@@ -21,8 +21,11 @@ def primesUpTo(x, primes = []):
     if primes == [2]:
         primes = [] # Not particularly useful as we only list odd numbers
     
-    if x <= 1: #  No primes <= 1
+    elif x <= 1: #  No primes <= 1
         return []
+
+    elif x == 3: # Bug fix. May need to change logic in future so this isn't necessary
+        return [2, 3]
     
     else: # Some primes
         # All odd numbers initially assumed prime. Each element in lst refers to an odd number, starting at 3, i.e. lst[0] refers to 3, lst[4] refers to 11
@@ -56,18 +59,9 @@ def primesUpTo(x, primes = []):
                 for i in range(_posOf(num**2), len(lst), num): # Mark multiples of the prime above its square as not prime
                     lst[i] = False
 
-        posOfSqrt = _posOf(int(sqrt(x)))
-        if start < posOfSqrt:
-            start = posOfSqrt+1
+        start = max(_posOf(primes[-1]), _posOf(int(sqrt(x)))) + 1
 
-        # This part is because 2 and 3 are found as primes <= square root in range 4-25
-        if x < 25: 
-            if x == 3: # Only one where start should be 0 (referring to 3)
-                start = 0
-            else: # Start would be 0 (referring to 3), has to be at least 1 (referring to 5)
-                start = 1
-
-        primes += [_numAt(index) for index in range(start, len(lst)) if lst[index]] # Get the primes above the square root
+        primes += [_numAt(index) for index in range(start, len(lst)) if lst[index]] # Get the primes above the square root (or above primes[-1])
         
         return primes
 
@@ -125,6 +119,10 @@ def compositesUpTo(x, primes = []):
 
     Can pass in a list of known primes to decrease execution time
     """
+    if x <= 3:
+        return []
+    elif x == 4:
+        return [4]
     primes = primesUpTo(x, primes)
     composites = []
     for index in range(len(primes)-1):
