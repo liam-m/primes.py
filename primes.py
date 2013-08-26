@@ -121,7 +121,7 @@ def compositesUpTo(x, primes = []):
         return [4]
     primes = primesUpTo(x, primes)
     composites = []
-    for index in range(len(primes)-1):
+    for index in range(len(primes)-1): # Add numbers between primes to composites
         composites += list(range(primes[index]+1, primes[index+1]))
-    composites += list(range(composites[-1]+1, x+1))
+    composites += list(range(primes[-1]+1, x+1)) # Add numbers between last prime and x
     return composites
