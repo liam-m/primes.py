@@ -1,13 +1,6 @@
 from binarySearch import binarySearch
 from math import sqrt, log
-
-def _posOf(num, offset = 3):
-    # Position of number in lst
-    return int((num - offset) / 2)
-
-def _numAt(pos, offset = 3):
-    # Number at position in lst e.g. lst[0] refers to 3, lst[2] refers to 7
-    return pos * 2 + offset
+from bisect import bisect_right
 
 def primesUpTo(x, primes = []):
     """
@@ -18,52 +11,55 @@ def primesUpTo(x, primes = []):
     Can pass in a list of known primes to decrease execution time
     """
 
+    def _posOf(num, offset = 3):
+        # Position of number in lst
+        return int((num - offset) / 2)
+
+    def _numAt(pos, offset = 3):
+        # Number at position in lst e.g. lst[0] refers to 3, lst[2] refers to 7
+        return pos * 2 + offset
+
     if primes == [2]:
         primes = [] # Not particularly useful as we only list odd numbers
     
-    elif x <= 1: #  No primes <= 1
+    if x <= 1: #  No primes <= 1
         return []
 
     elif x == 3: # Bug fix. May need to change logic in future so this isn't necessary
         return [2, 3]
     
-    else: # Some primes
-        # All odd numbers initially assumed prime. Each element in lst refers to an odd number, starting at 3, i.e. lst[0] refers to 3, lst[4] refers to 11
-        lst = [True] * int((x-1)/2)
+    # Some primes
+    # All odd numbers initially assumed prime. Each element in lst refers to an odd number, starting at 3, i.e. lst[0] refers to 3, lst[4] refers to 11
+    lst = [True] * int((x-1)/2)
+    
+    if primes: # Some primes have already been worked out
         
-        if primes: # Some primes have already been worked out
+        if primes[-1] >= x: # Enough primes have already been worked out
+            return primes[:bisect_right(primes, x)] # Binary search to position of x and return list up to that point
+                
+        else: # Not all primes up to x have been worked out
             
-            if primes[-1] >= x: # Enough primes have already been worked out
-                
-                for index in range(len(primes)): # Return primes up to that number
-                    if primes[index] > x:
-                        return primes[:index]
-                else: # All primes are there
-                    return primes
-                    
-            else: # Not all primes up to x have been worked out
-                
-                for num in primes[1:]: # Skipping 2, go through the primes
-                    for i in range(_posOf(num**2), len(lst), num): # Mark multiples of the prime above its square as not prime
-                        lst[i] = False
-                start = _posOf(primes[-1])+1 # Start at the position of the last prime + 1
-                        
-        else: # No primes worked out
-            primes = [2] # Only going to work out odd primes so remember 2 is prime
-            start = 0 # Start at 0
-
-        for index in range(start, _posOf(int(sqrt(x)))+1): # Mark multiples of prime <= square root as not prime
-            if lst[index]: # If number at index is prime
-                num = _numAt(index) # Number index refers to
-                primes.append(num) # It is prime, so add it to list of primes
+            for num in primes[1:]: # Skipping 2, go through the primes
                 for i in range(_posOf(num**2), len(lst), num): # Mark multiples of the prime above its square as not prime
                     lst[i] = False
+            start = _posOf(primes[-1])+1 # Start at the position of the last prime + 1
+                    
+    else: # No primes worked out
+        primes = [2] # Only going to work out odd primes so remember 2 is prime
+        start = 0 # Start at 0
 
-        start = max(_posOf(primes[-1]), _posOf(int(sqrt(x)))) + 1
+    for index in range(start, _posOf(int(sqrt(x)))+1): # Mark multiples of prime <= square root as not prime
+        if lst[index]: # If number at index is prime
+            num = _numAt(index) # Number index refers to
+            primes.append(num) # It is prime, so add it to list of primes
+            for i in range(_posOf(num**2), len(lst), num): # Mark multiples of the prime above its square as not prime
+                lst[i] = False
 
-        primes += [_numAt(index) for index in range(start, len(lst)) if lst[index]] # Get the primes above the square root (or above primes[-1])
-        
-        return primes
+    start = max(_posOf(primes[-1]), _posOf(int(sqrt(x)))) + 1
+
+    primes += [_numAt(index) for index in range(start, len(lst)) if lst[index]] # Get the primes above the square root (or above primes[-1])
+    
+    return primes
 
 def isPrime(x, primes = []):
     """
