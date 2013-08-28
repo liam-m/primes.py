@@ -125,3 +125,20 @@ def compositesUpTo(x, primes = []):
         composites += list(range(primes[index]+1, primes[index+1]))
     composites += list(range(primes[-1]+1, x+1)) # Add numbers between last prime and x
     return composites
+
+def nextPrime(primes):
+    """
+    Given a list of primes, returns the next prime
+
+    Uses method of trial division
+    
+    This is much less efficient than primesUpTo for generating ranges of primes
+    """
+    if not primes:
+        return [2]
+    for num in range(primes[-1]+1, 2*primes[-1]):
+        for prime in primes:
+            if num % prime == 0:
+                break
+            elif prime > sqrt(num):
+                return num
