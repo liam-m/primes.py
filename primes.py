@@ -2,7 +2,7 @@ from binarySearch import binarySearch
 from math import sqrt, log
 from bisect import bisect_right
 
-def primesUpTo(x, primes = []):
+def primesUpTo(x, primes=[]):
     """
     Implementation of Sieve of Eratosthenes
     
@@ -11,11 +11,11 @@ def primesUpTo(x, primes = []):
     Can pass in a list of known primes to decrease execution time
     """
 
-    def _posOf(num, offset = 3):
+    def _posOf(num, offset=3):
         # Position of number in lst
         return int((num - offset) / 2)
 
-    def _numAt(pos, offset = 3):
+    def _numAt(pos, offset=3):
         # Number at position in lst e.g. lst[0] refers to 3, lst[2] refers to 7
         return pos * 2 + offset
 
@@ -61,7 +61,7 @@ def primesUpTo(x, primes = []):
     
     return primes
 
-def isPrime(x, primes = []):
+def isPrime(x, primes=[]):
     """
     Returns True if x is a prime number, False if it is not
 
@@ -86,7 +86,7 @@ def isPrime(x, primes = []):
             return False
     return True
 
-def nPrimes(n, primes = []):
+def nPrimes(n, primes=[]):
     """
     Returns a list of the first n primes
 
@@ -101,7 +101,7 @@ def nPrimes(n, primes = []):
     primes = primesUpTo(upperBound, primes)
     return primes[:n]
 
-def nthPrime(n, primes = []):
+def nthPrime(n, primes=[]):
     """
     Returns the nth prime (i.e. the 3rd prime, the 6th prime)
 
@@ -109,7 +109,7 @@ def nthPrime(n, primes = []):
     """
     return nPrimes(n, primes)[-1]
 
-def compositesUpTo(x, primes = []):
+def compositesUpTo(x, primes=[]):
     """
     Returns a list of all composite (non-prime greater than 1) numbers up to (and including) x
 
