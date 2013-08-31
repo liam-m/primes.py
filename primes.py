@@ -135,8 +135,8 @@ def nextPrime(primes):
     This is much less efficient than primesUpTo for generating ranges of primes
     """
     if not primes:
-        return [2]
-    for num in range(primes[-1]+1, 2*primes[-1]):
+        return 2
+    for num in range(primes[-1]+(2 if primes[-1]%2 else 1), 2*primes[-1], 2):
         for prime in primes:
             if num % prime == 0:
                 break
