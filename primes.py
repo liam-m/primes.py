@@ -6,7 +6,7 @@ def primesUpTo(x, primes = []):
     """
     Implementation of Sieve of Eratosthenes
     
-    Returns all primes up to (and including) x
+    Returns a list of all primes up to (and including) x
 
     Can pass in a list of known primes to decrease execution time
     """
@@ -88,7 +88,7 @@ def isPrime(x, primes = []):
 
 def nPrimes(n, primes = []):
     """
-    Returns the first n primes
+    Returns a list of the first n primes
 
     Can pass in a list of known primes to decrease execution time
     """
@@ -111,7 +111,7 @@ def nthPrime(n, primes = []):
 
 def compositesUpTo(x, primes = []):
     """
-    Returns all composite (non-prime greater than 1) numbers up to (and including) x
+    Returns a list of all composite (non-prime greater than 1) numbers up to (and including) x
 
     Can pass in a list of known primes to decrease execution time
     """
