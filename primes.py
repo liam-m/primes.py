@@ -10,7 +10,17 @@ def primesUpTo(x, primes=[]):
 
     Can pass in a list of known primes to decrease execution time
     """
+    
+    # The Sieve of Eratosthenes works by making a list of numbers 2..n.
+    # Each consecutive number is tested - if it is not crossed out, then
+    # it is prime and multiples of this number up to n are crossed out.
 
+    # In this implementation, uncrossed numbers in the list are
+    # represented by True and crossed numbers are represented by False.
+    # In addition, this implementation also takes advantage of the fact
+    # that the only even prime is 2. Only odd numbers 3..n are listed,
+    # meaning that only half the 'crossing out' is necessary.
+    
     def _posOf(num, offset=3):
         # Position of number in lst
         return int((num-offset) / 2)
@@ -23,47 +33,82 @@ def primesUpTo(x, primes=[]):
         # Returns first multiple of x >= above
         return ceil(above/x) * x
 
-    if primes == [2]:
-        primes = [] # Not particularly useful as we only list odd numbers
+    def _markAsComposite(lst, start, step):
+        # Mark items in lst as composite (False) from start, increasing in increments of step
+        for index in range(start, len(lst), step):
+            lst[index] = False
     
-    if x <= 1: #  No primes <= 1
+    if x <= 1: 
         return []
 
     elif x == 3: # Bug fix. May need to change logic in future so this isn't necessary
         return [2, 3]
-    
-    if primes: # Some primes have already been worked out
-        
-        if primes[-1] >= x: # Enough primes have already been worked out
-            return primes[:bisect_right(primes, x)] # Binary search to position of x and return list up to that point
-                
-        else: # Not all primes up to x have been worked out
 
-            offset = 3 # Number first element in lst will refer to. In future this will be primes[-1]+2 (first odd number above highest known prime)
+    # As this function takes advantage of 2 being the only even prime,
+    # passing in 2 is not useful, so we'll strip that out
+    elif primes == [2]:
+        primes = []
+
+    # If a list of primes is passed in, take advantage of this
+    if primes:
+        # If enough primes are passed in, we can simply return the primes up to x
+        if primes[-1] >= (x-1):
+            # Primes is a sorted list so we can binary search (bisect_right)
+            return primes[:bisect_right(primes, x)]
+
+        # We have a partial list of primes
+        else:
+            # Offset is the number the first element of the list refers to.
+            # To reduce memory usage, this should be primes[-1]+2
+            # i.e. the next odd number above highest known prime)
+            offset = 3 # primes[-1]+2
+            # lst is the list of (initially) uncrossed numbers from offset to x
+            # _posOf(x) will be the position of the last element - so we want a list
+            # this of this length + 1
             lst = [True] * (_posOf(x, offset)+1)
-            
-            for num in primes[1:bisect_right(primes, int(sqrt(x)))]: # Skipping 2, go through the primes up to sqrt(x)
-                # Mark multiples of the prime above its square (or above offset, as square may not even be in lst) as not prime
-                for i in range(_posOf(max(_firstMultipleOf(num, offset), num**2), offset), len(lst), num):
-                    lst[i] = False
-            start = _posOf(primes[-1], offset)+1 # Start at the position of the last prime + 1
-                    
-    else: # No primes worked out
+
+            # Mark all multiples of the known primes as not prime
+            # Only go up to the sqrt(x) as all composites <= x have a factor <= sqrt(x)
+            for prime in primes[1:bisect_right(primes, int(sqrt(x)))]:
+                # Start at the square as multiples < the square have already been marked
+                # If the square isn't in the list (because offset > than the square),
+                # then start marking from the first multiple of the prime above offset
+                start = _posOf(max(prime**2, _firstMultipleOf(prime, offset)), offset)
+                _markAsComposite(lst, start, prime)
+
+            # Start the main algorithm at the position of highest known prime + 1
+            start = _posOf(primes[-1], offset) + 1
+
+    # When no primes are known prior to the main algorithm                   
+    else:
+        # The list will refer to 3, 5 .. x-2, x
         offset = 3
         lst = [True] * (_posOf(x, offset)+1)
-        primes = [2] # Only going to work out odd primes so remember 2 is prime
-        start = 0 # Start at 0
+        # Remember that 2 is prime, as it isn't referred to in the list
+        primes = [2]
+        # Start the main algorithm at the first element of the list - 3
+        start = 0 
 
-    for index in range(start, _posOf(int(sqrt(x)), offset)+1): # Mark multiples of prime <= square root as not prime
-        if lst[index]: # If number at index is prime
-            num = _numAt(index, offset) # Number index refers to
-            primes.append(num) # It is prime, so add it to list of primes
-            for i in range(_posOf(num**2, offset), len(lst), num): # Mark multiples of the prime above its square as not prime
-                lst[i] = False
+    # Go through the numbers in the list up to the square root of x
+    # Only go up to the position of the square root of x as all composites <= x have
+    # a factor <= x, so all composites will have been marked by square root of x
+    for index in range(start, _posOf(int(sqrt(x)), offset)+1):
+        # If the number at the index is True, then it's prime
+        if lst[index]:
+            num = _numAt(index, offset)
+            primes.append(num)
+            # Start at the square as multiples < the square have already been marked
+            _markAsComposite(lst, _posOf(num**2, offset), num)
 
-    start = _posOf(max(primes[-1], int(sqrt(x))), offset) + 1 # Start 1 after square root of x - or 1 after highest prime if it's > sqrt(x)
+    # Now all non-primes are now False, so go through the rest of the numbers
+    # and add the ones that aren't crossed out to the list of primes
 
-    primes += [_numAt(index, offset) for index in range(start, len(lst)) if lst[index]] # Get the primes above the square root (or above primes[-1])
+    # Start at the position of the square root + 1
+    # If primes passed in were > sqrt(x), then we'll start at the position of the
+    # highest known prime + 1
+    start = _posOf(max(primes[-1], int(sqrt(x))), offset) + 1
+
+    primes += [_numAt(index, offset) for index in range(start, len(lst)) if lst[index]]
     
     return primes
 
@@ -146,3 +191,8 @@ def nextPrime(primes):
     for num in range(primes[-1]+(2 if primes[-1]%2 else 1), 2*primes[-1], 2):
         if isPrime(num, primes):
             return num
+
+def twinPrimesUpTo(x, primes=[]):
+    primes = primesUpTo(x, primes)
+    return [(primes[index], primes[index+1]) for index in range(len(primes)-1) if primes[index] == primes[index+1]-2]
+
