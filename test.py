@@ -42,13 +42,13 @@ class TestPrimesUpTo(unittest.TestCase):
 
     def testPrimesUpTo1000WithLesserPassIn(self):
         for i in range(1000):
-            passIn = primes.primesUpTo(random.randint(0, i))
-            self.assertEqual(primes.primesUpTo(i), primes.primesUpTo(i, passIn))
+            passInL = primes.primesUpTo(random.randint(0, i))
+            self.assertEqual(primes.primesUpTo(i), primes.primesUpTo(i, passInL))
 
     def testPrimesUpTo1000WithGreaterPassIn(self):
         for i in range(1000):
-            passIn = primes.primesUpTo(random.randint(i, 2*i))
-            self.assertEqual(primes.primesUpTo(i), primes.primesUpTo(i, passIn))
+            passInG = primes.primesUpTo(random.randint(i, 2*i))
+            self.assertEqual(primes.primesUpTo(i), primes.primesUpTo(i, passInG))
 
 class TestIsPrime(unittest.TestCase):
     def testIsPrime0(self):
