@@ -54,11 +54,11 @@ def known_prime_test(length):
 
     for order in order_range:
         result = time_execution_primes(order)
-        print "Order {0}, average time: {1:f}s, number of iterations: {2}".format(order, *result)
+        print("Order {0}, average time: {1:f}s, number of iterations: {2}".format(order, *result))
 
 def fermat_test(n=12):
-    for x in xrange(n):
-        print "2^(2^{0}) +1 = 2^{1} + 1 is ".format(x, 2**x), 'prime' if isPrime(2**(2**x) + 1) else 'composite'
+    for x in range(n):
+        print("2^(2^{0}) +1 = 2^{1} + 1 is ".format(x, 2**x), 'prime' if isPrime(2**(2**x) + 1) else 'composite')
 
 parser = argparse.ArgumentParser(description='Test the Baillie-PSW implementation')
 group = parser.add_mutually_exclusive_group()
