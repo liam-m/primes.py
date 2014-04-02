@@ -41,20 +41,11 @@ def time_execution_primes(order):
     return total_time/iterations, iterations
 
 def known_prime_test(length):
-    if length == 'short':
-        order_range = range(2, 6)
-    elif length == 'medium':
-        order_range = range(2, 7)
-    elif length == 'long':
-        order_range = range(2, 8)
-    elif length == 'superlong':
-        order_range = range(2, 9)
-    elif length == 'stupidlylong':
-        order_range = range(2, 10)
-
-    for order in order_range:
-        result = time_execution_primes(order)
-        print("Order {0}, average time: {1:f}s, number of iterations: {2}".format(order, *result))
+    upper_bounds = {'short': 6, 'medium': 7, 'long': 8, 'superlong': 9, 'stupidlylong': 10}
+    if length in upper_bounds:
+        for order in range(2, upper_bounds[length]):
+            result = time_execution_primes(order)
+            print("Order {0}, average time: {1:f}s, number of iterations: {2}".format(order, *result))
 
 def fermat_test(n=12):
     for x in range(n):
