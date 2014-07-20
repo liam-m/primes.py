@@ -108,7 +108,7 @@ def primesUpTo(x, primes=[]):
     # highest known prime + 1
     start = _posOf(max(primes[-1], int(sqrt(x))), offset) + 1
 
-    primes += [_numAt(index, offset) for index in range(start, len(lst)) if lst[index]]
+    primes.extend(_numAt(index, offset) for index in range(start, len(lst)) if lst[index])
     
     return primes
 
@@ -120,6 +120,7 @@ def isPrime(x, primes=[]):
     """
     if x <= 1:
         return False
+    
     if primes:
         if primes[-1] >= x: # If it's prime, it'll be in the list
             return not binarySearch(primes, x) == -1
@@ -155,7 +156,7 @@ def nPrimes(n, primes=[]):
 
 def nthPrime(n, primes=[]):
     """
-    Returns the nth prime (i.e. the 3rd prime, the 6th prime)
+    Returns the nth prime (e.g. the 3rd prime, the 6th prime)
 
     Can pass in a list of known primes to decrease execution time    
     """
@@ -173,9 +174,9 @@ def compositesUpTo(x, primes=[]):
         return [4]
     primes = primesUpTo(x, primes)
     composites = []
-    for index in range(len(primes)-1): # Add numbers between primes to composites
-        composites += list(range(primes[index]+1, primes[index+1]))
-    composites += list(range(primes[-1]+1, x+1)) # Add numbers between last prime and x
+    for p1, p2 in zip(primes, primes[1:]): # Add numbers between primes to composites
+        composites.extend(list(range(p1+1, p2)))
+    composites.extend(range(primes[-1]+1, x+1)) # Add numbers between last prime and x
     return composites
 
 def nextPrime(primes):
@@ -188,7 +189,8 @@ def nextPrime(primes):
     """
     if not primes:
         return 2
-    for num in range(primes[-1]+(2 if primes[-1]%2 else 1), 2*primes[-1], 2):
+    p = primes[-1]
+    for num in range(p + p%2+1, 2*p, 2): # Odd numbers from highest known to double it
         if isPrime(num, primes):
             return num
 
