@@ -194,5 +194,5 @@ def nextPrime(primes):
 
 def twinPrimesUpTo(x, primes=[]):
     primes = primesUpTo(x, primes)
-    return [(primes[index], primes[index+1]) for index in range(len(primes)-1) if primes[index] == primes[index+1]-2]
+    return ((prime1, prime2) for prime1, prime2 in zip(primes, primes[1:]) if prime2-prime1 == 2)
 
