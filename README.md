@@ -14,7 +14,7 @@ Can pass in a list of primes to decrease execution time
 
 ### Example usage
 
-```
+```python
 >>> primesUpTo(10)
 [2, 3, 5, 7]
 
@@ -30,7 +30,7 @@ Can pass in a list of known primes to decrease execution time
 
 ### Example usage
 
-```
+```python
 >>> isPrime(191)
 True
 
@@ -46,7 +46,7 @@ Can pass in a list of known primes to decrease execution time
 
 ### Example usage
 
-```
+```python
 >>> nPrimes(5)
 [2, 3, 5, 7, 11]
 
@@ -62,7 +62,7 @@ Can pass in a list of known primes to decrease execution time
 
 ### Example usage
 
-```
+```python
 >>> nthPrime(1000)
 7919
 
@@ -78,7 +78,7 @@ Can pass in a list of known primes to decrease execution time
 
 ### Example usage
 
-```
+```python
 >>> compositesUpTo(10)
 [4, 6, 8, 9, 10]
 
@@ -96,7 +96,7 @@ This is much less efficient than primesUpTo for generating ranges of primes
 
 ### Example usage
 
-```
+```python
 >>> nextPrime([2, 3, 5, 7, 11])
 13
 
