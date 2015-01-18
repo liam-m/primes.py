@@ -173,6 +173,12 @@ class TestTwinPrimesUpTo(unittest.TestCase):
     def testTwinPrimesUpTo620(self):
         self.assertEqual(list(primes.twinPrimesUpTo(620)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73), (101, 103), (107, 109), (137, 139), (149, 151), (179, 181), (191, 193), (197, 199), (227, 229), (239, 241), (269, 271), (281, 283), (311, 313), (347, 349), (419, 421), (431, 433), (461, 463), (521, 523), (569, 571), (599, 601), (617, 619)])
 
+    def testTwinPrimesWithPassIn(self):
+        upto = 500
+        p = primes.primesUpTo(upto)
+        for i in range(upto):
+            self.assertEqual(list(primes.twinPrimesUpTo(i)), list(primes.twinPrimesUpTo(i, p[:random.randint(0, upto)])))
+
 class TestCousinPrimesUpTo(unittest.TestCase):
     def testCousinPrimesUpTo6(self):
         self.assertEqual(list(primes.cousinPrimesUpTo(6)), [])
@@ -192,6 +198,12 @@ class TestCousinPrimesUpTo(unittest.TestCase):
     def testCousinPrimesUpTo971(self):
         self.assertEqual(len(list(primes.cousinPrimesUpTo(971))), 41)
 
+    def testCousinPrimesWithPassIn(self):
+        upto = 500
+        p = primes.primesUpTo(upto)
+        for i in range(upto):
+            self.assertEqual(list(primes.cousinPrimesUpTo(i)), list(primes.cousinPrimesUpTo(i, p[:random.randint(0, upto)])))
+            
 class TestSexyPrimesUpTo(unittest.TestCase):
     def testSexyPrimesUpTo10(self):
         self.assertEqual(list(primes.sexyPrimesUpTo(10)), [])
@@ -208,6 +220,12 @@ class TestSexyPrimesUpTo(unittest.TestCase):
     def testSexyPrimesUpTo467(self):
         self.assertEqual(list(primes.sexyPrimesUpTo(467)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37), (37,43), (41,47), (47,53), (53,59), (61,67), (67,73), (73,79), (83,89), (97,103), (101,107), (103,109), (107,113), (131,137), (151,157), (157,163), (167,173), (173,179), (191,197), (193,199), (223,229), (227,233), (233,239), (251,257), (257,263), (263,269), (271,277), (277,283), (307,313), (311,317), (331,337), (347,353), (353,359), (367,373), (373,379), (383,389), (433,439), (443,449), (457,463), (461,467)])
 
+    def testSexyPrimesWithPassIn(self):
+        upto = 500
+        p = primes.primesUpTo(upto)
+        for i in range(upto):
+            self.assertEqual(list(primes.sexyPrimesUpTo(i)), list(primes.sexyPrimesUpTo(i, p[:random.randint(0, upto)])))
+            
 class TestPrimeTripletsUpTo(unittest.TestCase):
     def testPrimeTripletsUpTo10(self):
         self.assertEqual(list(primes.primeTripletsUpTo(10)), [])
@@ -224,6 +242,12 @@ class TestPrimeTripletsUpTo(unittest.TestCase):
     def testPrimeTripletsUpTo887(self):
         self.assertEqual(list(primes.primeTripletsUpTo(887)), [(5, 7, 11), (7, 11, 13), (11, 13, 17), (13, 17, 19), (17, 19, 23), (37, 41, 43), (41, 43, 47), (67, 71, 73), (97, 101, 103), (101, 103, 107), (103, 107, 109), (107, 109, 113), (191, 193, 197), (193, 197, 199), (223, 227, 229), (227, 229, 233), (277, 281, 283), (307, 311, 313), (311, 313, 317), (347, 349, 353), (457, 461, 463), (461, 463, 467), (613, 617, 619), (641, 643, 647), (821, 823, 827), (823, 827, 829), (853, 857, 859), (857, 859, 863), (877, 881, 883), (881, 883, 887)])
 
+    def testPrimeTripletsWithPassIn(self):
+        upto = 500
+        p = primes.primesUpTo(upto)
+        for i in range(upto):
+            self.assertEqual(list(primes.primeTripletsUpTo(i)), list(primes.primeTripletsUpTo(i, p[:random.randint(0, upto)])))
+            
 class TestPrimeQuadrupletsUpTo(unittest.TestCase):
     def testPrimeQuadrupletsUpTo12(self):
         self.assertEqual(list(primes.primeQuadrupletsUpTo(12)), [])
@@ -240,5 +264,12 @@ class TestPrimeQuadrupletsUpTo(unittest.TestCase):
     def testPrimeQuadrupletsUpTo100000(self):
         self.assertEqual(len(list(primes.primeQuadrupletsUpTo(100000))), 38)
 
+    def testPrimeQuadrupletsWithPassIn(self):
+        upto = 500
+        p = primes.primesUpTo(upto)
+        for i in range(upto):
+            self.assertEqual(list(primes.primeQuadrupletsUpTo(i)), list(primes.primeQuadrupletsUpTo(i, p[:random.randint(0, upto)])))
+
+            
 if __name__ == '__main__':
     unittest.main()
