@@ -206,3 +206,15 @@ def cousinPrimesUpTo(x, primes=[]):
 def sexyPrimesUpTo(x, primes=[]):
     return primesWithDifferenceUpTo(x, 6, primes)
 
+def primeTripletsUpTo(x, primes=[]):
+    for p in primesUpTo(x-6, primes=[]):
+        if isPrime(p+2) and isPrime(p+6):
+            yield (p, p+2, p+6)
+        if isPrime(p+4) and isPrime(p+6):
+            yield (p, p+4, p+6)
+
+def primeQuadrupletsUpTo(x, primes=[]):
+    for p in primesUpTo(x-8, primes=[]):
+        if isPrime(p+2) and isPrime(p+6) and isPrime(p+8):
+            yield (p, p+2, p+6, p+8)
+
