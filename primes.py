@@ -194,7 +194,15 @@ def nextPrime(primes):
         if isPrime(num, primes):
             return num
 
+def primesWithDifferenceUpTo(x, difference, primes=[]):
+    return ((p, p+difference) for p in primesUpTo(x-difference, primes) if isPrime(p+difference, primes))
+
 def twinPrimesUpTo(x, primes=[]):
-    primes = primesUpTo(x, primes)
-    return ((prime1, prime2) for prime1, prime2 in zip(primes, primes[1:]) if prime2-prime1 == 2)
+    return primesWithDifferenceUpTo(x, 2, primes)
+
+def cousinPrimesUpTo(x, primes=[]):
+    return primesWithDifferenceUpTo(x, 4, primes)
+
+def sexyPrimesUpTo(x, primes=[]):
+    return primesWithDifferenceUpTo(x, 6, primes)
 

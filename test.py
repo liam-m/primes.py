@@ -145,5 +145,69 @@ class TestNextPrime(unittest.TestCase):
         for i in range(len(self.pri)):
             self.assertEqual(primes.nextPrime(self.pri[:i]), self.pri[i])
 
+class TestTwinPrimesUpTo(unittest.TestCase):
+    def testTwinPrimesUpTo4(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(4)), [])
+
+    def testTwinPrimesUpTo5(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(5)), [(3, 5)])
+
+    def testTwinPrimesUpTo6(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(6)), [(3, 5)])
+
+    def testTwinPrimesUpTo7(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(7)), [(3, 5), (5, 7)])
+
+    def testTwinPrimesUpTo13(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(13)), [(3, 5), (5, 7), (11, 13)])
+
+    def testTwinPrimesUpTo31(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(31)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31)])
+
+    def testTwinPrimesUpTo73(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(73)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73)])
+
+    def testTwinPrimesUpTo139(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(139)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73), (101, 103), (107, 109), (137, 139)])
+
+    def testTwinPrimesUpTo620(self):
+        self.assertEqual(list(primes.twinPrimesUpTo(620)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73), (101, 103), (107, 109), (137, 139), (149, 151), (179, 181), (191, 193), (197, 199), (227, 229), (239, 241), (269, 271), (281, 283), (311, 313), (347, 349), (419, 421), (431, 433), (461, 463), (521, 523), (569, 571), (599, 601), (617, 619)])
+
+class TestCousinPrimesUpTo(unittest.TestCase):
+    def testCousinPrimesUpTo6(self):
+        self.assertEqual(list(primes.cousinPrimesUpTo(6)), [])
+
+    def testCousinPrimesUpTo7(self):
+        self.assertEqual(list(primes.cousinPrimesUpTo(7)), [(3, 7)])
+
+    def testCousinPrimesUpTo17(self):
+        self.assertEqual(list(primes.cousinPrimesUpTo(17)), [(3, 7), (7, 11), (13, 17)])
+
+    def testCousinPrimesUpTo101(self):
+        self.assertEqual(list(primes.cousinPrimesUpTo(101)), [(3, 7), (7, 11), (13, 17), (19, 23), (37, 41), (43, 47), (67, 71), (79, 83), (97, 101)])
+
+    def testCousinPrimesUpTo617(self):
+        self.assertEqual(len(list(primes.cousinPrimesUpTo(617))), 28)
+
+    def testCousinPrimesUpTo971(self):
+        self.assertEqual(len(list(primes.cousinPrimesUpTo(971))), 41)
+
+class TestSexyPrimesUpTo(unittest.TestCase):
+    def testSexyPrimesUpTo10(self):
+        self.assertEqual(list(primes.sexyPrimesUpTo(10)), [])
+
+    def testSexyPrimesUpTo11(self):
+        self.assertEqual(list(primes.sexyPrimesUpTo(11)), [(5, 11)])
+
+    def testSexyPrimesUpTo37(self):
+        self.assertEqual(list(primes.sexyPrimesUpTo(37)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37)])
+
+    def testSexyPrimesUpTo199(self):
+        self.assertEqual(list(primes.sexyPrimesUpTo(199)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37), (37,43), (41,47), (47,53), (53,59), (61,67), (67,73), (73,79), (83,89), (97,103), (101,107), (103,109), (107,113), (131,137), (151,157), (157,163), (167,173), (173,179), (191,197), (193,199)])
+        
+    def testSexyPrimesUpTo467(self):
+        self.assertEqual(list(primes.sexyPrimesUpTo(467)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37), (37,43), (41,47), (47,53), (53,59), (61,67), (67,73), (73,79), (83,89), (97,103), (101,107), (103,109), (107,113), (131,137), (151,157), (157,163), (167,173), (173,179), (191,197), (193,199), (223,229), (227,233), (233,239), (251,257), (257,263), (263,269), (271,277), (277,283), (307,313), (311,317), (331,337), (347,353), (353,359), (367,373), (373,379), (383,389), (433,439), (443,449), (457,463), (461,467)])
+
+
 if __name__ == '__main__':
     unittest.main()
