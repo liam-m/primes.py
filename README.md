@@ -4,6 +4,8 @@ Several prime number functions in Python
 
 If you want to help develop, [open an issue](https://github.com/liam-m/primes.py/issues/new) or [fork the repo](https://github.com/liam-m/primes.py/fork), make your changes and [submit a pull request](https://github.com/liam-m/primes.py/compare/).
 
+[![Build Status](https://travis-ci.org/liam-m/primes.py.svg)](https://travis-ci.org/liam-m/primes.py)
+
 ##primesUpTo
     
 Implementation of Sieve of Eratosthenes
