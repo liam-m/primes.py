@@ -106,8 +106,32 @@ class TestIsPrime(unittest.TestCase):
     
 
 class TestNPrimes(unittest.TestCase):
+    def testNPrimes0(self):
+        self.assertEqual(primes.nPrimes(0), [])
+
+    def testNPrimes1(self):
+        self.assertEqual(primes.nPrimes(1), [2])
+
+    def testNPrimes2(self):
+        self.assertEqual(primes.nPrimes(2), [2, 3])
+
+    def testNPrimes5(self):
+        self.assertEqual(primes.nPrimes(5), [2, 3, 5, 7, 11])
+
+    def testNPrimes100(self):
+        self.assertEqual(primes.nPrimes(100), primes.primesUpTo(542))
+
+    def testNPrimes500(self):
+        for i in range(500):
+            p = primes.primesUpTo(i)
+            self.assertEqual(primes.nPrimes(len(p)), p)
+    
     def testNPrimes1000(self):
         for i in range(1000):
+            self.assertEqual(len(primes.nPrimes(i)), i)
+
+    def testNPrimes10000(self):
+        for i in range(10000, 10050):
             self.assertEqual(len(primes.nPrimes(i)), i)
 
 class TestNthPrime(unittest.TestCase):
@@ -119,7 +143,10 @@ class TestNthPrime(unittest.TestCase):
             self.assertEqual(primes.nthPrime(i), self.pri[i-1])
 
 class TestCompositesUpTo(unittest.TestCase):
-    def testCompositesUpTo4(self):
+    def testCompositesUpTo0(self):
+        self.assertEqual(primes.compositesUpTo(0), [])
+    
+    def testCompositesUpTo3(self):
         self.assertTrue(all([primes.compositesUpTo(i) == [] for i in range(4)]))
 
     def testCompositesUpTo4(self):
