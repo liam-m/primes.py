@@ -302,16 +302,17 @@ class TestPrimes(unittest.TestCase):
         self.primes = primes.Primes()
     
     def testMembershipSanity(self):
-        self.assertFalse(1 in self.primes)
-        self.assertTrue(2 in self.primes)
-        self.assertTrue(3 in self.primes)
-        self.assertFalse(4 in self.primes)
-        self.assertTrue(5 in self.primes)
-        self.assertFalse(6 in self.primes)
-        self.assertTrue(7 in self.primes)
-        self.assertFalse(8 in self.primes)
-        self.assertFalse(9 in self.primes)
-        self.assertFalse(10 in self.primes)
+        for _ in range(5):
+            self.assertFalse(1 in self.primes)
+            self.assertTrue(2 in self.primes)
+            self.assertTrue(3 in self.primes)
+            self.assertFalse(4 in self.primes)
+            self.assertTrue(5 in self.primes)
+            self.assertFalse(6 in self.primes)
+            self.assertTrue(7 in self.primes)
+            self.assertFalse(8 in self.primes)
+            self.assertFalse(9 in self.primes)
+            self.assertFalse(10 in self.primes)
 
     def testMembership1000(self):
         p = primes.primesUpTo(1000)
