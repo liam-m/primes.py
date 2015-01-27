@@ -9,4 +9,4 @@ install:
  - pip install coverage
 script:
  - python test.py
- - coverage run test.py && coverage report --fail-under=100 --omit=primes.py && coverage report --fail-under=98 --include=primes.py
+ - coverage run test.py && coverage report --fail-under=100

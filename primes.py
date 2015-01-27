@@ -4,7 +4,7 @@ from bisect import bisect_right
 
 try:
     from sys import maxint
-except:
+except: # pragma: no cover
     maxint = 9223372036854775807
 
 class Primes:
