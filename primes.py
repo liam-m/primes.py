@@ -2,6 +2,33 @@ from binarySearch import binarySearch
 from math import sqrt, log, ceil
 from bisect import bisect_right
 
+class Primes:
+    def __init__(self):
+        self.primes = []
+        self.highest_known = 0
+
+    def __iter__(self):
+        return self.primes.__iter__()
+
+    def __len__(self):
+        return len(self.primes)
+
+    def __contains__(self, item):
+        if item > self.highest_known:
+            self.primes = primesUpTo(item, self.primes)
+        return item in self.primes
+
+    def __getitem__(self, key):
+        if len(self)-1 < key:
+            self.primes = nPrimes(key+1, self.primes)
+        return self.primes[key]
+
+    def __eq__(self, other):
+        return self.primes == other
+
+    def __ne__(self, other):
+        return self.primes != other
+
 def primesUpTo(x, primes=[]):
     """
     Implementation of Sieve of Eratosthenes

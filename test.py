@@ -297,6 +297,98 @@ class TestPrimeQuadrupletsUpTo(unittest.TestCase):
         for i in range(upto):
             self.assertEqual(list(primes.primeQuadrupletsUpTo(i)), list(primes.primeQuadrupletsUpTo(i, p[:random.randint(0, upto)])))
 
+class TestPrimes(unittest.TestCase):
+    def setUp(self):
+        self.primes = primes.Primes()
+    
+    def testMembershipSanity(self):
+        self.assertFalse(1 in self.primes)
+        self.assertTrue(2 in self.primes)
+        self.assertTrue(3 in self.primes)
+        self.assertFalse(4 in self.primes)
+        self.assertTrue(5 in self.primes)
+        self.assertFalse(6 in self.primes)
+        self.assertTrue(7 in self.primes)
+        self.assertFalse(8 in self.primes)
+        self.assertFalse(9 in self.primes)
+        self.assertFalse(10 in self.primes)
+
+    def testMembership1000(self):
+        p = primes.primesUpTo(1000)
+        for pr in p:
+            self.assertTrue(pr in self.primes)
+
+        c = primes.compositesUpTo(1000, p)
+        for co in c:
+            self.assertFalse(co in self.primes)
+
+    def testIndexingSanity(self):
+        self.assertEqual(self.primes[0], 2)
+        self.assertEqual(self.primes[1], 3)
+        self.assertEqual(self.primes[2], 5)
+        self.assertEqual(self.primes[3], 7)
+        self.assertEqual(self.primes[10], 31)
+        self.assertEqual(self.primes[100], 547)
+        self.assertEqual(self.primes[1000], 7927)
+
+    def testIndexing1000(self):
+        p = primes.nPrimes(1000)
+        for i, pr in enumerate(p):
+            self.assertEqual(self.primes[i], pr)
+
+    def testLen(self):
+        self.assertEqual(len(self.primes), 0)
+        self.primes[0]
+        self.assertEqual(len(self.primes), 1)
+        self.primes[1]
+        self.assertEqual(len(self.primes), 2)
+        self.primes[2]
+        self.assertEqual(len(self.primes), 3)
+        self.primes[10]
+        self.assertEqual(len(self.primes), 11)
+        self.primes[150]
+        self.assertEqual(len(self.primes), 151)
+        self.primes[1234]
+        self.assertEqual(len(self.primes), 1235)
+
+    def testIteration(self):
+        self.primes[999]
+        
+        self.assertEqual(primes.nPrimes(1000), list(self.primes))
+
+        self.assertEqual(primes.nPrimes(1000), [prime for prime in self.primes])
+        
+        for prime in self.primes:
+            self.assertTrue(primes.isPrime(prime))
+
+    def testEquality(self):
+        otherprimes = primes.Primes()
+        self.assertEqual(self.primes, otherprimes)
+        self.assertEqual(self.primes, [])
+        self.assertNotEqual(self.primes, [2])
+        self.assertFalse(self.primes != otherprimes)
+
+        self.primes[0]
+        self.assertNotEqual(self.primes, otherprimes)
+        self.assertEqual(self.primes, [2])
+        self.assertNotEqual(self.primes, [])
+        self.assertNotEqual(self.primes, [3])
+        self.assertNotEqual(self.primes, [2, 3])
+        self.assertFalse(self.primes == otherprimes)
+
+        otherprimes[0]
+        self.assertEqual(self.primes, otherprimes)
+        self.assertEqual(otherprimes, [2])
+        self.assertFalse(self.primes != otherprimes)
+
+        self.primes[100]
+        otherprimes[100]
+        otherprimes[50]
+        self.assertEqual(self.primes, otherprimes)
+
+        self.primes[200]
+        self.assertNotEqual(self.primes, otherprimes)
+
             
 if __name__ == '__main__':
     unittest.main()
