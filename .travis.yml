@@ -9,4 +9,4 @@ install:
  - pip install coverage
 script:
  - python test.py
- - coverage run test.py && coverage report --fail-under=100
+ - coverage run test.py && coverage report --fail-under=100 --rcfile=coveragerc
