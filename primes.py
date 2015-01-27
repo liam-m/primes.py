@@ -2,6 +2,11 @@ from binarySearch import binarySearch
 from math import sqrt, log, ceil
 from bisect import bisect_right
 
+try:
+    from sys import maxint
+except:
+    maxint = 9223372036854775807
+
 class Primes:
     def __init__(self):
         self.primes = []
@@ -19,8 +24,14 @@ class Primes:
         return item in self.primes
 
     def __getitem__(self, key):
-        if len(self)-1 < key:
-            self.primes = nPrimes(key+1, self.primes)
+        if isinstance(key, slice):
+            l = max(len(self), key.stop if key.stop not in [None, maxint] else 0)-1
+            start, stop, step = key.indices(l)
+        elif isinstance(key, int):
+            start, stop, step = 0, key, 1
+        
+        if len(self)-1 < stop:
+            self.primes = nPrimes(stop+1, self.primes)
         return self.primes[key]
 
     def __eq__(self, other):

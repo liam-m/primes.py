@@ -330,11 +330,29 @@ class TestPrimes(unittest.TestCase):
         self.assertEqual(self.primes[10], 31)
         self.assertEqual(self.primes[100], 547)
         self.assertEqual(self.primes[1000], 7927)
+        self.assertEqual(self.primes[-1], 7927)
 
     def testIndexing1000(self):
         p = primes.nPrimes(1000)
         for i, pr in enumerate(p):
             self.assertEqual(self.primes[i], pr)
+
+    def testSlicing(self):
+        self.assertEqual(self.primes[:1], [2])
+        self.assertEqual(self.primes[0:2], [2, 3])
+        self.assertEqual(self.primes[:2], [2, 3])
+        self.assertEqual(self.primes[0:2:1], [2, 3])
+        self.assertEqual(self.primes[::1], [2, 3])
+        self.assertEqual(self.primes[1:], [3])
+        self.assertEqual(self.primes[1::1], [3])
+        self.assertEqual(self.primes[1:5:2], [3, 7])
+        self.assertEqual(self.primes[::2], [2, 5, 11])
+        self.assertEqual(self.primes[:], [2, 3, 5, 7, 11])
+        self.assertEqual(self.primes[::-1], [11, 7, 5, 3, 2])
+        self.assertEqual(self.primes[::-2], [11, 5, 2])
+        self.assertEqual(self.primes[2::1], [5, 7, 11])
+        self.assertEqual(self.primes[:3:1], [2, 3, 5])
+        self.assertEqual(self.primes[:5:2], [2, 5, 11])
 
     def testLen(self):
         self.assertEqual(len(self.primes), 0)
