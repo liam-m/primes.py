@@ -314,13 +314,22 @@ class TestPrimes(unittest.TestCase):
             self.assertFalse(9 in self.primes)
             self.assertFalse(10 in self.primes)
 
-    def testMembership1000(self):
-        p = primes.primesUpTo(1000)
+    def testMembership10000(self):
+        p = primes.primesUpTo(10000)
         for pr in p:
             self.assertTrue(pr in self.primes)
 
-        c = primes.compositesUpTo(1000, p)
+        c = primes.compositesUpTo(10000, p)
         for co in c:
+            self.assertFalse(co in self.primes)
+
+    def testMembership15000(self):
+        p = primes.primesUpTo(15000)
+        for pr in p[::-1]:
+            self.assertTrue(pr in self.primes)
+
+        c = primes.compositesUpTo(15000, p)
+        for co in c[::-1]:
             self.assertFalse(co in self.primes)
 
     def testIndexingSanity(self):

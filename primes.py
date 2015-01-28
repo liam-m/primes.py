@@ -21,7 +21,7 @@ class Primes:
     def __contains__(self, item):
         if item > self.highest_known:
             self.primes = primesUpTo(item, self.primes)
-        return item in self.primes
+        return not binarySearch(self.primes, item) == -1
 
     def __getitem__(self, key):
         if isinstance(key, slice):
