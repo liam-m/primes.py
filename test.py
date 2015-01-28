@@ -365,6 +365,14 @@ class TestPrimes(unittest.TestCase):
         self.assertEqual(self.primes[:3:1], [2, 3, 5])
         self.assertEqual(self.primes[:5:2], [2, 5, 11])
 
+    def testSlicing5000(self):
+        p = primes.nPrimes(1000)
+        for _ in range(5000):
+            start = None if random.randint(0, 1) == 0 else random.randint(0, 999)
+            stop = random.randint(0, 999) # self.primes not guaranteed to have 1000 elements so passing in None could fail
+            step = None if random.randint(0, 1) == 0 else random.randint(1, 100)
+            self.assertEqual(self.primes[start:stop:step], p[start:stop:step], ' '.join(map(str, [start, stop, step])))
+
     def testSlicing1000Pos(self):
         p = primes.nPrimes(1000)
         for _ in range(1000):
