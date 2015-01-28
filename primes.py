@@ -25,15 +25,16 @@ class Primes:
 
     def __getitem__(self, key):
         if isinstance(key, slice):
-            l = max(len(self), key.stop if key.stop not in [None, maxint] else 0)-1
-            start, stop, step = key.indices(l)
+            if key.start not in [None, maxint] and len(self)-1 < key.start:
+                self.primes = nPrimes(key.start+1, self.primes)
+            if key.stop not in [None, maxint] and len(self) < key.stop:
+                self.primes = nPrimes(key.stop, self.primes)
         elif isinstance(key, int):
-            start, stop, step = 0, key, 1
+            if len(self)-1 < key:
+                self.primes = nPrimes(key+1, self.primes)
         else:
             raise TypeError()
         
-        if len(self)-1 < stop:
-            self.primes = nPrimes(stop+1, self.primes)
         return self.primes[key]
 
     def __eq__(self, other):

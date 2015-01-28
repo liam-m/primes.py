@@ -373,6 +373,14 @@ class TestPrimes(unittest.TestCase):
             step = random.randint(1, 100)
             self.assertEqual(self.primes[start:stop:step], p[start:stop:step])
 
+    def testSlicing1000Neg(self):
+        p = primes.nPrimes(1000)
+        for _ in range(1000):
+            start = random.randint(100, 999)
+            stop = random.randint(0, start)
+            step = random.randint(-100, -1)
+            self.assertEqual(self.primes[start:stop:step], p[start:stop:step], ' '.join(map(str, [start, stop, step, list(self.primes)])))
+
     def testLen(self):
         self.assertEqual(len(self.primes), 0)
         self.primes[0]
