@@ -348,6 +348,7 @@ class TestPrimes(unittest.TestCase):
             self.assertEqual(self.primes[i], pr)
 
     def testSlicing(self):
+        self.assertRaises(TypeError, lambda p: p[1,2,3], self.primes)
         self.assertEqual(self.primes[:1], [2])
         self.assertEqual(self.primes[0:2], [2, 3])
         self.assertEqual(self.primes[:2], [2, 3])
@@ -363,6 +364,14 @@ class TestPrimes(unittest.TestCase):
         self.assertEqual(self.primes[2::1], [5, 7, 11])
         self.assertEqual(self.primes[:3:1], [2, 3, 5])
         self.assertEqual(self.primes[:5:2], [2, 5, 11])
+
+    def testSlicing1000Pos(self):
+        p = primes.nPrimes(1000)
+        for _ in range(1000):
+            start = random.randint(0, 700)
+            stop = random.randint(start, 999)
+            step = random.randint(1, 100)
+            self.assertEqual(self.primes[start:stop:step], p[start:stop:step])
 
     def testLen(self):
         self.assertEqual(len(self.primes), 0)

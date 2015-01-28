@@ -29,6 +29,8 @@ class Primes:
             start, stop, step = key.indices(l)
         elif isinstance(key, int):
             start, stop, step = 0, key, 1
+        else:
+            raise TypeError()
         
         if len(self)-1 < stop:
             self.primes = nPrimes(stop+1, self.primes)
