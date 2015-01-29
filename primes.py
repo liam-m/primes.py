@@ -25,6 +25,9 @@ class Primes:
 
     def __getitem__(self, key):
         if isinstance(key, slice):
+            if key.step == 0:
+                raise ValueError("slice step cannot be zero")
+            
             if all([s not in [None, maxint] for s in [key.start, key.stop, key.step]]):
                 if key.start>key.stop and key.step>0 or key.stop>key.start and key.step<0:
                     return []

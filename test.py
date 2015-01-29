@@ -418,6 +418,11 @@ class TestPrimes(unittest.TestCase):
             self.assertEqual(self.primes[start:stop:step], [])
             self.assertEqual(len(self.primes), 0)
 
+        self.assertRaises(ValueError, lambda p: p[10:20:0], self.primes)
+        self.assertEqual(len(self.primes), 0)
+        self.assertRaises(ValueError, lambda p: p[20:10:0], self.primes)
+        self.assertEqual(len(self.primes), 0)
+
     def testLen(self):
         self.assertEqual(len(self.primes), 0)
         self.primes[0]
