@@ -10,3 +10,9 @@ install:
 script:
  - python test.py
  - coverage run test.py && coverage report --fail-under=100 --rcfile=coveragerc
+ - python speed_test.py --short
+ - python speed_test.py --medium
+ - python speed_test.py --long
+ - python speed_test.py --superlong
+ - python speed_test.py --stupidlylong
+ - python speed_test.py --fermat 6

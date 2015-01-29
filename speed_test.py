@@ -49,7 +49,7 @@ def known_prime_test(length):
 
 def fermat_test(n=12):
     for x in range(n):
-        print("2^(2^{0}) +1 = 2^{1} + 1 is ".format(x, 2**x), 'prime' if isPrime(2**(2**x) + 1) else 'composite')
+        print("2^(2^{0}) + 1 = 2^{1} + 1 = {2} is {3}".format(x, 2**x, 2**(2**x) + 1, 'prime' if isPrime(2**(2**x) + 1) else 'composite'))
 
 parser = argparse.ArgumentParser(description='Test the Baillie-PSW implementation')
 group = parser.add_mutually_exclusive_group()
