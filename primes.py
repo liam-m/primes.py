@@ -25,6 +25,10 @@ class Primes:
 
     def __getitem__(self, key):
         if isinstance(key, slice):
+            if all([s not in [None, maxint] for s in [key.start, key.stop, key.step]]):
+                if key.start>key.stop and key.step>0 or key.stop>key.start and key.step<0:
+                    return []
+            
             if key.start not in [None, maxint] and len(self)-1 < key.start:
                 self.primes = nPrimes(key.start+1, self.primes)
             if key.stop not in [None, maxint] and len(self) < key.stop:

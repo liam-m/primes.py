@@ -389,6 +389,35 @@ class TestPrimes(unittest.TestCase):
             step = random.randint(-100, -1)
             self.assertEqual(self.primes[start:stop:step], p[start:stop:step], ' '.join(map(str, [start, stop, step, list(self.primes)])))
 
+    def testSlicingNoStop(self):
+        self.assertEqual(self.primes[::3], [])
+        self.assertEqual(self.primes[1::3], [3])
+        self.assertEqual(self.primes[1::-1], [3, 2])
+        self.assertEqual(self.primes[2::3], [5])
+        self.assertEqual(self.primes[3::1], [7])
+        self.assertEqual(self.primes[5::2], [13])
+        self.assertEqual(self.primes[4::-2], [11, 5, 2])
+        self.assertEqual(self.primes[1::2], [3, 7, 13])
+        self.assertEqual(self.primes[2::3], [5, 13])
+        self.assertEqual(self.primes[3:], [7, 11, 13])
+        self.assertEqual(self.primes[::-3], [13, 5])
+
+    def testSlicingEmpty(self):
+        # Test primes aren't generated for empty sequences
+        for _ in range(1000):
+            start = random.randint(0, 1000)
+            stop = random.randint(start+1, 1001)
+            step = random.randint(-100, -1)
+            self.assertEqual(self.primes[start:stop:step], [])
+            self.assertEqual(len(self.primes), 0)
+
+        for _ in range(1000):
+            start = random.randint(1, 1000)
+            stop = random.randint(0, start-1)
+            step = random.randint(1, 100)
+            self.assertEqual(self.primes[start:stop:step], [])
+            self.assertEqual(len(self.primes), 0)
+
     def testLen(self):
         self.assertEqual(len(self.primes), 0)
         self.primes[0]
