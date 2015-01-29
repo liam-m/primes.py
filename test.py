@@ -73,8 +73,28 @@ class TestIsPrime(unittest.TestCase):
         self.assertFalse(primes.isPrime(100))
 
     def testIsPrimeMersenne(self):
-        # 8th Mersenne prime
-        self.assertTrue(primes.isPrime(2**31 - 1))
+        for n in [2, 3, 5, 7, 13, 17, 19, 31]:
+            self.assertTrue(primes.isPrime(2**n - 1))
+
+    def testIsPrimeFermat(self):
+        for n in [0, 1, 2, 3, 4]:
+            self.assertTrue(primes.isPrime(2**(2**n) + 1))
+            
+        self.assertFalse(primes.isPrime(2**32 + 1))
+
+    def testIsPrimeWagstaff(self):
+        for n in [3, 5, 7, 11, 13, 17, 19, 23, 31, 43]:
+            self.assertTrue(primes.isPrime((2**n + 1)/3))
+
+    def testIsPrimeWoodall(self):
+        for n in [2, 3, 6, 30]:
+            self.assertTrue(primes.isPrime(n * 2**n - 1))
+
+    def testIsPrimeProth(self):
+        self.assertTrue(all(map(primes.isPrime, [3, 5, 13, 17, 41, 97, 113, 193, 241, 257, 353, 449, 577, 641, 673, 769, 929, 1153, 1217, 1409, 1601, 2113, 2689, 2753, 3137, 3329, 3457, 4481, 4993, 6529, 7297, 7681, 7937, 9473, 9601, 9857])))
+
+    def testIsPrimeSolinas(self):
+        self.assertTrue(all(map(primes.isPrime, [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 47, 59, 61, 67, 71, 73, 79, 97])))
 
     def testIsPrime0WithPassIn(self):
         self.assertFalse(primes.isPrime(0, [2, 3, 5]))
