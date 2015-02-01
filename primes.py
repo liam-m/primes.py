@@ -165,6 +165,13 @@ def primesUpTo(x, primes=[]):
     
     return primes
 
+def _trial_division(n, primes):
+    """
+    Simple trial division algorithm, check if n is prime by remainder dividing
+    it by a list of known primes
+    """    
+    return all(n%p != 0 for p in primes[:bisect_right(primes, sqrt(n))])    
+
 def _miller_rabin_2(n):
     """
     Single application of the Miller-Rabin primality test base-2
@@ -205,22 +212,15 @@ def isPrime(x, primes=[]):
         if primes[-1] >= x: # If it's prime, it'll be in the list
             return not binarySearch(primes, x) == -1
         elif primes[-1] >= sqrt(x): # If it's prime, none of the primes up to its square root will be a factor of it
-            for prime in primes:
-                if prime > sqrt(x):
-                    break
-                if x % prime == 0:
-                    return False
-            return True
-    # Not enough primes have been worked out
+            return _trial_division(x, primes)
+
+    if not _trial_division(x, [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]):
+        return False
 
     if not _miller_rabin_2(x):
         return False
     
-    primes = primesUpTo(int(sqrt(x)), primes)
-    for prime in primes:
-        if x % prime == 0:
-            return False
-    return True
+    return _trial_division(x, primesUpTo(int(sqrt(x)), primes))
 
 def nPrimes(n, primes=[]):
     """
