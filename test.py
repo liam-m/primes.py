@@ -82,8 +82,12 @@ class TestIsPrime(unittest.TestCase):
 
     def testIsPrime40000Composites(self):
         knownComposites = primes.compositesUpTo(40000)
+        knownPrimes = primes.primesUpTo(40000)
         for c in knownComposites:
             self.assertFalse(primes.isPrime(c))
+
+        for c in knownComposites:
+            self.assertFalse(primes.isPrime(c, knownPrimes[:random.randint(0, len(knownPrimes)-1)]))
 
     def testIsPrimeMersenne(self):
         for n in [2, 3, 5, 7, 13, 17, 19, 31]:
@@ -168,12 +172,10 @@ class TestNPrimes(unittest.TestCase):
             self.assertEqual(len(primes.nPrimes(i)), i)
 
 class TestNthPrime(unittest.TestCase):
-    def setUp(self):
-        self.pri = primes.primesUpTo(1000)
-
     def testNthPrime1000(self):
-        for i in range(1, len(self.pri)):
-            self.assertEqual(primes.nthPrime(i), self.pri[i-1])
+        knownPrimes = primes.primesUpTo(1000)
+        for i in range(1, len(knownPrimes)):
+            self.assertEqual(primes.nthPrime(i), knownPrimes[i-1])
 
 class TestCompositesUpTo(unittest.TestCase):
     def testCompositesUpTo0(self):
@@ -198,12 +200,10 @@ class TestCompositesUpTo(unittest.TestCase):
         self.assertEqual(len(primes.compositesUpTo(100)), 74)
 
 class TestNextPrime(unittest.TestCase):
-    def setUp(self):
-        self.pri = primes.primesUpTo(10000)
-
     def testNextPrime10000(self):
-        for i in range(len(self.pri)):
-            self.assertEqual(primes.nextPrime(self.pri[:i]), self.pri[i])
+        knownPrimes = primes.primesUpTo(10000)
+        for i in range(len(knownPrimes)):
+            self.assertEqual(primes.nextPrime(knownPrimes[:i]), knownPrimes[i])
 
 class TestTwinPrimesUpTo(unittest.TestCase):
     def testTwinPrimesUpTo4(self):
