@@ -4,8 +4,13 @@ from bisect import bisect_right
 
 try:
     from sys import maxint
-except ImportError:
+except ImportError: # pragma: no cover
     maxint = 9223372036854775807
+
+try:
+    range = xrange
+except NameError: # pragma: no cover
+    pass
 
 class Primes:
     def __init__(self):
@@ -28,7 +33,7 @@ class Primes:
             if key.step == 0:
                 raise ValueError("slice step cannot be zero")
             
-            if all([s not in [None, maxint] for s in [key.start, key.stop, key.step]]):
+            if all((s not in [None, maxint] for s in [key.start, key.stop, key.step])):
                 if key.start>key.stop and key.step>0 or key.stop>key.start and key.step<0:
                     return []
             
