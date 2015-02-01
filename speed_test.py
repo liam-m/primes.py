@@ -43,7 +43,7 @@ def time_execution_primes(order):
 def known_prime_test(length):
     upper_bounds = {'short': 6, 'medium': 7, 'long': 8, 'superlong': 9, 'stupidlylong': 10}
     if length in upper_bounds:
-        print("Testing primes with length {}".format(upper_bounds[length]))
+        print("Testing {0} primes - length {1}".format(length, upper_bounds[length]))
         for order in range(2, upper_bounds[length]):
             result = time_execution_primes(order)
             print("Order {0}, average time: {1:f}s, number of iterations: {2}".format(order, *result))
