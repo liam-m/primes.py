@@ -72,13 +72,16 @@ class TestIsPrime(unittest.TestCase):
     def testIsPrime100(self):
         self.assertFalse(primes.isPrime(100))
 
-    def testIsPrime10000(self):
-        knownPrimes = primes.primesUpTo(10000)
+    def testIsPrime40000(self):
+        knownPrimes = primes.primesUpTo(40000)
         for p in knownPrimes:
             self.assertTrue(primes.isPrime(p))
 
-    def testIsPrime10000Composites(self):
-        knownComposites = primes.compositesUpTo(10000)
+        for p in knownPrimes:
+            self.assertTrue(primes.isPrime(p, knownPrimes[:random.randint(0, len(knownPrimes)-1)]))
+
+    def testIsPrime40000Composites(self):
+        knownComposites = primes.compositesUpTo(40000)
         for c in knownComposites:
             self.assertFalse(primes.isPrime(c))
 
