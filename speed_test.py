@@ -43,6 +43,7 @@ def time_execution_primes(order):
 def known_prime_test(length):
     upper_bounds = {'short': 6, 'medium': 7, 'long': 8, 'superlong': 9, 'stupidlylong': 10}
     if length in upper_bounds:
+        print("Testing primes with length {}".format(upper_bounds[length]))
         for order in range(2, upper_bounds[length]):
             result = time_execution_primes(order)
             print("Order {0}, average time: {1:f}s, number of iterations: {2}".format(order, *result))
@@ -58,18 +59,19 @@ group.add_argument('--medium', help='Test primes up to order 6', action='store_t
 group.add_argument('--long', help='Test primes up to order 7', action='store_true')
 group.add_argument('--superlong', help='Test primes up to order 8', action='store_true')
 group.add_argument('--stupidlylong', help='Test primes up to order 9', action='store_true')
+group.add_argument('--all', help='Test primes up to orders 5, 6, 7, 8 and 9', action='store_true')
 group.add_argument('--fermat', help='Check the primality of the first n Fermat numbers', type=int, default=0)
 args = parser.parse_args()
 
-if args.short:
+if args.short or args.all:
     known_prime_test('short')
-elif args.medium:
+if args.medium or args.all:
     known_prime_test('medium')
-elif args.long:
+if args.long or args.all:
     known_prime_test('long')
-elif args.superlong:
+if args.superlong or args.all:
     known_prime_test('superlong')
-elif args.stupidlylong:
+if args.stupidlylong or args.all:
     known_prime_test('stupidlylong')
-elif args.fermat:
+if args.fermat:
     fermat_test(args.fermat)
