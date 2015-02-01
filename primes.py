@@ -178,7 +178,6 @@ def _miller_rabin_2(n):
 
     Returns True if n is probably prime, False if n is composite
     """
-    n = int(n)
     if n in (2, 3):
         return True
     

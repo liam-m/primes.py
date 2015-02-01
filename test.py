@@ -101,7 +101,7 @@ class TestIsPrime(unittest.TestCase):
 
     def testIsPrimeWagstaff(self):
         for n in [3, 5, 7, 11, 13, 17, 19, 23, 31, 43]:
-            self.assertTrue(primes.isPrime((2**n + 1)/3))
+            self.assertTrue(primes.isPrime((2**n + 1)//3))
 
     def testIsPrimeWoodall(self):
         for n in [2, 3, 6, 30]:
