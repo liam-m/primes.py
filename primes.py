@@ -165,6 +165,33 @@ def primesUpTo(x, primes=[]):
     
     return primes
 
+def _miller_rabin_2(n):
+    """
+    Single application of the Miller-Rabin primality test base-2
+
+    Returns True if n is probably prime, False if n is composite
+    """
+    n = int(n)
+    if n in (2, 3):
+        return True
+    
+    d, s = n-1, 0
+    while d%2 == 0:
+        d //= 2
+        s += 1
+
+    x = pow(2, d, n)
+    if x in (1, n-1):
+        return True
+    for _ in range(s-1):
+        x = pow(x, 2, n)
+        if x == 1:
+            return False
+        if x == n-1:
+            return True
+    
+    return False
+
 def isPrime(x, primes=[]):
     """
     Returns True if x is a prime number, False if it is not
@@ -185,6 +212,10 @@ def isPrime(x, primes=[]):
                     return False
             return True
     # Not enough primes have been worked out
+
+    if not _miller_rabin_2(x):
+        return False
+    
     primes = primesUpTo(int(sqrt(x)), primes)
     for prime in primes:
         if x % prime == 0:
