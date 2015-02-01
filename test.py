@@ -72,6 +72,16 @@ class TestIsPrime(unittest.TestCase):
     def testIsPrime100(self):
         self.assertFalse(primes.isPrime(100))
 
+    def testIsPrime10000(self):
+        knownPrimes = primes.primesUpTo(10000)
+        for p in knownPrimes:
+            self.assertTrue(primes.isPrime(p))
+
+    def testIsPrime10000Composites(self):
+        knownComposites = primes.compositesUpTo(10000)
+        for c in knownComposites:
+            self.assertFalse(primes.isPrime(c))
+
     def testIsPrimeMersenne(self):
         for n in [2, 3, 5, 7, 13, 17, 19, 31]:
             self.assertTrue(primes.isPrime(2**n - 1))

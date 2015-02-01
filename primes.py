@@ -214,7 +214,7 @@ def isPrime(x, primes=[]):
         elif primes[-1] >= sqrt(x): # If it's prime, none of the primes up to its square root will be a factor of it
             return _trial_division(x, primes)
 
-    if not _trial_division(x, [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]):
+    if not _trial_division(x, [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]):
         return False
 
     if not _miller_rabin_2(x):

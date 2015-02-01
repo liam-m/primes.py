@@ -9,7 +9,7 @@ install:
  - pip install coverage
 script:
  - python test.py
- - coverage run test.py && coverage report --fail-under=100 --rcfile=coveragerc
+ - coverage run test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
  - python speed_test.py --short
  - python speed_test.py --medium
  - python speed_test.py --long
