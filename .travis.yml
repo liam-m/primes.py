@@ -7,8 +7,10 @@ python:
  - "3.4"
 install:
  - pip install coverage
+ - pip install pylint
 script:
  - python test.py
  - coverage run test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
  - python speed_test.py --all
  - python speed_test.py --fermat 6
+ - pylint primes.py || true
