@@ -1,338 +1,338 @@
 import unittest
-import primes
 import random
 from math import sqrt
+from primes import *
 
 class TestPrimesUpTo(unittest.TestCase):
     def testPrimesUpTo0(self):
-        self.assertEqual(primes.primesUpTo(0), [])
+        self.assertEqual(primes_up_to(0), [])
 
     def testPrimesUpTo1(self):
-        self.assertEqual(primes.primesUpTo(1), [])
+        self.assertEqual(primes_up_to(1), [])
 
     def testPrimesUpTo2(self):
-        self.assertEqual(primes.primesUpTo(2), [2])
+        self.assertEqual(primes_up_to(2), [2])
 
     def testPrimesUpTo3(self):
-        self.assertEqual(primes.primesUpTo(3), [2, 3])
+        self.assertEqual(primes_up_to(3), [2, 3])
 
     def testPrimesUpTo4(self):
-        self.assertEqual(primes.primesUpTo(4), [2, 3])
+        self.assertEqual(primes_up_to(4), [2, 3])
 
     def testPrimesUpTo5(self):
-        self.assertEqual(primes.primesUpTo(5), [2, 3, 5])
+        self.assertEqual(primes_up_to(5), [2, 3, 5])
 
     def testPrimesUpTo10(self):
-        self.assertEqual(primes.primesUpTo(10), [2, 3, 5, 7])
+        self.assertEqual(primes_up_to(10), [2, 3, 5, 7])
 
     def testPrimesUpTo100(self):
-        self.assertEqual(len(primes.primesUpTo(100)), 25)
+        self.assertEqual(len(primes_up_to(100)), 25)
 
     def testPrimesUpTo1000(self):
-        self.assertEqual(len(primes.primesUpTo(1000)), 168)
+        self.assertEqual(len(primes_up_to(1000)), 168)
 
     def testPrimesUpTo10000(self):
-        self.assertEqual(len(primes.primesUpTo(10000)), 1229)
+        self.assertEqual(len(primes_up_to(10000)), 1229)
 
     def testPrimesUpTo100000(self):
-        self.assertEqual(len(primes.primesUpTo(100000)), 9592)
+        self.assertEqual(len(primes_up_to(100000)), 9592)
 
     def testPrimesUpTo1000000(self):
-        self.assertEqual(len(primes.primesUpTo(1000000)), 78498)
+        self.assertEqual(len(primes_up_to(1000000)), 78498)
 
     def testPrimesUpTo1000WithLesserPassIn(self):
         for i in range(1000):
-            passInL = primes.primesUpTo(random.randint(0, i))
-            self.assertEqual(primes.primesUpTo(i), primes.primesUpTo(i, passInL))
+            passInL = primes_up_to(random.randint(0, i))
+            self.assertEqual(primes_up_to(i), primes_up_to(i, passInL))
 
     def testPrimesUpTo1000WithGreaterPassIn(self):
         for i in range(1000):
-            passInG = primes.primesUpTo(random.randint(i, 2*i))
-            self.assertEqual(primes.primesUpTo(i), primes.primesUpTo(i, passInG))
+            passInG = primes_up_to(random.randint(i, 2*i))
+            self.assertEqual(primes_up_to(i), primes_up_to(i, passInG))
 
 class TestIsPrime(unittest.TestCase):
     def testIsPrime0(self):
-        self.assertFalse(primes.isPrime(0))
+        self.assertFalse(is_prime(0))
 
     def testIsPrime1(self):
-        self.assertFalse(primes.isPrime(1))
+        self.assertFalse(is_prime(1))
 
     def testIsPrime2(self):
-        self.assertTrue(primes.isPrime(2))
+        self.assertTrue(is_prime(2))
 
     def testIsPrime3(self):
-        self.assertTrue(primes.isPrime(3))
+        self.assertTrue(is_prime(3))
 
     def testIsPrime4(self):
-        self.assertFalse(primes.isPrime(4))
+        self.assertFalse(is_prime(4))
 
     def testIsPrime5(self):
-        self.assertTrue(primes.isPrime(5))
+        self.assertTrue(is_prime(5))
 
     def testIsPrime100(self):
-        self.assertFalse(primes.isPrime(100))
+        self.assertFalse(is_prime(100))
 
     def testIsPrime40000(self):
-        knownPrimes = primes.primesUpTo(40000)
+        knownPrimes = primes_up_to(40000)
         for p in knownPrimes:
-            self.assertTrue(primes.isPrime(p))
+            self.assertTrue(is_prime(p))
 
         for p in knownPrimes:
-            self.assertTrue(primes.isPrime(p, knownPrimes[:random.randint(0, len(knownPrimes)-1)]))
+            self.assertTrue(is_prime(p, knownPrimes[:random.randint(0, len(knownPrimes)-1)]))
 
     def testIsPrime40000Composites(self):
-        knownComposites = primes.compositesUpTo(40000)
-        knownPrimes = primes.primesUpTo(40000)
+        knownComposites = composites_up_to(40000)
+        knownPrimes = primes_up_to(40000)
         for c in knownComposites:
-            self.assertFalse(primes.isPrime(c))
+            self.assertFalse(is_prime(c))
 
         for c in knownComposites:
-            self.assertFalse(primes.isPrime(c, knownPrimes[:random.randint(0, len(knownPrimes)-1)]))
+            self.assertFalse(is_prime(c, knownPrimes[:random.randint(0, len(knownPrimes)-1)]))
 
     def testIsPrimeMersenne(self):
         for n in [2, 3, 5, 7, 13, 17, 19, 31]:
-            self.assertTrue(primes.isPrime(2**n - 1))
+            self.assertTrue(is_prime(2**n - 1))
 
     def testIsPrimeFermat(self):
         for n in [0, 1, 2, 3, 4]:
-            self.assertTrue(primes.isPrime(2**(2**n) + 1))
+            self.assertTrue(is_prime(2**(2**n) + 1))
             
-        self.assertFalse(primes.isPrime(2**32 + 1))
+        self.assertFalse(is_prime(2**32 + 1))
 
     def testIsPrimeWagstaff(self):
         for n in [3, 5, 7, 11, 13, 17, 19, 23, 31, 43]:
-            self.assertTrue(primes.isPrime((2**n + 1)//3))
+            self.assertTrue(is_prime((2**n + 1)//3))
 
     def testIsPrimeWoodall(self):
         for n in [2, 3, 6, 30]:
-            self.assertTrue(primes.isPrime(n * 2**n - 1))
+            self.assertTrue(is_prime(n * 2**n - 1))
 
     def testIsPrimeProth(self):
-        self.assertTrue(all(map(primes.isPrime, [3, 5, 13, 17, 41, 97, 113, 193, 241, 257, 353, 449, 577, 641, 673, 769, 929, 1153, 1217, 1409, 1601, 2113, 2689, 2753, 3137, 3329, 3457, 4481, 4993, 6529, 7297, 7681, 7937, 9473, 9601, 9857])))
+        self.assertTrue(all(map(is_prime, [3, 5, 13, 17, 41, 97, 113, 193, 241, 257, 353, 449, 577, 641, 673, 769, 929, 1153, 1217, 1409, 1601, 2113, 2689, 2753, 3137, 3329, 3457, 4481, 4993, 6529, 7297, 7681, 7937, 9473, 9601, 9857])))
 
     def testIsPrimeSolinas(self):
-        self.assertTrue(all(map(primes.isPrime, [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 47, 59, 61, 67, 71, 73, 79, 97])))
+        self.assertTrue(all(map(is_prime, [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 47, 59, 61, 67, 71, 73, 79, 97])))
 
     def testIsPrime0WithPassIn(self):
-        self.assertFalse(primes.isPrime(0, [2, 3, 5]))
+        self.assertFalse(is_prime(0, [2, 3, 5]))
 
     def testIsPrime1WithPassIn(self):
-        self.assertFalse(primes.isPrime(1, [2, 3, 5]))
+        self.assertFalse(is_prime(1, [2, 3, 5]))
 
     def testIsPrime2WithPassIn(self):
-        self.assertTrue(primes.isPrime(2, [2, 3, 5]))
+        self.assertTrue(is_prime(2, [2, 3, 5]))
 
     def testIsPrime3WithPassIn(self):
-        self.assertTrue(primes.isPrime(3, [2, 3, 5]))
+        self.assertTrue(is_prime(3, [2, 3, 5]))
 
     def testIsPrime4WithPassIn(self):
-        self.assertFalse(primes.isPrime(4, [2, 3, 5]))
+        self.assertFalse(is_prime(4, [2, 3, 5]))
 
     def testIsPrime5WithPassIn(self):
-        self.assertTrue(primes.isPrime(5, [2, 3, 5]))
+        self.assertTrue(is_prime(5, [2, 3, 5]))
 
     def testIsPrimeMersenneWithPassInGreaterThanX(self):
         # 7th Mersenne prime
         # Pass in primes > x
-        self.assertTrue(primes.isPrime(2**19 - 1, primes.primesUpTo(1.2 * 2**19)))
+        self.assertTrue(is_prime(2**19 - 1, primes_up_to(1.2 * 2**19)))
 
     def testIsPrimeMersenneWithPassInGreaterThanSqrt(self):
         # 7th Mersenne prime
         # Pass in primes between sqrt(x) and x
-        self.assertTrue(primes.isPrime(2**19 - 1, primes.primesUpTo(sqrt(1.2 * 2**19))))
+        self.assertTrue(is_prime(2**19 - 1, primes_up_to(sqrt(1.2 * 2**19))))
     
 
 class TestNPrimes(unittest.TestCase):
     def testNPrimes0(self):
-        self.assertEqual(primes.nPrimes(0), [])
+        self.assertEqual(n_primes(0), [])
 
     def testNPrimes1(self):
-        self.assertEqual(primes.nPrimes(1), [2])
+        self.assertEqual(n_primes(1), [2])
 
     def testNPrimes2(self):
-        self.assertEqual(primes.nPrimes(2), [2, 3])
+        self.assertEqual(n_primes(2), [2, 3])
 
     def testNPrimes5(self):
-        self.assertEqual(primes.nPrimes(5), [2, 3, 5, 7, 11])
+        self.assertEqual(n_primes(5), [2, 3, 5, 7, 11])
 
     def testNPrimes100(self):
-        self.assertEqual(primes.nPrimes(100), primes.primesUpTo(542))
+        self.assertEqual(n_primes(100), primes_up_to(542))
 
     def testNPrimes500(self):
         for i in range(500):
-            p = primes.primesUpTo(i)
-            self.assertEqual(primes.nPrimes(len(p)), p)
+            p = primes_up_to(i)
+            self.assertEqual(n_primes(len(p)), p)
     
     def testNPrimes1000(self):
         for i in range(1000):
-            self.assertEqual(len(primes.nPrimes(i)), i)
+            self.assertEqual(len(n_primes(i)), i)
 
     def testNPrimes10000(self):
         for i in range(10000, 10050):
-            self.assertEqual(len(primes.nPrimes(i)), i)
+            self.assertEqual(len(n_primes(i)), i)
 
 class TestNthPrime(unittest.TestCase):
     def testNthPrime1000(self):
-        knownPrimes = primes.primesUpTo(1000)
+        knownPrimes = primes_up_to(1000)
         for i in range(1, len(knownPrimes)):
-            self.assertEqual(primes.nthPrime(i), knownPrimes[i-1])
+            self.assertEqual(nth_prime(i), knownPrimes[i-1])
 
 class TestCompositesUpTo(unittest.TestCase):
     def testCompositesUpTo0(self):
-        self.assertEqual(primes.compositesUpTo(0), [])
+        self.assertEqual(composites_up_to(0), [])
     
     def testCompositesUpTo3(self):
-        self.assertTrue(all([primes.compositesUpTo(i) == [] for i in range(4)]))
+        self.assertTrue(all([composites_up_to(i) == [] for i in range(4)]))
 
     def testCompositesUpTo4(self):
-        self.assertEqual(primes.compositesUpTo(4), [4])
+        self.assertEqual(composites_up_to(4), [4])
 
     def testCompositesUpTo5(self):
-        self.assertEqual(primes.compositesUpTo(5), [4])
+        self.assertEqual(composites_up_to(5), [4])
 
     def testCompositesUpTo6(self):
-        self.assertEqual(primes.compositesUpTo(6), [4, 6])
+        self.assertEqual(composites_up_to(6), [4, 6])
 
     def testCompositesUpTo20(self):
-        self.assertEqual(primes.compositesUpTo(20), [4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20])
+        self.assertEqual(composites_up_to(20), [4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20])
 
     def testCompositesUpTo100(self):
-        self.assertEqual(len(primes.compositesUpTo(100)), 74)
+        self.assertEqual(len(composites_up_to(100)), 74)
 
 class TestNextPrime(unittest.TestCase):
     def testNextPrime10000(self):
-        knownPrimes = primes.primesUpTo(10000)
+        knownPrimes = primes_up_to(10000)
         for i in range(len(knownPrimes)):
-            self.assertEqual(primes.nextPrime(knownPrimes[:i]), knownPrimes[i])
+            self.assertEqual(next_prime(knownPrimes[:i]), knownPrimes[i])
 
 class TestTwinPrimesUpTo(unittest.TestCase):
     def testTwinPrimesUpTo4(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(4)), [])
+        self.assertEqual(list(twin_primes_up_to(4)), [])
 
     def testTwinPrimesUpTo5(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(5)), [(3, 5)])
+        self.assertEqual(list(twin_primes_up_to(5)), [(3, 5)])
 
     def testTwinPrimesUpTo6(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(6)), [(3, 5)])
+        self.assertEqual(list(twin_primes_up_to(6)), [(3, 5)])
 
     def testTwinPrimesUpTo7(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(7)), [(3, 5), (5, 7)])
+        self.assertEqual(list(twin_primes_up_to(7)), [(3, 5), (5, 7)])
 
     def testTwinPrimesUpTo13(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(13)), [(3, 5), (5, 7), (11, 13)])
+        self.assertEqual(list(twin_primes_up_to(13)), [(3, 5), (5, 7), (11, 13)])
 
     def testTwinPrimesUpTo31(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(31)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31)])
+        self.assertEqual(list(twin_primes_up_to(31)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31)])
 
     def testTwinPrimesUpTo73(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(73)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73)])
+        self.assertEqual(list(twin_primes_up_to(73)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73)])
 
     def testTwinPrimesUpTo139(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(139)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73), (101, 103), (107, 109), (137, 139)])
+        self.assertEqual(list(twin_primes_up_to(139)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73), (101, 103), (107, 109), (137, 139)])
 
     def testTwinPrimesUpTo620(self):
-        self.assertEqual(list(primes.twinPrimesUpTo(620)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73), (101, 103), (107, 109), (137, 139), (149, 151), (179, 181), (191, 193), (197, 199), (227, 229), (239, 241), (269, 271), (281, 283), (311, 313), (347, 349), (419, 421), (431, 433), (461, 463), (521, 523), (569, 571), (599, 601), (617, 619)])
+        self.assertEqual(list(twin_primes_up_to(620)), [(3, 5), (5, 7), (11, 13), (17, 19), (29, 31), (41, 43), (59, 61), (71, 73), (101, 103), (107, 109), (137, 139), (149, 151), (179, 181), (191, 193), (197, 199), (227, 229), (239, 241), (269, 271), (281, 283), (311, 313), (347, 349), (419, 421), (431, 433), (461, 463), (521, 523), (569, 571), (599, 601), (617, 619)])
 
     def testTwinPrimesWithPassIn(self):
         upto = 500
-        p = primes.primesUpTo(upto)
+        p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(primes.twinPrimesUpTo(i)), list(primes.twinPrimesUpTo(i, p[:random.randint(0, upto)])))
+            self.assertEqual(list(twin_primes_up_to(i)), list(twin_primes_up_to(i, p[:random.randint(0, upto)])))
 
 class TestCousinPrimesUpTo(unittest.TestCase):
     def testCousinPrimesUpTo6(self):
-        self.assertEqual(list(primes.cousinPrimesUpTo(6)), [])
+        self.assertEqual(list(cousin_primes_up_to(6)), [])
 
     def testCousinPrimesUpTo7(self):
-        self.assertEqual(list(primes.cousinPrimesUpTo(7)), [(3, 7)])
+        self.assertEqual(list(cousin_primes_up_to(7)), [(3, 7)])
 
     def testCousinPrimesUpTo17(self):
-        self.assertEqual(list(primes.cousinPrimesUpTo(17)), [(3, 7), (7, 11), (13, 17)])
+        self.assertEqual(list(cousin_primes_up_to(17)), [(3, 7), (7, 11), (13, 17)])
 
     def testCousinPrimesUpTo101(self):
-        self.assertEqual(list(primes.cousinPrimesUpTo(101)), [(3, 7), (7, 11), (13, 17), (19, 23), (37, 41), (43, 47), (67, 71), (79, 83), (97, 101)])
+        self.assertEqual(list(cousin_primes_up_to(101)), [(3, 7), (7, 11), (13, 17), (19, 23), (37, 41), (43, 47), (67, 71), (79, 83), (97, 101)])
 
     def testCousinPrimesUpTo617(self):
-        self.assertEqual(len(list(primes.cousinPrimesUpTo(617))), 28)
+        self.assertEqual(len(list(cousin_primes_up_to(617))), 28)
 
     def testCousinPrimesUpTo971(self):
-        self.assertEqual(len(list(primes.cousinPrimesUpTo(971))), 41)
+        self.assertEqual(len(list(cousin_primes_up_to(971))), 41)
 
     def testCousinPrimesWithPassIn(self):
         upto = 500
-        p = primes.primesUpTo(upto)
+        p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(primes.cousinPrimesUpTo(i)), list(primes.cousinPrimesUpTo(i, p[:random.randint(0, upto)])))
+            self.assertEqual(list(cousin_primes_up_to(i)), list(cousin_primes_up_to(i, p[:random.randint(0, upto)])))
             
 class TestSexyPrimesUpTo(unittest.TestCase):
     def testSexyPrimesUpTo10(self):
-        self.assertEqual(list(primes.sexyPrimesUpTo(10)), [])
+        self.assertEqual(list(sexy_primes_up_to(10)), [])
 
     def testSexyPrimesUpTo11(self):
-        self.assertEqual(list(primes.sexyPrimesUpTo(11)), [(5, 11)])
+        self.assertEqual(list(sexy_primes_up_to(11)), [(5, 11)])
 
     def testSexyPrimesUpTo37(self):
-        self.assertEqual(list(primes.sexyPrimesUpTo(37)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37)])
+        self.assertEqual(list(sexy_primes_up_to(37)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37)])
 
     def testSexyPrimesUpTo199(self):
-        self.assertEqual(list(primes.sexyPrimesUpTo(199)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37), (37,43), (41,47), (47,53), (53,59), (61,67), (67,73), (73,79), (83,89), (97,103), (101,107), (103,109), (107,113), (131,137), (151,157), (157,163), (167,173), (173,179), (191,197), (193,199)])
+        self.assertEqual(list(sexy_primes_up_to(199)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37), (37,43), (41,47), (47,53), (53,59), (61,67), (67,73), (73,79), (83,89), (97,103), (101,107), (103,109), (107,113), (131,137), (151,157), (157,163), (167,173), (173,179), (191,197), (193,199)])
         
     def testSexyPrimesUpTo467(self):
-        self.assertEqual(list(primes.sexyPrimesUpTo(467)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37), (37,43), (41,47), (47,53), (53,59), (61,67), (67,73), (73,79), (83,89), (97,103), (101,107), (103,109), (107,113), (131,137), (151,157), (157,163), (167,173), (173,179), (191,197), (193,199), (223,229), (227,233), (233,239), (251,257), (257,263), (263,269), (271,277), (277,283), (307,313), (311,317), (331,337), (347,353), (353,359), (367,373), (373,379), (383,389), (433,439), (443,449), (457,463), (461,467)])
+        self.assertEqual(list(sexy_primes_up_to(467)), [(5,11), (7,13), (11,17), (13,19), (17,23), (23,29), (31,37), (37,43), (41,47), (47,53), (53,59), (61,67), (67,73), (73,79), (83,89), (97,103), (101,107), (103,109), (107,113), (131,137), (151,157), (157,163), (167,173), (173,179), (191,197), (193,199), (223,229), (227,233), (233,239), (251,257), (257,263), (263,269), (271,277), (277,283), (307,313), (311,317), (331,337), (347,353), (353,359), (367,373), (373,379), (383,389), (433,439), (443,449), (457,463), (461,467)])
 
     def testSexyPrimesWithPassIn(self):
         upto = 500
-        p = primes.primesUpTo(upto)
+        p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(primes.sexyPrimesUpTo(i)), list(primes.sexyPrimesUpTo(i, p[:random.randint(0, upto)])))
+            self.assertEqual(list(sexy_primes_up_to(i)), list(sexy_primes_up_to(i, p[:random.randint(0, upto)])))
             
 class TestPrimeTripletsUpTo(unittest.TestCase):
     def testPrimeTripletsUpTo10(self):
-        self.assertEqual(list(primes.primeTripletsUpTo(10)), [])
+        self.assertEqual(list(prime_triplets_up_to(10)), [])
         
     def testPrimeTripletsUpTo11(self):
-        self.assertEqual(list(primes.primeTripletsUpTo(11)), [(5, 7, 11)])
+        self.assertEqual(list(prime_triplets_up_to(11)), [(5, 7, 11)])
 
     def testPrimeTripletsUpTo109(self):
-        self.assertEqual(list(primes.primeTripletsUpTo(109)), [(5, 7, 11), (7, 11, 13), (11, 13, 17), (13, 17, 19), (17, 19, 23), (37, 41, 43), (41, 43, 47), (67, 71, 73), (97, 101, 103), (101, 103, 107), (103, 107, 109)])
+        self.assertEqual(list(prime_triplets_up_to(109)), [(5, 7, 11), (7, 11, 13), (11, 13, 17), (13, 17, 19), (17, 19, 23), (37, 41, 43), (41, 43, 47), (67, 71, 73), (97, 101, 103), (101, 103, 107), (103, 107, 109)])
 
     def testPrimeTripletsUpTo467(self):
-        self.assertEqual(list(primes.primeTripletsUpTo(467)), [(5, 7, 11), (7, 11, 13), (11, 13, 17), (13, 17, 19), (17, 19, 23), (37, 41, 43), (41, 43, 47), (67, 71, 73), (97, 101, 103), (101, 103, 107), (103, 107, 109), (107, 109, 113), (191, 193, 197), (193, 197, 199), (223, 227, 229), (227, 229, 233), (277, 281, 283), (307, 311, 313), (311, 313, 317), (347, 349, 353), (457, 461, 463), (461, 463, 467)])
+        self.assertEqual(list(prime_triplets_up_to(467)), [(5, 7, 11), (7, 11, 13), (11, 13, 17), (13, 17, 19), (17, 19, 23), (37, 41, 43), (41, 43, 47), (67, 71, 73), (97, 101, 103), (101, 103, 107), (103, 107, 109), (107, 109, 113), (191, 193, 197), (193, 197, 199), (223, 227, 229), (227, 229, 233), (277, 281, 283), (307, 311, 313), (311, 313, 317), (347, 349, 353), (457, 461, 463), (461, 463, 467)])
 
     def testPrimeTripletsUpTo887(self):
-        self.assertEqual(list(primes.primeTripletsUpTo(887)), [(5, 7, 11), (7, 11, 13), (11, 13, 17), (13, 17, 19), (17, 19, 23), (37, 41, 43), (41, 43, 47), (67, 71, 73), (97, 101, 103), (101, 103, 107), (103, 107, 109), (107, 109, 113), (191, 193, 197), (193, 197, 199), (223, 227, 229), (227, 229, 233), (277, 281, 283), (307, 311, 313), (311, 313, 317), (347, 349, 353), (457, 461, 463), (461, 463, 467), (613, 617, 619), (641, 643, 647), (821, 823, 827), (823, 827, 829), (853, 857, 859), (857, 859, 863), (877, 881, 883), (881, 883, 887)])
+        self.assertEqual(list(prime_triplets_up_to(887)), [(5, 7, 11), (7, 11, 13), (11, 13, 17), (13, 17, 19), (17, 19, 23), (37, 41, 43), (41, 43, 47), (67, 71, 73), (97, 101, 103), (101, 103, 107), (103, 107, 109), (107, 109, 113), (191, 193, 197), (193, 197, 199), (223, 227, 229), (227, 229, 233), (277, 281, 283), (307, 311, 313), (311, 313, 317), (347, 349, 353), (457, 461, 463), (461, 463, 467), (613, 617, 619), (641, 643, 647), (821, 823, 827), (823, 827, 829), (853, 857, 859), (857, 859, 863), (877, 881, 883), (881, 883, 887)])
 
     def testPrimeTripletsWithPassIn(self):
         upto = 500
-        p = primes.primesUpTo(upto)
+        p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(primes.primeTripletsUpTo(i)), list(primes.primeTripletsUpTo(i, p[:random.randint(0, upto)])))
+            self.assertEqual(list(prime_triplets_up_to(i)), list(prime_triplets_up_to(i, p[:random.randint(0, upto)])))
             
 class TestPrimeQuadrupletsUpTo(unittest.TestCase):
     def testPrimeQuadrupletsUpTo12(self):
-        self.assertEqual(list(primes.primeQuadrupletsUpTo(12)), [])
+        self.assertEqual(list(prime_quadruplets_up_to(12)), [])
 
     def testPrimeQuadrupletsUpTo13(self):
-        self.assertEqual(list(primes.primeQuadrupletsUpTo(13)), [(5, 7, 11, 13)])
+        self.assertEqual(list(prime_quadruplets_up_to(13)), [(5, 7, 11, 13)])
 
     def testPrimeQuadrupletsUpTo829(self):
-        self.assertEqual(list(primes.primeQuadrupletsUpTo(829)), [(5, 7, 11, 13), (11, 13, 17, 19), (101, 103, 107, 109), (191, 193, 197, 199), (821, 823, 827, 829)])
+        self.assertEqual(list(prime_quadruplets_up_to(829)), [(5, 7, 11, 13), (11, 13, 17, 19), (101, 103, 107, 109), (191, 193, 197, 199), (821, 823, 827, 829)])
 
     def testPrimeQuadrupletsUpTo2090(self):
-        self.assertEqual(list(primes.primeQuadrupletsUpTo(2090)), [(5, 7, 11, 13), (11, 13, 17, 19), (101, 103, 107, 109), (191, 193, 197, 199), (821, 823, 827, 829), (1481, 1483, 1487, 1489), (1871, 1873, 1877, 1879), (2081, 2083, 2087, 2089)])
+        self.assertEqual(list(prime_quadruplets_up_to(2090)), [(5, 7, 11, 13), (11, 13, 17, 19), (101, 103, 107, 109), (191, 193, 197, 199), (821, 823, 827, 829), (1481, 1483, 1487, 1489), (1871, 1873, 1877, 1879), (2081, 2083, 2087, 2089)])
 
     def testPrimeQuadrupletsUpTo100000(self):
-        self.assertEqual(len(list(primes.primeQuadrupletsUpTo(100000))), 38)
+        self.assertEqual(len(list(prime_quadruplets_up_to(100000))), 38)
 
     def testPrimeQuadrupletsWithPassIn(self):
         upto = 500
-        p = primes.primesUpTo(upto)
+        p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(primes.primeQuadrupletsUpTo(i)), list(primes.primeQuadrupletsUpTo(i, p[:random.randint(0, upto)])))
+            self.assertEqual(list(prime_quadruplets_up_to(i)), list(prime_quadruplets_up_to(i, p[:random.randint(0, upto)])))
 
 class TestPrimes(unittest.TestCase):
     def setUp(self):
-        self.primes = primes.Primes()
+        self.primes = Primes()
     
     def testMembershipSanity(self):
         for _ in range(5):
@@ -348,20 +348,20 @@ class TestPrimes(unittest.TestCase):
             self.assertFalse(10 in self.primes)
 
     def testMembership10000(self):
-        p = primes.primesUpTo(10000)
+        p = primes_up_to(10000)
         for pr in p:
             self.assertTrue(pr in self.primes)
 
-        c = primes.compositesUpTo(10000, p)
+        c = composites_up_to(10000, p)
         for co in c:
             self.assertFalse(co in self.primes)
 
     def testMembership15000(self):
-        p = primes.primesUpTo(15000)
+        p = primes_up_to(15000)
         for pr in p[::-1]:
             self.assertTrue(pr in self.primes)
 
-        c = primes.compositesUpTo(15000, p)
+        c = composites_up_to(15000, p)
         for co in c[::-1]:
             self.assertFalse(co in self.primes)
 
@@ -376,7 +376,7 @@ class TestPrimes(unittest.TestCase):
         self.assertEqual(self.primes[-1], 7927)
 
     def testIndexing1000(self):
-        p = primes.nPrimes(1000)
+        p = n_primes(1000)
         for i, pr in enumerate(p):
             self.assertEqual(self.primes[i], pr)
 
@@ -399,7 +399,7 @@ class TestPrimes(unittest.TestCase):
         self.assertEqual(self.primes[:5:2], [2, 5, 11])
 
     def testSlicing5000(self):
-        p = primes.nPrimes(1000)
+        p = n_primes(1000)
         for _ in range(5000):
             start = None if random.randint(0, 1) == 0 else random.randint(0, 999)
             stop = random.randint(0, 999) # self.primes not guaranteed to have 1000 elements so passing in None could fail
@@ -407,7 +407,7 @@ class TestPrimes(unittest.TestCase):
             self.assertEqual(self.primes[start:stop:step], p[start:stop:step], ' '.join(map(str, [start, stop, step])))
 
     def testSlicing1000Pos(self):
-        p = primes.nPrimes(1000)
+        p = n_primes(1000)
         for _ in range(1000):
             start = random.randint(0, 700)
             stop = random.randint(start, 999)
@@ -415,7 +415,7 @@ class TestPrimes(unittest.TestCase):
             self.assertEqual(self.primes[start:stop:step], p[start:stop:step])
 
     def testSlicing1000Neg(self):
-        p = primes.nPrimes(1000)
+        p = n_primes(1000)
         for _ in range(1000):
             start = random.randint(100, 999)
             stop = random.randint(0, start)
@@ -474,15 +474,15 @@ class TestPrimes(unittest.TestCase):
     def testIteration(self):
         self.primes[999]
         
-        self.assertEqual(primes.nPrimes(1000), list(self.primes))
+        self.assertEqual(n_primes(1000), list(self.primes))
 
-        self.assertEqual(primes.nPrimes(1000), [prime for prime in self.primes])
+        self.assertEqual(n_primes(1000), [prime for prime in self.primes])
         
         for prime in self.primes:
-            self.assertTrue(primes.isPrime(prime))
+            self.assertTrue(is_prime(prime))
 
     def testEquality(self):
-        otherprimes = primes.Primes()
+        otherprimes = Primes()
         self.assertEqual(self.primes, otherprimes)
         self.assertEqual(self.primes, [])
         self.assertNotEqual(self.primes, [2])

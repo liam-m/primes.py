@@ -1,4 +1,4 @@
-from primes import isPrime
+from primes import is_prime
 import time, argparse
 
 order_2_primes = [101, 103, 107, 109, 113,
@@ -36,7 +36,7 @@ def time_execution_primes(order):
     iterations = len(prime_list)
     for prime in prime_list:
         start_time = time.time()
-        isPrime(prime)
+        is_prime(prime)
         total_time += (time.time() - start_time)
     return total_time/iterations, iterations
 
@@ -50,7 +50,7 @@ def known_prime_test(length):
 
 def fermat_test(n=12):
     for x in range(n):
-        print("2^(2^{0}) + 1 = 2^{1} + 1 = {2} is {3}".format(x, 2**x, 2**(2**x) + 1, 'prime' if isPrime(2**(2**x) + 1) else 'composite'))
+        print("2^(2^{0}) + 1 = 2^{1} + 1 = {2} is {3}".format(x, 2**x, 2**(2**x) + 1, 'prime' if is_prime(2**(2**x) + 1) else 'composite'))
 
 parser = argparse.ArgumentParser(description='Test the Baillie-PSW implementation')
 group = parser.add_mutually_exclusive_group()
