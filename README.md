@@ -8,9 +8,7 @@ If you want to help develop, [open an issue](https://github.com/liam-m/primes.py
 
 ##Primes
 
-A list-like object that supports membership checking slicing for sequences of prime numbers
-
-### Example usage
+A list-like object that automatically generates additional prime numbers as required. Supports membership testing and slicing for sequences of prime numbers
 
 ```python
 >>> primes = Primes()
