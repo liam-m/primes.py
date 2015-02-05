@@ -2,7 +2,7 @@
 Several prime number functions
 """
 
-from binarySearch import binarySearch
+from binary_search import binary_search
 from math import sqrt, log, ceil
 from bisect import bisect_right
 
@@ -50,7 +50,7 @@ class Primes(object):
         """
         if item > self.highest_known:
             self.primes = primes_up_to(item, self.primes)
-        return not binarySearch(self.primes, item) == -1
+        return not binary_search(self.primes, item) == -1
 
     def __getitem__(self, key):
         """
@@ -251,7 +251,7 @@ def is_prime(x, primes=None):
     if primes:
         if primes[-1] >= x:
             # If it's prime, it'll be in the list
-            return not binarySearch(primes, x) == -1
+            return not binary_search(primes, x) == -1
         elif primes[-1] >= sqrt(x):
             # If it's prime, none of the primes up to its square root will be a factor of it
             return _trial_division(x, primes)
