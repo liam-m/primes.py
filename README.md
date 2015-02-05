@@ -1,10 +1,34 @@
 #primes.py
 
-Several prime number functions in Python
+Prime number library for Python 2 and 3
 
 If you want to help develop, [open an issue](https://github.com/liam-m/primes.py/issues/new) or [fork the repo](https://github.com/liam-m/primes.py/fork), make your changes and [submit a pull request](https://github.com/liam-m/primes.py/compare/).
 
 [![Build Status](https://travis-ci.org/liam-m/primes.py.svg)](https://travis-ci.org/liam-m/primes.py)
+
+##Primes
+
+A list-like object that supports membership checking slicing for sequences of prime numbers
+
+### Example usage
+
+```python
+>>> primes = Primes()
+>>> 10 in primes
+False
+>>> 11 in primes
+True
+>>> primes[10:20]
+[31, 37, 41, 43, 47, 53, 59, 61, 67, 71]
+>>> primes[15:10:-2]
+[53, 43, 37]
+>>> primes[100]
+547
+```
+
+---
+
+There are also a number of functions for prime generation and primality testing:
 
 ##primes_up_to
     
@@ -13,8 +37,6 @@ Implementation of Sieve of Eratosthenes
 Returns a list of all primes up to (and including) x
 
 Can pass in a list of primes to decrease execution time
-
-### Example usage
 
 ```python
 >>> primes_up_to(10)
@@ -30,8 +52,6 @@ Returns True if x is a prime number, False if it is not
 
 Can pass in a list of known primes to decrease execution time
 
-### Example usage
-
 ```python
 >>> is_prime(191)
 True
@@ -45,8 +65,6 @@ False
 Returns a list of the first n primes
 
 Can pass in a list of known primes to decrease execution time
-
-### Example usage
 
 ```python
 >>> n_primes(5)
@@ -62,8 +80,6 @@ Returns the nth prime (i.e. the 3rd prime, the 6th prime)
 
 Can pass in a list of known primes to decrease execution time 
 
-### Example usage
-
 ```python
 >>> nth_prime(1000)
 7919
@@ -77,8 +93,6 @@ Can pass in a list of known primes to decrease execution time
 Returns a list of all composite (non-prime greater than 1) numbers up to (and including) x
 
 Can pass in a list of known primes to decrease execution time
-
-### Example usage
 
 ```python
 >>> composites_up_to(10)
@@ -95,8 +109,6 @@ Given a list of primes, returns the next prime
 Uses method of trial division
     
 This is much less efficient than primes_up_to for generating ranges of primes
-
-### Example usage
 
 ```python
 >>> next_prime([2, 3, 5, 7, 11])
