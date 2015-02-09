@@ -113,7 +113,7 @@ class _IsPrimeList(object):
         """
         Position of num in self.lst
         """
-        return int((num-self.min_num) / 2)
+        return (num-self.min_num) // 2
 
     def __init__(self, min_num, max_num):
         """
