@@ -2,6 +2,7 @@
 Several prime number functions
 """
 
+from __future__ import division
 from binary_search import binary_search
 from math import sqrt, log, ceil
 from bisect import bisect_right
@@ -88,6 +89,70 @@ class Primes(object):
         """
         return self.primes != other
 
+def _first_multiple_of(x, above):
+    """
+    Returns first multiple of x >= above
+    """
+    return ceil(above/x) * x
+
+class _IsPrimeList(object):
+    """
+    Helper class used in primes_up_to.
+    List of booleans representing whether odd numbers from x-y are prime.
+    Behaviour is undefined for numbers not in this range.
+
+    As only odd numbers are represented, the amount of work in primes_up_to
+    is effectively halved. Even less work is necessary when the lower bound
+    is greater than 3.
+
+    Initially, all numbers are 'uncrossed' (True), when a prime is found,
+    call mark_multiples_as_composite
+    """
+
+    def _pos_of(self, num):
+        """
+        Position of num in self.lst
+        """
+        return int((num-self.min_num) / 2)
+
+    def __init__(self, min_num, max_num):
+        """
+        Initialise a representation of a list of crossed and uncrossed numbers
+        between min_num and max_num. All numbers are initially uncrossed
+        """
+        self.min_num = min_num
+        self.max_num = max_num
+        self.lst = [True] * (self._pos_of(max_num)+1)
+
+    def __getitem__(self, num):
+        """
+        If num is an odd number between min_num and max_num, return True if num
+        hasn't been crossed out yet, False if num has been crossed out
+        """
+        return self.lst[self._pos_of(num)]
+
+    def __setitem__(self, num, item):
+        """
+        If num is an odd number between min_num and max_num, set it to item,
+        which must be a bool. Only used in mark_multiples_as_composite for
+        crossing out numbers
+        """
+        if num%2 == 1:
+            self.lst[self._pos_of(num)] = item
+
+    def mark_multiples_as_composite(self, prime):
+        """
+        Mark multiples of prime as composite
+
+        Start at the square as multiples less than this will already have been
+        marked as composite. If prime^2 < min_num, start at the first multiple
+        of prime above min_num
+        """
+        start = max(prime**2, _first_multiple_of(prime, self.min_num))
+
+        for index in range(int(start), self.max_num+1, prime):
+            self[index] = False
+
 def primes_up_to(x, primes=None):
     """
     Implementation of Sieve of Eratosthenes
@@ -97,112 +162,53 @@ def primes_up_to(x, primes=None):
     Can pass in a list of known primes to decrease execution time
     """
 
-    # The Sieve of Eratosthenes works by making a list of numbers 2..n.
+    # The Sieve of Eratosthenes works by making a list of numbers 2..x.
     # Each consecutive number is tested - if it is not crossed out, then
     # it is prime and multiples of this number up to n are crossed out.
 
-    # In this implementation, uncrossed numbers in the list are
-    # represented by True and crossed numbers are represented by False.
-    # In addition, this implementation also takes advantage of the fact
-    # that the only even prime is 2. Only odd numbers 3..n are listed,
-    # meaning that only half the 'crossing out' is necessary.
-
-    def _pos_of(num, offset=3):
-        """
-        Position of number in lst
-        """
-        return int((num-offset) / 2)
-
-    def _num_at(pos, offset=3):
-        """
-        Number at position in lst e.g. lst[0] refers to 3, lst[2] refers to 7
-        """
-        return pos*2 + offset
-
-    def _first_multiple_of(x, above):
-        """
-        Returns first multiple of x >= above
-        """
-        return ceil(above/x) * x
-
-    def _mark_as_composite(lst, start, step):
-        """
-        Mark items in lst as composite (False) from start, increasing in increments of step
-        """
-        for index in range(start, len(lst), step):
-            lst[index] = False
+    # A helper class represents crossed and uncrossed numbers as False and True
+    # and has multiple other optimisations for efficiency
 
     if x <= 1:
         return []
 
-    elif x == 3: # Bug fix. May need to change logic in future so this isn't necessary
-        return [2, 3]
-
-    # As this function takes advantage of 2 being the only even prime,
-    # passing in 2 is not useful, so we'll strip that out
-    elif not primes or primes == [2]:
-        primes = []
-
     # If a list of primes is passed in, take advantage of this
-    if primes:
+    # The helper class effectively already has even numbers crossed out,
+    # so this would not be useful to know
+    if primes and primes != [2]:
         # If enough primes are passed in, we can simply return the primes up to x
         if primes[-1] >= (x-1):
             # Primes is a sorted list so we can binary search (bisect_right)
             return primes[:bisect_right(primes, x)]
 
-        # We have a partial list of primes
         else:
-            # Offset is the number the first element of the list refers to.
-            # To reduce memory usage, this should be primes[-1]+2
-            # i.e. the next odd number above highest known prime)
-            offset = 3 # primes[-1]+2
-            # lst is the list of (initially) uncrossed numbers from offset to x
-            # _pos_of(x) will be the position of the last element - so we want a list
-            # this of this length + 1
-            lst = [True] * (_pos_of(x, offset)+1)
+            lst = _IsPrimeList(primes[-1]+2, x)
 
-            # Mark all multiples of the known primes as not prime
             # Only go up to the sqrt(x) as all composites <= x have a factor <= sqrt(x)
             for prime in primes[1:bisect_right(primes, int(sqrt(x)))]:
-                # Start at the square as multiples < the square have already been marked
-                # If the square isn't in the list (because offset > than the square),
-                # then start marking from the first multiple of the prime above offset
-                start = _pos_of(max(prime**2, _first_multiple_of(prime, offset)), offset)
-                _mark_as_composite(lst, start, prime)
-
-            # Start the main algorithm at the position of highest known prime + 1
-            start = _pos_of(primes[-1], offset) + 1
-
-    # When no primes are known prior to the main algorithm
+                lst.mark_multiples_as_composite(prime)
     else:
-        # The list will refer to 3, 5 .. x-2, x
-        offset = 3
-        lst = [True] * (_pos_of(x, offset)+1)
-        # Remember that 2 is prime, as it isn't referred to in the list
+        lst = _IsPrimeList(3, x)
+        # Remember that 2 is prime, as it isn't referred to in the helper class
         primes = [2]
-        # Start the main algorithm at the first element of the list - 3
-        start = 0
 
-    # Go through the numbers in the list up to the square root of x
     # Only go up to the position of the square root of x as all composites <= x have
     # a factor <= x, so all composites will have been marked by square root of x
-    for index in range(start, _pos_of(int(sqrt(x)), offset)+1):
-        # If the number at the index is True, then it's prime
-        if lst[index]:
-            num = _num_at(index, offset)
+    for num in range(lst.min_num, int(sqrt(x))+1, 2):
+        # Hasn't been crossed yet, so it's prime
+        if lst[num]:
             primes.append(num)
             # Start at the square as multiples < the square have already been marked
-            _mark_as_composite(lst, _pos_of(num**2, offset), num)
+            lst.mark_multiples_as_composite(num)
 
-    # Now all non-primes are now False, so go through the rest of the numbers
-    # and add the ones that aren't crossed out to the list of primes
+    # Now all composites up to x are known, add the uncrossed numbers to the list of primes
 
-    # Start at the position of the square root + 1
-    # If primes passed in were > sqrt(x), then we'll start at the position of the
+    # Start at the position of the square root + 1, rounded up to be odd
+    # If primes passed in were > sqrt(x), start at the position of the
     # highest known prime + 1
-    start = _pos_of(max(primes[-1], int(sqrt(x))), offset) + 1
+    start = (max(primes[-1], int(sqrt(x))) + 1) | 1
 
-    primes.extend(_num_at(index, offset) for index in range(start, len(lst)) if lst[index])
+    primes.extend(num for num in range(start, x+1, 2) if lst[num])
 
     return primes
 

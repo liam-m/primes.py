@@ -134,12 +134,12 @@ class TestIsPrime(unittest.TestCase):
     def testIsPrimeMersenneWithPassInGreaterThanX(self):
         # 7th Mersenne prime
         # Pass in primes > x
-        self.assertTrue(is_prime(2**19 - 1, primes_up_to(1.2 * 2**19)))
+        self.assertTrue(is_prime(int(2**19) - 1, primes_up_to(int(1.2 * 2**19))))
 
     def testIsPrimeMersenneWithPassInGreaterThanSqrt(self):
         # 7th Mersenne prime
         # Pass in primes between sqrt(x) and x
-        self.assertTrue(is_prime(2**19 - 1, primes_up_to(sqrt(1.2 * 2**19))))
+        self.assertTrue(is_prime(int(2**19) - 1, primes_up_to(int(sqrt(1.2 * 2**19)))))
 
 
 class TestNPrimes(unittest.TestCase):
