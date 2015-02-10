@@ -279,10 +279,14 @@ def n_primes(n, primes=None):
     if not primes:
         primes = []
     if len(primes) < n:
-        if n >= 8602:
-            upper_bound = int(n*log(n) + n*(log(log(n)) - 0.9385))
+        if n >= 39017:
+            upper_bound = int(n*(log(n) + log(log(n)) - 0.9484))
+        elif n >= 15985:
+            upper_bound = int(n*(log(n) + log(log(n)) - 0.9427))
+        elif n >= 8602:
+            upper_bound = int(n*(log(n) + log(log(n)) - 0.9385))
         elif n >= 6:
-            upper_bound = int(n * (log(n) + log(log(n))))
+            upper_bound = int(n*(log(n) + log(log(n))))
         else:
             upper_bound = 13
         primes = primes_up_to(upper_bound, primes)

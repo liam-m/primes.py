@@ -171,6 +171,14 @@ class TestNPrimes(unittest.TestCase):
         for i in range(10000, 10050):
             self.assertEqual(len(n_primes(i)), i)
 
+    def testNPrimes16000(self):
+        for i in range(16000, 16005):
+            self.assertEqual(len(n_primes(i)), i)
+
+    def testNPrimes40000(self):
+        for i in range(40000, 40005):
+            self.assertEqual(len(n_primes(i)), i)
+
 class TestNthPrime(unittest.TestCase):
     def testNthPrime1000(self):
         known_primes = primes_up_to(1000)
