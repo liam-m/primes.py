@@ -306,15 +306,12 @@ def composites_up_to(x, primes=None):
 
     Can pass in a list of known primes to decrease execution time
     """
-    if x <= 3:
-        return []
-    elif x == 4:
-        return [4]
     primes = primes_up_to(x, primes)
     composites = []
     for p1, p2 in zip(primes, primes[1:]): # Add numbers between primes to composites
-        composites.extend(list(range(p1+1, p2)))
-    composites.extend(range(primes[-1]+1, x+1)) # Add numbers between last prime and x
+        composites.extend(range(p1+1, p2))
+    if primes:
+        composites.extend(range(primes[-1]+1, x+1)) # Add numbers between last prime and x
     return composites
 
 def next_prime(primes):
