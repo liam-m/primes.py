@@ -268,7 +268,8 @@ def is_prime(x, primes=None):
     if not _miller_rabin_2(x):
         return False
 
-    return _trial_division(x, primes_up_to(int(sqrt(x)), primes))
+    # Skip first 15 primes we tried earlier
+    return _trial_division(x, primes_up_to(int(sqrt(x)), primes)[15:])
 
 def n_primes(n, primes=None):
     """
