@@ -153,7 +153,7 @@ class _IsPrimeList(object):
         for index in range(int(start), self.max_num+1, prime):
             self[index] = False
 
-def primes_up_to(x, primes=None):
+def sieve_of_eratosthenes(x, primes=None):
     """
     Implementation of Sieve of Eratosthenes
 
@@ -211,6 +211,52 @@ def primes_up_to(x, primes=None):
     primes.extend(num for num in range(start, x+1, 2) if lst[num])
 
     return primes
+
+def sieve_of_atkin(limit):
+    """
+    Implementation of Sieve of Atkin
+
+    Returns a list of all primes up to (and including) x
+    """
+
+    if limit <= 5:
+        return [2, 3, 5][:bisect_right([2, 3, 5], limit)]
+
+    res = [2, 3]
+    lst = [False]*(limit+1)
+
+    for y in range(1, int(sqrt(limit))+1):
+        for x in range(1, int(sqrt((limit - y**2) / 4))+1):
+            n = 4*x**2 + y**2
+            if n%12 == 1 or n%12 == 5:
+                lst[n] = not lst[n]
+        for x in range(1, int(sqrt((limit - y**2) / 3))+1):
+            n = 3*x**2 + y**2
+            if n%12 == 7:
+                lst[n] = not lst[n]
+        for x in range(y+1, int(sqrt((limit + y**2) / 3))+1):
+            n = 3*x**2 - y**2
+            if n%12 == 11:
+                lst[n] = not lst[n]
+
+    for ind in range(5, int(sqrt(limit))+1):
+        if lst[ind]:
+            res.append(ind)
+            for ind2 in range(ind**2, limit+1, ind):
+                lst[ind2] = False
+
+    return res + [num for num in range(int(sqrt(limit))+1, limit+1) if lst[num]]
+
+def primes_up_to(x, primes=None):
+    """
+    Returns a list of primes up to (and including) x
+
+    Uses (hopefully) the faster sieving algorithm available
+    """
+
+    if primes:
+        return sieve_of_eratosthenes(x, primes)
+    return sieve_of_atkin(x)
 
 def _trial_division(n, primes):
     """
