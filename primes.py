@@ -136,21 +136,24 @@ class _IsPrimeList(object):
         If num is an odd number between min_num and max_num, set it to item,
         which must be a bool. Only used in mark_multiples_as_composite for
         crossing out numbers
+
+        num must be odd, this is ensured in mark_multiples_as_composite
         """
-        if num%2 == 1:
-            self.lst[self._pos_of(num)] = item
+        self.lst[self._pos_of(num)] = item
 
     def mark_multiples_as_composite(self, prime):
         """
-        Mark multiples of prime as composite
+        Mark odd multiples of prime as composite
 
         Start at the square as multiples less than this will already have been
-        marked as composite. If prime^2 < min_num, start at the first multiple
-        of prime above min_num
+        marked as composite. If prime^2 < min_num, start at the odd first
+        multiple of prime above min_num
         """
         start = max(prime**2, _first_multiple_of(prime, self.min_num))
+        if start % 2 == 0:
+            start += prime
 
-        for index in range(int(start), self.max_num+1, prime):
+        for index in range(int(start), self.max_num+1, prime*2):
             self[index] = False
 
 def sieve_of_eratosthenes(x, primes=None):
