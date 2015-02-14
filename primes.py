@@ -224,24 +224,25 @@ def sieve_of_atkin(limit):
     if limit <= 5:
         return list_up_to([2, 3, 5], limit)
 
-    res = [2, 3]
+    res = [2, 3, 5]
     lst = [False]*(limit+1)
+    s1, s2, s3 = {1,13,17,29,37,41,49,53}, {7,19,31,43}, {11,23,47,59}
 
     for y in range(1, int(sqrt(limit))+1):
         for x in range(1, int(sqrt((limit - y**2) / 4))+1):
             n = 4*x**2 + y**2
-            if n%12 == 1 or n%12 == 5:
+            if n%60 in s1:
                 lst[n] = not lst[n]
         for x in range(1, int(sqrt((limit - y**2) / 3))+1):
             n = 3*x**2 + y**2
-            if n%12 == 7:
+            if n%60 in s2:
                 lst[n] = not lst[n]
         for x in range(y+1, int(sqrt((limit + y**2) / 3))+1):
             n = 3*x**2 - y**2
-            if n%12 == 11:
+            if n%60 in s3:
                 lst[n] = not lst[n]
 
-    for num in range(5, int(sqrt(limit))+1, 2):
+    for num in range(res[-1]+2, int(sqrt(limit))+1, 2):
         if lst[num]:
             res.append(num)
             for ind in range(num**2, limit+1, num*2):
