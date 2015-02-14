@@ -226,7 +226,7 @@ def sieve_of_atkin(limit):
 
     res = [2, 3, 5]
     lst = [False]*(limit+1)
-    s1, s2, s3 = {1,13,17,29,37,41,49,53}, {7,19,31,43}, {11,23,47,59}
+    s1, s2, s3 = set([1,13,17,29,37,41,49,53]), set([7,19,31,43]), set([11,23,47,59])
 
     for y in range(1, int(sqrt(limit))+1):
         for x in range(1, int(sqrt((limit - y**2) / 4))+1):
