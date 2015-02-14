@@ -3,9 +3,8 @@ Several prime number functions
 """
 
 from __future__ import division
-from binary_search import binary_search
+from binary_search import binary_search, list_up_to
 from math import sqrt, log, ceil
-from bisect import bisect_right
 
 try:
     from sys import maxint
@@ -181,14 +180,14 @@ def sieve_of_eratosthenes(x, primes=None):
     if primes and primes != [2]:
         # If enough primes are passed in, we can simply return the primes up to x
         if primes[-1] >= (x-1):
-            # Primes is a sorted list so we can binary search (bisect_right)
-            return primes[:bisect_right(primes, x)]
+            # Primes is a sorted list so binary search is possible
+            return list_up_to(primes, x)
 
         else:
             lst = _IsPrimeList(primes[-1]+2, x)
 
             # Only go up to the sqrt(x) as all composites <= x have a factor <= sqrt(x)
-            for prime in primes[1:bisect_right(primes, int(sqrt(x)))]:
+            for prime in list_up_to(primes, int(sqrt(x)))[1:]:
                 lst.mark_multiples_as_composite(prime)
     else:
         lst = _IsPrimeList(3, x)
@@ -223,7 +222,7 @@ def sieve_of_atkin(limit):
     """
 
     if limit <= 5:
-        return [2, 3, 5][:bisect_right([2, 3, 5], limit)]
+        return list_up_to([2, 3, 5], limit)
 
     res = [2, 3]
     lst = [False]*(limit+1)
@@ -266,7 +265,7 @@ def _trial_division(n, primes):
     Simple trial division algorithm, check if n is prime by remainder dividing
     it by a list of known primes
     """
-    return all(n%p != 0 for p in primes[:bisect_right(primes, sqrt(n))])
+    return all(n%p != 0 for p in list_up_to(primes, int(sqrt(n))))
 
 def _miller_rabin_2(n):
     """
