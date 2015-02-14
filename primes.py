@@ -212,18 +212,19 @@ def sieve_of_atkin(limit):
     lst = [False]*(limit+1)
     s1, s2, s3 = set([1,13,17,29,37,41,49,53]), set([7,19,31,43]), set([11,23,47,59])
 
-    for y in range(1, int(sqrt(limit))+1):
-        y2 = y**2
+    squares = dict([(x, x**2) for x in range(1, int(sqrt(limit))+1)])
+
+    for y, y2 in squares.items():
         for x in range(1, int(sqrt((limit - y2) / 4))+1):
-            n = 4*x**2 + y2
+            n = 4*squares[x] + y2
             if n%60 in s1:
                 lst[n] = not lst[n]
         for x in range(1, int(sqrt((limit - y2) / 3))+1):
-            n = 3*x**2 + y2
+            n = 3*squares[x] + y2
             if n%60 in s2:
                 lst[n] = not lst[n]
         for x in range(y+1, int(sqrt((limit + y2) / 3))+1):
-            n = 3*x**2 - y2
+            n = 3*squares[x] - y2
             if n%60 in s3:
                 lst[n] = not lst[n]
 
