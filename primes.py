@@ -108,12 +108,6 @@ class _IsPrimeList(object):
     call mark_multiples_as_composite
     """
 
-    def _pos_of(self, num):
-        """
-        Position of num in self.lst
-        """
-        return (num-self.min_num) // 2
-
     def __init__(self, min_num, max_num):
         """
         Initialise a representation of a list of crossed and uncrossed numbers
@@ -121,24 +115,14 @@ class _IsPrimeList(object):
         """
         self.min_num = min_num
         self.max_num = max_num
-        self.lst = [True] * (self._pos_of(max_num)+1)
+        self.lst = [True] * ((max_num-min_num)//2 + 1)
 
     def __getitem__(self, num):
         """
         If num is an odd number between min_num and max_num, return True if num
         hasn't been crossed out yet, False if num has been crossed out
         """
-        return self.lst[self._pos_of(num)]
-
-    def __setitem__(self, num, item):
-        """
-        If num is an odd number between min_num and max_num, set it to item,
-        which must be a bool. Only used in mark_multiples_as_composite for
-        crossing out numbers
-
-        num must be odd, this is ensured in mark_multiples_as_composite
-        """
-        self.lst[self._pos_of(num)] = item
+        return self.lst[(num-self.min_num) // 2]
 
     def mark_multiples_as_composite(self, prime):
         """
@@ -152,8 +136,8 @@ class _IsPrimeList(object):
         if start % 2 == 0:
             start += prime
 
-        for index in range(int(start), self.max_num+1, prime*2):
-            self[index] = False
+        for num in range(int(start), self.max_num+1, prime*2):
+            self.lst[(num-self.min_num) // 2] = False
 
 def sieve_of_eratosthenes(x, primes=None):
     """
