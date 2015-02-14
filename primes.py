@@ -93,7 +93,7 @@ def _first_multiple_of(x, above):
     """
     Returns first multiple of x >= above
     """
-    return ceil(above/x) * x
+    return above + ((x-(above%x)) % x)
 
 class _IsPrimeList(object):
     """
