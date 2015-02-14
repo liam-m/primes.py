@@ -239,13 +239,13 @@ def sieve_of_atkin(limit):
             if n%12 == 11:
                 lst[n] = not lst[n]
 
-    for ind in range(5, int(sqrt(limit))+1):
-        if lst[ind]:
-            res.append(ind)
-            for ind2 in range(ind**2, limit+1, ind):
-                lst[ind2] = False
+    for num in range(5, int(sqrt(limit))+1, 2):
+        if lst[num]:
+            res.append(num)
+            for ind in range(num**2, limit+1, num*2):
+                lst[ind] = False
 
-    return res + [num for num in range(int(sqrt(limit))+1, limit+1) if lst[num]]
+    return res + [num for num in range(_first_multiple_of(2, int(sqrt(limit)))+1, limit+1, 2) if lst[num]]
 
 def primes_up_to(x, primes=None):
     """

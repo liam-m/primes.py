@@ -517,6 +517,11 @@ class TestPrimes(unittest.TestCase):
         self.primes[200]
         self.assertNotEqual(self.primes, otherprimes)
 
+class TestSieves(unittest.TestCase):
+    def testSieves(self):
+        for i in range(1000):
+            self.assertEqual(sieve_of_eratosthenes(i), sieve_of_atkin(i))
+
 
 if __name__ == '__main__':
     unittest.main()
