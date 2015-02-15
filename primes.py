@@ -198,11 +198,23 @@ def sieve_of_eratosthenes(x, primes=None):
 
     return primes
 
+def _range24(start, stop, step=2):
+    """
+    Like range(), but step is alternating between 2 and 4
+    (or 4 and 2 if step is initially 4)
+    """
+    while start < stop:
+        yield start
+        start += step
+        step = 2+(step&2)
+
 def sieve_of_atkin(limit):
     """
     Implementation of Sieve of Atkin
 
     Returns a list of all primes up to (and including) x
+
+    See http://compoasso.free.fr/primelistweb/page/prime/atkin_en.php for the range values 
     """
 
     if limit <= 5:
@@ -214,30 +226,24 @@ def sieve_of_atkin(limit):
 
     squares = dict([(x, x**2) for x in range(1, int(sqrt(limit))+1)])
 
+    range24_1_4 = list(_range24(1, int(sqrt(limit)) + 1, 4)) # +4, +2, +4.. from 1
+    range24_2_2 = list(_range24(2, int(sqrt(limit)) + 1, 2)) # +2, +4, +2.. from 2
+    range_1_2 = list(range(1, int(sqrt(limit)) + 1, 2))
+
     for x in range(1, int(sqrt(limit//4)) + 1):
-        # If x is a multiple of 3, y should be the sequence 1, 5, 7, 11, 13...
-        # (+4, +2, +4, +2...). However, practically it takes longer to generate
-        # this sequence than to just try all odd values of y
-        for y in range(1, int(sqrt(limit - 4*squares[x])) + 1, 2):
+        for y in list_up_to(range24_1_4 if x%3 == 0 else range_1_2, int(sqrt(limit - 4*squares[x]))):
             n = 4*squares[x] + squares[y]
             if n%60 in s1:
                 lst[n] = True
 
     for x in range(1, int(sqrt(limit//3)) + 1, 2):
-        # y should be the sequence 2, 4, 8, 10, 14... (+2, +4, +2, +4...)
-        # However, practically it takes longer to generate this sequence
-        # than to just try all even values of y
-        for y in range(2, int(sqrt(limit - 3*squares[x])) + 1, 2):
+        for y in list_up_to(range24_2_2, int(sqrt(limit - 3*squares[x]))):
             n = 3*squares[x] + squares[y]
             if n%60 in s2:
                 lst[n] = True
 
     for x in range(1, int(sqrt(limit)) + 1):
-        # If x is even, y should be the sequence 1, 5, 7, 11... (+4, +2, +4)
-        # and if x is odd, y should be the sequence 2, 4, 8, 10... (+2, +4, +2)
-        # Hoever, practically it takes longer to generate this sequence than
-        # to just try all odd/even values of y
-        for y in range(1 if x%2 == 0 else 2, x, 2):
+        for y in list_up_to(range24_1_4 if x%2 == 0 else range24_2_2, x):
             n = 3*squares[x] - squares[y]
             if n<=limit and n%60 in s3:
                 lst[n] = True
