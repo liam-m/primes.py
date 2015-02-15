@@ -214,19 +214,33 @@ def sieve_of_atkin(limit):
 
     squares = dict([(x, x**2) for x in range(1, int(sqrt(limit))+1)])
 
-    for y, y2 in squares.items():
-        for x in range(1, int(sqrt((limit - y2) / 4))+1):
-            n = 4*squares[x] + y2
+    for x in range(1, int(sqrt(limit//4)) + 1):
+        # If x is a multiple of 3, y should be the sequence 1, 5, 7, 11, 13...
+        # (+4, +2, +4, +2...). However, practically it takes longer to generate
+        # this sequence than to just try all odd values of y
+        for y in range(1, int(sqrt(limit - 4*squares[x])) + 1, 2):
+            n = 4*squares[x] + squares[y]
             if n%60 in s1:
-                lst[n] = not lst[n]
-        for x in range(1, int(sqrt((limit - y2) / 3))+1):
-            n = 3*squares[x] + y2
+                lst[n] = True
+
+    for x in range(1, int(sqrt(limit//3)) + 1, 2):
+        # y should be the sequence 2, 4, 8, 10, 14... (+2, +4, +2, +4...)
+        # However, practically it takes longer to generate this sequence
+        # than to just try all even values of y
+        for y in range(2, int(sqrt(limit - 3*squares[x])) + 1, 2):
+            n = 3*squares[x] + squares[y]
             if n%60 in s2:
-                lst[n] = not lst[n]
-        for x in range(y+1, int(sqrt((limit + y2) / 3))+1):
-            n = 3*squares[x] - y2
-            if n%60 in s3:
-                lst[n] = not lst[n]
+                lst[n] = True
+
+    for x in range(1, int(sqrt(limit)) + 1):
+        # If x is even, y should be the sequence 1, 5, 7, 11... (+4, +2, +4)
+        # and if x is odd, y should be the sequence 2, 4, 8, 10... (+2, +4, +2)
+        # Hoever, practically it takes longer to generate this sequence than
+        # to just try all odd/even values of y
+        for y in range(1 if x%2 == 0 else 2, x, 2):
+            n = 3*squares[x] - squares[y]
+            if n<=limit and n%60 in s3:
+                lst[n] = True
 
     for num in range(res[-1]+2, int(sqrt(limit))+1, 2):
         if lst[num]:
