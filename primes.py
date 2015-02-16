@@ -162,7 +162,7 @@ def sieve_of_eratosthenes(x, primes=None):
     # The helper class effectively already has even numbers crossed out,
     # so this would not be useful to know
     if primes and primes != [2]:
-        # If enough primes are passed in, we can simply return the primes up to x
+        # If enough primes are passed in, simply return the primes up to x
         if primes[-1] >= (x-1):
             # Primes is a sorted list so binary search is possible
             return list_up_to(primes, x)
@@ -251,7 +251,7 @@ def sieve_of_atkin(limit):
     for num in range(res[-1]+2, int(sqrt(limit))+1, 2):
         if lst[num]:
             res.append(num)
-            for ind in range(num**2, limit+1, num*2):
+            for ind in range(squares[num], limit+1, num*2):
                 lst[ind] = False
 
     return res + [num for num in range(_first_multiple_of(2, int(sqrt(limit)))+1, limit+1, 2) if lst[num]]
@@ -323,7 +323,7 @@ def is_prime(x, primes=None):
     if not _miller_rabin_2(x):
         return False
 
-    # Skip first 15 primes we tried earlier
+    # Skip first 15 primes tried earlier
     return _trial_division(x, primes_up_to(int(sqrt(x)), primes)[15:])
 
 def n_primes(n, primes=None):
@@ -381,7 +381,7 @@ def next_prime(primes):
     if not primes:
         return 2
     p = primes[-1]
-    for num in range(p + p%2+1, 2*p, 2): # Odd numbers from highest known to double it
+    for num in range(_first_multiple_of(2, p)+1, 2*p, 2): # Odd numbers from highest known to double it
         if is_prime(num, primes):
             return num
 
