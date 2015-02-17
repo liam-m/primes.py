@@ -248,8 +248,9 @@ def sieve_of_atkin(limit):
             if n<=limit and n%60 in s3:
                 lst[n] = True
 
-    for num in range(res[-1]+2, int(sqrt(limit))+1, 2):
-        if lst[num] and num%3 > 0 and num%5 > 0:
+    # Exclude multiples of 2, 3 and 5
+    for num in list_up_to([i+n for i in range(1, int(sqrt(limit))+1, 30) for n in (0, 6, 10, 12, 16, 18, 22, 28)], int(sqrt(limit))):
+        if lst[num]:
             res.append(num)
             for ind in range(squares[num], limit+1, num*2):
                 lst[ind] = False
