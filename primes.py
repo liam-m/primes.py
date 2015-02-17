@@ -249,7 +249,7 @@ def sieve_of_atkin(limit):
                 lst[n] = True
 
     for num in range(res[-1]+2, int(sqrt(limit))+1, 2):
-        if lst[num]:
+        if lst[num] and num%3 > 0 and num%5 > 0:
             res.append(num)
             for ind in range(squares[num], limit+1, num*2):
                 lst[ind] = False
