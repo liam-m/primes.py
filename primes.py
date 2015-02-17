@@ -136,8 +136,7 @@ class _IsPrimeList(object):
         if start % 2 == 0:
             start += prime
 
-        for num in range(int(start), self.max_num+1, prime*2):
-            self.lst[(num-self.min_num) // 2] = False
+        self.lst[(start-self.min_num)//2::prime] = [False]*len(self.lst[(start-self.min_num)//2::prime])
 
 def sieve_of_eratosthenes(x, primes=None):
     """
@@ -252,8 +251,7 @@ def sieve_of_atkin(limit):
     for num in list_up_to([i+n for i in range(1, int(sqrt(limit))+1, 30) for n in (0, 6, 10, 12, 16, 18, 22, 28)], int(sqrt(limit))):
         if lst[num]:
             res.append(num)
-            for ind in range(squares[num], limit+1, num*2):
-                lst[ind] = False
+            lst[squares[num]::num*2] = [False]*len(lst[squares[num]::num*2])
 
     return res + [num for num in range(_first_multiple_of(2, int(sqrt(limit)))+1, limit+1, 2) if lst[num]]
 
