@@ -94,53 +94,6 @@ def _first_multiple_of(x, above):
     """
     return above + ((x-(above%x)) % x)
 
-class _IsPrimeList(object):
-    """
-    Helper class used in primes_up_to.
-    List of booleans representing whether odd numbers from x-y are prime.
-    Behaviour is undefined for numbers not in this range.
-
-    As only odd numbers are represented, the amount of work in primes_up_to
-    is effectively halved. Even less work is necessary when the lower bound
-    is greater than 3.
-
-    Initially, all numbers are 'uncrossed' (True), when a prime is found,
-    call mark_multiples_as_composite
-    """
-
-    def __init__(self, min_num, max_num):
-        """
-        Initialise a representation of a list of crossed and uncrossed numbers
-        between min_num and max_num. All numbers are initially uncrossed
-        """
-        self.min_num = min_num
-        self.max_num = max_num
-        self.lst = [True] * ((max_num-min_num)//2 + 1)
-
-    def __getitem__(self, num):
-        """
-        If num is an odd number between min_num and max_num, return True if num
-        hasn't been crossed out yet, False if num has been crossed out
-        """
-        return self.lst[(num-self.min_num) // 2]
-
-    def mark_multiples_as_composite(self, prime):
-        """
-        Mark odd multiples of prime as composite
-
-        Start at the square as multiples less than this will already have been
-        marked as composite. If prime^2 < min_num, start at the odd first
-        multiple of prime above min_num
-        """
-        start = max(prime**2, _first_multiple_of(prime, self.min_num))
-        if start % 2 == 0:
-            start += prime
-
-        startIndex = (start-self.min_num)//2
-        endIndex = (self.max_num-self.min_num)//2
-
-        self.lst[startIndex::prime] = [False]*((endIndex-startIndex)//prime + 1)
-
 def sieve_of_eratosthenes(x, primes=None):
     """
     Implementation of Sieve of Eratosthenes
@@ -170,24 +123,38 @@ def sieve_of_eratosthenes(x, primes=None):
             return list_up_to(primes, x)
 
         else:
-            lst = _IsPrimeList(primes[-1]+2, x)
+            offset = primes[-1]+2
+            lst = [True] * ((x-offset)//2 + 1)
 
             # Only go up to the sqrt(x) as all composites <= x have a factor <= sqrt(x)
             for prime in list_up_to(primes, int(sqrt(x)))[1:]:
-                lst.mark_multiples_as_composite(prime)
+                start = max(prime**2, _first_multiple_of(prime, offset))
+                if start % 2 == 0:
+                    start += prime
+
+                startIndex = (start-offset)//2
+                endIndex = (x-offset)//2
+
+                lst[startIndex::prime] = [False]*((endIndex-startIndex)//prime + 1)
     else:
-        lst = _IsPrimeList(3, x)
+        offset = 3
+        lst = [True] * ((x-offset)//2 + 1)
         # Remember that 2 is prime, as it isn't referred to in the helper class
         primes = [2]
 
     # Only go up to the position of the square root of x as all composites <= x have
     # a factor <= x, so all composites will have been marked by square root of x
-    for num in range(lst.min_num, int(sqrt(x))+1, 2):
+    for num in range(offset, int(sqrt(x))+1, 2):
         # Hasn't been crossed yet, so it's prime
-        if lst[num]:
+        if lst[(num-offset) // 2]:
             primes.append(num)
             # Start at the square as multiples < the square have already been marked
-            lst.mark_multiples_as_composite(num)
+            start = num**2
+
+            startIndex = (start-offset)//2
+            endIndex = (x-offset)//2
+
+            lst[startIndex::num] = [False]*((endIndex-startIndex)//num + 1)
 
     # Now all composites up to x are known, add the uncrossed numbers to the list of primes
 
@@ -196,7 +163,7 @@ def sieve_of_eratosthenes(x, primes=None):
     # highest known prime + 1
     start = (max(primes[-1], int(sqrt(x))) + 1) | 1
 
-    primes.extend(num for num in range(start, x+1, 2) if lst[num])
+    primes.extend(num for num in range(start, x+1, 2) if lst[(num-offset) // 2])
 
     return primes
 
@@ -265,9 +232,7 @@ def primes_up_to(x, primes=None):
     Uses (hopefully) the faster sieving algorithm available
     """
 
-    if primes:
-        return sieve_of_eratosthenes(x, primes)
-    return sieve_of_atkin(x)
+    return sieve_of_eratosthenes(x, primes)
 
 def _trial_division(n, primes):
     """
