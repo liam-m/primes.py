@@ -5,6 +5,7 @@ Several prime number functions
 from __future__ import division
 from binary_search import binary_search, list_up_to
 from math import sqrt, log, ceil
+from numpy import ones, zeros
 
 try:
     from sys import maxint
@@ -123,7 +124,7 @@ def sieve_of_eratosthenes(x, primes=None):
 
         else:
             offset = primes[-1]+2
-            lst = [True] * ((x-offset)//2 + 1)
+            lst = ones((x-offset)//2 + 1, dtype=bool)
 
             # Only go up to the sqrt(x) as all composites <= x have a factor <= sqrt(x)
             for prime in list_up_to(primes, int(sqrt(x)))[1:]:
@@ -131,14 +132,11 @@ def sieve_of_eratosthenes(x, primes=None):
                 if start % 2 == 0:
                     start += prime
 
-                startIndex = (start-offset)//2
-                endIndex = (x-offset)//2
-
-                lst[startIndex::prime] = [False]*((endIndex-startIndex)//prime + 1)
+                lst[(start-offset)//2::prime] = False
 
     else:
         offset = 3
-        lst = [True] * ((x-offset)//2 + 1)
+        lst = ones((x-offset)//2 + 1, dtype=bool)
         # Remember that 2 is prime, as it isn't referred to in the list
         primes = [2]
 
@@ -148,12 +146,8 @@ def sieve_of_eratosthenes(x, primes=None):
         # Hasn't been crossed yet, so it's prime
         if lst[(num-offset) // 2]:
             primes.append(num)
-            start = num**2
 
-            startIndex = (start-offset)//2
-            endIndex = (x-offset)//2
-
-            lst[startIndex::num] = [False]*((endIndex-startIndex)//num + 1)
+            lst[(num**2 - offset)//2::num] = False
 
     # Now all composites up to x are known, add the uncrossed numbers to the list of primes
 
@@ -189,7 +183,7 @@ def sieve_of_atkin(limit):
         return list_up_to([2, 3, 5], limit)
 
     res = [2, 3, 5]
-    lst = [False]*(limit+1)
+    lst = zeros(limit+1, dtype=bool)
     s1, s2, s3 = set([1,13,17,29,37,41,49,53]), set([7,19,31,43]), set([11,23,47,59])
 
     squares = dict([(x, x**2) for x in range(1, int(sqrt(limit))+1)])
@@ -220,7 +214,7 @@ def sieve_of_atkin(limit):
     for num in list_up_to([i+n for i in range(1, int(sqrt(limit))+1, 30) for n in (0, 6, 10, 12, 16, 18, 22, 28)], int(sqrt(limit))):
         if lst[num]:
             res.append(num)
-            lst[squares[num]::num*2] = [False]*((limit-squares[num])//(2*num) + 1)
+            lst[squares[num]::num*2] = False
 
     return res + [num for num in range(_first_multiple_of(2, int(sqrt(limit)))+1, limit+1, 2) if lst[num]]
 
