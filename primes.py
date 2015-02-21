@@ -107,15 +107,14 @@ def sieve_of_eratosthenes(x, primes=None):
     # Each consecutive number is tested - if it is not crossed out, then
     # it is prime and multiples of this number up to n are crossed out.
 
-    # A helper class represents crossed and uncrossed numbers as False and True
-    # and has multiple other optimisations for efficiency
+    # Crossed and uncrossed numbers are represented as False and True
+    # Only odd numbers are included, to reduce memory usage
 
     if x <= 1:
         return []
 
     # If a list of primes is passed in, take advantage of this
-    # The helper class effectively already has even numbers crossed out,
-    # so this would not be useful to know
+    # Even numbers aren't included in the list, so this isn't useful to know
     if primes and primes != [2]:
         # If enough primes are passed in, simply return the primes up to x
         if primes[-1] >= (x-1):
@@ -136,10 +135,11 @@ def sieve_of_eratosthenes(x, primes=None):
                 endIndex = (x-offset)//2
 
                 lst[startIndex::prime] = [False]*((endIndex-startIndex)//prime + 1)
+
     else:
         offset = 3
         lst = [True] * ((x-offset)//2 + 1)
-        # Remember that 2 is prime, as it isn't referred to in the helper class
+        # Remember that 2 is prime, as it isn't referred to in the list
         primes = [2]
 
     # Only go up to the position of the square root of x as all composites <= x have
@@ -148,7 +148,6 @@ def sieve_of_eratosthenes(x, primes=None):
         # Hasn't been crossed yet, so it's prime
         if lst[(num-offset) // 2]:
             primes.append(num)
-            # Start at the square as multiples < the square have already been marked
             start = num**2
 
             startIndex = (start-offset)//2
