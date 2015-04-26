@@ -4,7 +4,7 @@ Several prime number functions
 
 from __future__ import division
 from binary_search import binary_search, list_up_to
-from math import sqrt, log
+from math import log
 from numpy import ones, zeros
 
 try:
@@ -127,7 +127,7 @@ def sieve_of_eratosthenes(limit, primes=None):
             lst = ones((limit-offset)//2 + 1, dtype=bool)
 
             # Only go up to the sqrt as all composites <= limit have a factor <= sqrt(limit)
-            for prime in list_up_to(primes, int(sqrt(limit)))[1:]:
+            for prime in list_up_to(primes, int(limit ** 0.5))[1:]:
                 start = max(prime**2, _first_multiple_of(prime, offset))
                 if start % 2 == 0:
                     start += prime
@@ -142,7 +142,7 @@ def sieve_of_eratosthenes(limit, primes=None):
 
     # Only go up to the position of the sqrt as all composites <= limit have
     # a factor <= limit, so all composites will have been marked by sqrt(limit)
-    for num in range(offset, int(sqrt(limit))+1, 2):
+    for num in range(offset, int(limit**0.5)+1, 2):
         # Hasn't been crossed yet, so it's prime
         if lst[(num-offset) // 2]:
             primes.append(num)
@@ -154,7 +154,7 @@ def sieve_of_eratosthenes(limit, primes=None):
     # Start at the position of the square root + 1, rounded up to be odd
     # If primes passed in were > sqrt(limit), start at the position of the
     # highest known prime + 1
-    start = (max(primes[-1], int(sqrt(limit))) + 1) | 1
+    start = (max(primes[-1], int(limit ** 0.5)) + 1) | 1
 
     primes.extend(num for num in range(start, limit+1, 2) if lst[(num-offset) // 2])
 
@@ -184,23 +184,23 @@ def sieve_of_atkin(limit):
 
     res = [2, 3, 5]
     lst = zeros(limit+1, dtype=bool)
-    limit_sqrt = int(sqrt(limit))
+    limit_sqrt = int(limit ** 0.5)
     s1, s2, s3 = set([1, 13, 17, 29, 37, 41, 49, 53]), set([7, 19, 31, 43]), set([11, 23, 47, 59])
 
-    squares = dict([(x, x**2) for x in range(1, int(sqrt(limit))+1)])
+    squares = dict([(x, x**2) for x in range(1, limit_sqrt+1)])
 
     range24_1_4 = list(_range24(1, limit_sqrt + 1, 4)) # +4, +2, +4.. from 1
     range24_2_2 = list(_range24(2, limit_sqrt + 1, 2)) # +2, +4, +2.. from 2
     range_1_2 = list(range(1, limit_sqrt + 1, 2))
 
-    for x in range(1, int(sqrt(limit//4)) + 1):
-        for y in list_up_to(range24_1_4 if x%3 == 0 else range_1_2, int(sqrt(limit-4*squares[x]))):
+    for x in range(1, int((limit//4) ** 0.5) + 1):
+        for y in list_up_to(range24_1_4 if x%3 == 0 else range_1_2, int((limit-4*squares[x]) ** 0.5)):
             n = 4*squares[x] + squares[y]
             if n%60 in s1:
                 lst[n] = True
 
-    for x in range(1, int(sqrt(limit//3)) + 1, 2):
-        for y in list_up_to(range24_2_2, int(sqrt(limit - 3*squares[x]))):
+    for x in range(1, int((limit//3) ** 0.5) + 1, 2):
+        for y in list_up_to(range24_2_2, int((limit - 3*squares[x]) ** 0.5)):
             n = 3*squares[x] + squares[y]
             if n%60 in s2:
                 lst[n] = True
@@ -234,7 +234,7 @@ def _trial_division(num, primes):
     Simple trial division algorithm, check if num is prime by dividing
     it by a list of known primes
     """
-    return all(num%p != 0 for p in list_up_to(primes, int(sqrt(num))))
+    return all(num%p != 0 for p in list_up_to(primes, int(num ** 0.5)))
 
 def _miller_rabin_2(num):
     """
@@ -275,7 +275,7 @@ def is_prime(num, primes=None):
         if primes[-1] >= num:
             # If it's prime, it'll be in the list
             return not binary_search(primes, num) == -1
-        elif primes[-1] >= sqrt(num):
+        elif primes[-1] >= num**0.5:
             # If it's prime, none of the primes up to its square root will be a factor of it
             return _trial_division(num, primes)
 
@@ -286,7 +286,7 @@ def is_prime(num, primes=None):
         return False
 
     # Skip first 15 primes tried earlier
-    return _trial_division(num, primes_up_to(int(sqrt(num)), primes)[15:])
+    return _trial_division(num, primes_up_to(int(num ** 0.5), primes)[15:])
 
 def n_primes(num, primes=None):
     """
