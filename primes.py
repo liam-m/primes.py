@@ -37,7 +37,7 @@ class Primes(list):
         True
         """
         if item > self.highest_known:
-            self.extend(primes_up_to(item, self)[len(self):])
+            super(self.__class__, self).extend(primes_up_to(item, self)[len(self):])
         return not binary_search(self, item) == -1
 
     def __getitem__(self, key):
@@ -53,16 +53,16 @@ class Primes(list):
                     return []
 
             if key.start not in [None, maxint] and len(self)-1 < key.start:
-                self.extend(n_primes(key.start+1, list(self))[len(self):])
+                super(self.__class__, self).extend(n_primes(key.start+1, list(self))[len(self):])
             if key.stop not in [None, maxint] and len(self) < key.stop:
-                self.extend(n_primes(key.stop, list(self))[len(self):])
+                super(self.__class__, self).extend(n_primes(key.stop, list(self))[len(self):])
         elif isinstance(key, int):
             if len(self)-1 < key:
-                self.extend(n_primes(key+1, list(self))[len(self):])
+                super(self.__class__, self).extend(n_primes(key+1, list(self))[len(self):])
         else:
             raise TypeError()
 
-        return list.__getitem__(self, key)
+        return super(self.__class__, self).__getitem__(key)
 
     def __getslice__(self, i, j): # pragma: no cover
         """
