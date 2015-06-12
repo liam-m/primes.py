@@ -465,15 +465,15 @@ class TestPrimes(unittest.TestCase):
         self.assertEqual(len(self.primes), 0)
 
     def testLen(self):
-        self.assertEqual(len(self.primes), 0)
+        self.assertEqual(len(self.primes), 0, self.primes)
         self.primes[0]
-        self.assertEqual(len(self.primes), 1)
+        self.assertEqual(len(self.primes), 1, self.primes)
         self.primes[1]
-        self.assertEqual(len(self.primes), 2)
+        self.assertEqual(len(self.primes), 2, self.primes)
         self.primes[2]
-        self.assertEqual(len(self.primes), 3)
+        self.assertEqual(len(self.primes), 3, self.primes)
         self.primes[10]
-        self.assertEqual(len(self.primes), 11)
+        self.assertEqual(len(self.primes), 11, self.primes)
         self.primes[150]
         self.assertEqual(len(self.primes), 151)
         self.primes[1234]

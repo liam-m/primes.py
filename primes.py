@@ -17,9 +17,9 @@ try:
 except NameError: # pragma: no cover
     pass
 
-class Primes(object):
+class Primes(list):
     """
-    List-like object that supports slicing and membership checking, automatically
+    List subclass that supports slicing and membership checking, automatically
     generating new primes when needed
     """
 
@@ -27,20 +27,7 @@ class Primes(object):
         """
         Initialise an instance of the primes object
         """
-        self.primes = []
         self.highest_known = 0
-
-    def __iter__(self):
-        """
-        Iterate through the primes that have been generated
-        """
-        return self.primes.__iter__()
-
-    def __len__(self):
-        """
-        Number of primes that have been generated
-        """
-        return len(self.primes)
 
     def __contains__(self, item):
         """
@@ -50,8 +37,8 @@ class Primes(object):
         True
         """
         if item > self.highest_known:
-            self.primes = primes_up_to(item, self.primes)
-        return not binary_search(self.primes, item) == -1
+            self.extend(primes_up_to(item, self)[len(self):])
+        return not binary_search(self, item) == -1
 
     def __getitem__(self, key):
         """
@@ -66,28 +53,22 @@ class Primes(object):
                     return []
 
             if key.start not in [None, maxint] and len(self)-1 < key.start:
-                self.primes = n_primes(key.start+1, self.primes)
+                self.extend(n_primes(key.start+1, list(self))[len(self):])
             if key.stop not in [None, maxint] and len(self) < key.stop:
-                self.primes = n_primes(key.stop, self.primes)
+                self.extend(n_primes(key.stop, list(self))[len(self):])
         elif isinstance(key, int):
             if len(self)-1 < key:
-                self.primes = n_primes(key+1, self.primes)
+                self.extend(n_primes(key+1, list(self))[len(self):])
         else:
             raise TypeError()
 
-        return self.primes[key]
+        return list.__getitem__(self, key)
 
-    def __eq__(self, other):
+    def __getslice__(self, i, j):
         """
-        Check for equality with a list of primes
+        list still implements __getslice__ in 2.x, so it is overriden and calls __getitem__
         """
-        return self.primes == other
-
-    def __ne__(self, other):
-        """
-        Check for inequality with a list of primes
-        """
-        return self.primes != other
+        return self[slice(i, j)]
 
 def _first_multiple_of(num, above):
     """
