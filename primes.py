@@ -64,7 +64,7 @@ class Primes(list):
 
         return list.__getitem__(self, key)
 
-    def __getslice__(self, i, j):
+    def __getslice__(self, i, j): # pragma: no cover
         """
         list still implements __getslice__ in 2.x, so it is overriden and calls __getitem__
         """
