@@ -16,4 +16,4 @@ script:
  - python speed_test.py --all
  - python speed_test.py --fermat 6
  - pylint primes.py || true
- - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then mut.py --target primes --unit-test test -m; fi
+ - if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then mut.py --target primes --unit-test test -m -c; fi
