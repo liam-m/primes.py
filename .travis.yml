@@ -2,15 +2,20 @@ language: python
 python:
  - "2.6"
  - "2.7"
- - "3.2"
  - "3.3"
  - "3.4"
+ - "3.5"
+ - "nightly"
 install:
  - pip install coverage
  - pip install pylint
+ - if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then pip install mutpy; fi
+ - if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then pip install mutpy; fi
 script:
  - python test.py
  - coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
  - python speed_test.py --all
  - python speed_test.py --fermat 6
  - pylint primes.py || true
+ - if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]]; then mut.py --target primes --unit-test test -m -c; fi
+ - if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then mut.py --target primes --unit-test test -m -c; fi
