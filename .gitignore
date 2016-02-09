@@ -36,3 +36,7 @@ nosetests.xml
 
 # Coverage reports
 htmlcov/*
+
+# Mutation testing
+MutPy/*
+MutPy.yaml
