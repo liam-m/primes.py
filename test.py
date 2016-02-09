@@ -522,6 +522,10 @@ class TestSieves(unittest.TestCase):
         for i in range(1000):
             self.assertEqual(sieve_of_eratosthenes(i), sieve_of_atkin(i))
 
+        for _ in range(100):
+            r = random.randint(1001, 500000)
+            self.assertEqual(sieve_of_eratosthenes(r), sieve_of_atkin(r))
+
 
 if __name__ == '__main__':
     unittest.main()
