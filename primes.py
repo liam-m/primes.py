@@ -375,6 +375,9 @@ def prime_quadruplets_up_to(limit, primes=None):
             yield (prime, prime+2, prime+6, prime+8)
 
 def gcd(a, b):
+    """
+    The greatest common denominator of a and b
+    """
     while b > 0:
         r = a % b
         a = b
@@ -382,6 +385,9 @@ def gcd(a, b):
     return a
 
 def pollards_rho(num, starting_point=2):
+    """
+    Return a factor of num using Pollard's rho algorithm
+    """
     f = lambda x: (pow(x, 2, num) + 1) % num
     x, y = starting_point, starting_point
     while True:
@@ -393,7 +399,9 @@ def pollards_rho(num, starting_point=2):
         elif d != 1:
             return d
 
-# Factorise a semiprime number 
 def factorise(num):
+    """
+    Factorise a semiprime number
+    """
     factor = pollards_rho(num)
     return {factor, num//factor}
