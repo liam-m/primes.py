@@ -163,7 +163,7 @@ def sieve_of_atkin(limit):
     See http://compoasso.free.fr/primelistweb/page/prime/atkin_en.php for the range values
     """
 
-    if limit <= 5:
+    if limit <= 6:
         return list_up_to([2, 3, 5], limit)
 
     res = [2, 3, 5]
