@@ -3,14 +3,16 @@ Several prime number functions
 """
 
 from __future__ import division
-from binary_search import binary_search, list_up_to
 from math import log
-from numpy import ones, zeros
 
 try:
     from sys import maxint
 except ImportError: # pragma: no cover
     maxint = 9223372036854775807
+
+from numpy import ones, zeros
+
+from binary_search import binary_search, list_up_to
 
 try:
     range = xrange
