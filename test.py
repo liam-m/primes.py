@@ -3,6 +3,11 @@ import random
 from math import sqrt
 from primes import *
 
+# assertRaisesRegex is called assertRaisesRegexp on <3.2
+# Monkey patch it in on older versions to avoid DeprecationWarning
+if not hasattr(unittest.TestCase, 'assertRaisesRegex'):
+    unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
+
 class TestPrimesUpTo(unittest.TestCase):
     def testPrimesUpTo0(self):
         self.assertEqual(primes_up_to(0), [])
@@ -459,9 +464,9 @@ class TestPrimes(unittest.TestCase):
             self.assertEqual(self.primes[start:stop:step], [])
             self.assertEqual(len(self.primes), 0)
 
-        self.assertRaisesRegexp(ValueError, "slice step cannot be zero", lambda p: p[10:20:0], self.primes)
+        self.assertRaisesRegex(ValueError, "slice step cannot be zero", lambda p: p[10:20:0], self.primes)
         self.assertEqual(len(self.primes), 0)
-        self.assertRaisesRegexp(ValueError, "slice step cannot be zero", lambda p: p[20:10:0], self.primes)
+        self.assertRaisesRegex(ValueError, "slice step cannot be zero", lambda p: p[20:10:0], self.primes)
         self.assertEqual(len(self.primes), 0)
 
     def testLen(self):
