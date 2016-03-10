@@ -406,4 +406,4 @@ def factorise(num):
     Factorise a semiprime number
     """
     factor = pollards_rho(num)
-    return {factor, num//factor}
+    return set([factor, num//factor])
