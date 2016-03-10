@@ -30,6 +30,7 @@ class Primes(list):
         Initialise an instance of the primes object
         """
         self.highest_known = 0
+        super(self.__class__, self).__init__()
 
     def __contains__(self, item):
         """
