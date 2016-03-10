@@ -374,3 +374,26 @@ def prime_quadruplets_up_to(limit, primes=None):
         if is_prime(prime+2, primes) and is_prime(prime+6, primes) and is_prime(prime+8, primes):
             yield (prime, prime+2, prime+6, prime+8)
 
+def gcd(a, b):
+    while b > 0:
+        r = a % b
+        a = b
+        b = r
+    return a
+
+def pollards_rho(num, starting_point=2):
+    f = lambda x: (pow(x, 2, num) + 1) % num
+    x, y = starting_point, starting_point
+    while True:
+        x = f(x)
+        y = f(f(y))
+        d = gcd((x-y) % num, num)
+        if d == num:
+            return pollards_rho(num, starting_point+1)
+        elif d != 1:
+            return d
+
+# Factorise a semiprime number 
+def factorise(num):
+    factor = pollards_rho(num)
+    return {factor, num//factor}

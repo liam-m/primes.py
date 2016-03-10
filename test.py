@@ -526,6 +526,21 @@ class TestSieves(unittest.TestCase):
             r = random.randint(1001, 500000)
             self.assertEqual(sieve_of_eratosthenes(r), sieve_of_atkin(r))
 
+class TestFactorisation(unittest.TestCase):
+    def test15(self):
+        self.assertEqual(factorise(15), {3, 5})
+
+    def test8051(self):
+        self.assertEqual(factorise(8051), {83, 97})
+
+    def test10403(self):
+        self.assertEqual(factorise(10403), {101, 103})
+
+    def testComprehensive(self):
+        primes = primes_up_to(500000)
+        random.shuffle(primes)
+        for p, q in zip(primes[:1000], primes[1:]):
+            self.assertEqual(factorise(p*q), {p, q})
 
 if __name__ == '__main__':
     unittest.main()
