@@ -536,6 +536,9 @@ class TestFactorisation(unittest.TestCase):
     def test10403(self):
         self.assertEqual(factorise(10403), set([101, 103]))
 
+    def test94904178409(self):
+        self.assertEqual(factorise(94904178409), set([198031, 479239]))
+
     def testComprehensive(self):
         primes = primes_up_to(500000)
         random.shuffle(primes)
