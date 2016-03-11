@@ -5,7 +5,7 @@ from primes import *
 
 # assertRaisesRegex is called assertRaisesRegexp on <3.2
 # Monkey patch it in on older versions to avoid DeprecationWarning
-if not hasattr(unittest.TestCase, 'assertRaisesRegex'):
+if not hasattr(unittest.TestCase, 'assertRaisesRegex'): # pragma: no cover
     if hasattr(unittest.TestCase, 'assertRaisesRegexp'):
         unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
     else: # assertRaisesRegexp is unavailable on <2.7, so fall back to assertRaises
