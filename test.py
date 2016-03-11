@@ -6,7 +6,10 @@ from primes import *
 # assertRaisesRegex is called assertRaisesRegexp on <3.2
 # Monkey patch it in on older versions to avoid DeprecationWarning
 if not hasattr(unittest.TestCase, 'assertRaisesRegex'):
-    unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
+    if hasattr(unittest.TestCase, 'assertRaisesRegexp'):
+        unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
+    else: # assertRaisesRegexp is unavailable on <2.7, so fall back to assertRaises
+        unittest.TestCase.assertRaisesRegex = lambda self, e, r, c, *a, **k: self.assertRaises(e, c, *a, **k)
 
 class TestPrimesUpTo(unittest.TestCase):
     def testPrimesUpTo0(self):
