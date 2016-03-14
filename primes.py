@@ -381,24 +381,23 @@ def gcd(a, b):
     """
     The greatest common denominator of a and b
     """
-    while b > 0:
-        r = a % b
-        a = b
-        b = r
+    while b:
+        a, b = b, a%b
     return a
 
 def pollards_rho(num, starting_point=2):
     """
     Return a factor of num using Pollard's rho algorithm
     """
-    f = lambda x: (pow(x, 2, num) + 1) % num
+    f = lambda x: (x*x + 1) % num
     x, y = starting_point, starting_point
     while True:
         x = f(x)
         y = f(f(y))
         d = gcd((x-y) % num, num)
         if d == num:
-            return pollards_rho(num, starting_point+1)
+            starting_point += 1
+            x, y = starting_point, starting_point
         elif d != 1:
             return d
 
