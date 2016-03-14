@@ -543,7 +543,8 @@ class TestSieves(unittest.TestCase):
 class TestPrimeFactorisation(unittest.TestCase):
     def testPrimes(self):
         for p in primes_up_to(100000):
-            self.assertEqual(factorise(p), set([p]))
+            self.assertEqual(factorise(p, include_trivial=False), set())
+            self.assertEqual(factorise(p, include_trivial=True), set([1, p]))
 
 class TestSemiprimeFactorisation(unittest.TestCase):
     def test15(self):
@@ -555,7 +556,12 @@ class TestSemiprimeFactorisation(unittest.TestCase):
     def test10403(self):
         self.assertEqual(factorise(10403), set([101, 103]))
 
+    def test1882778881(self):
+        # Used to inifinite loop
+        self.assertEqual(factorise(1882778881), set([43391]))
+
     def test94904178409(self):
+        # Isn't found starting at x, y = 2, 2
         self.assertEqual(factorise(94904178409), set([198031, 479239]))
 
     def testComprehensive(self):

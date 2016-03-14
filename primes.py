@@ -401,12 +401,19 @@ def pollards_rho(num, starting_point=2):
         elif d != 1:
             return d
 
-def factorise(num):
+def factorise(num, include_trivial=False):
     """
     Factorise a number
+
+    Returns the non-trivial factors of num
+    Returns trivial factors if include_trivial = True
     """
-    factors = set()
-    while not is_prime(num):
+    factors = set([1, num]) if include_trivial else set()
+
+    if is_prime(num):
+        return factors
+    
+    while num > 1 and not is_prime(num):       
         factor = pollards_rho(num)
 
         if is_prime(factor):
@@ -416,5 +423,6 @@ def factorise(num):
             
         while num % factor == 0:
             num //= factor
-    factors.add(num)
+    if num > 1:
+        factors.add(num)
     return factors
