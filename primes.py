@@ -405,8 +405,8 @@ def factorise(num, include_trivial=False):
     """
     Factorise a number
 
-    Returns the non-trivial factors of num
-    Returns trivial factors if include_trivial = True
+    Returns the prime factors of num
+    Excludes trivial factors unless include_trivial = True
     """
     factors = set([1, num]) if include_trivial else set()
 
