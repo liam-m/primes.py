@@ -404,7 +404,18 @@ def pollards_rho(num, starting_point=2):
 
 def factorise(num):
     """
-    Factorise a semiprime number
+    Factorise a number
     """
-    factor = pollards_rho(num)
-    return set([factor, num//factor])
+    factors = set()
+    while not is_prime(num):
+        factor = pollards_rho(num)
+
+        if is_prime(factor):
+            factors.add(factor)
+        else:
+            factors |= factorise(factor)
+            
+        while num % factor == 0:
+            num //= factor
+    factors.add(num)
+    return factors

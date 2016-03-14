@@ -1,7 +1,13 @@
 import unittest
 import random
 from math import sqrt
+from operator import mul
 from primes import *
+
+try:
+    from functools import reduce
+except ImportError: # pragma: no cover
+    pass
 
 # assertRaisesRegex is called assertRaisesRegexp on <3.2
 # Monkey patch it in on older versions to avoid DeprecationWarning
@@ -534,7 +540,12 @@ class TestSieves(unittest.TestCase):
             r = random.randint(1001, 500000)
             self.assertEqual(sieve_of_eratosthenes(r), sieve_of_atkin(r))
 
-class TestFactorisation(unittest.TestCase):
+class TestPrimeFactorisation(unittest.TestCase):
+    def testPrimes(self):
+        for p in primes_up_to(100000):
+            self.assertEqual(factorise(p), set([p]))
+
+class TestSemiprimeFactorisation(unittest.TestCase):
     def test15(self):
         self.assertEqual(factorise(15), set([3, 5]))
 
@@ -552,6 +563,15 @@ class TestFactorisation(unittest.TestCase):
         random.shuffle(primes)
         for p, q in zip(primes[:1000], primes[1:]):
             self.assertEqual(factorise(p*q), set([p, q]))
+
+class TestCompositeFactorisation(unittest.TestCase):
+    def testComposites(self):
+        primes = primes_up_to(10000)
+        for _ in range(1000):
+            num_factors = random.randint(3, 7)
+            factors = set([random.choice(primes) for _ in range(num_factors)])
+            N = reduce(mul, factors, 1)
+            self.assertEqual(factorise(N), factors)
 
 if __name__ == '__main__':
     unittest.main()
