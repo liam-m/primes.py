@@ -412,15 +412,15 @@ def factorise(num, include_trivial=False):
 
     if is_prime(num):
         return factors
-    
-    while num > 1 and not is_prime(num):       
+
+    while num > 1 and not is_prime(num):
         factor = pollards_rho(num)
 
         if is_prime(factor):
             factors.add(factor)
         else:
             factors |= factorise(factor)
-            
+
         while num % factor == 0:
             num //= factor
     if num > 1:
