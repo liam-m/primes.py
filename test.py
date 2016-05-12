@@ -65,126 +65,74 @@ class TestPrimesUpTo(unittest.TestCase):
             self.assertEqual(primes_up_to(i), primes_up_to(i, greater_primes))
 
 class TestIsPrime(unittest.TestCase):
-    def testIsPrime0(self):
-        self.assertFalse(is_prime(0))
+    def setUp(self):
+        simple_primes = [2, 3, 5]
+        primes_40000 = primes_up_to(40000)
+        mersenne_primes = list(map(lambda x: 2**x - 1, [2, 3, 5, 7, 13, 17, 19, 31]))
+        fermat_primes = list(map(lambda x: 2**(2**x) + 1, [0, 1, 2, 3, 4]))
+        wagstaff_primes = list(map(lambda x: (2**x + 1)//3, [3, 5, 7, 11, 13, 17, 19, 23, 31, 43]))
+        woodall_primes = list(map(lambda x: x * 2**x - 1, [2, 3, 6, 30]))
+        proth_primes = [3, 5, 13, 17, 41, 97, 113, 193, 241, 257, 353, 449, 577, 641, 673, 769, 929,
+                        1153, 1217, 1409, 1601, 2113, 2689, 2753, 3137, 3329, 3457, 4481, 4993, 6529,
+                        7297, 7681, 7937, 9473, 9601, 9857]
+        solinas_primes = [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 47, 59, 61, 67, 71, 73, 79, 97]
+        self.primes = simple_primes + primes_40000 + mersenne_primes + fermat_primes + wagstaff_primes + \
+                 woodall_primes + proth_primes + solinas_primes
+        self.primes = sorted(set(self.primes))
 
-    def testIsPrime1(self):
-        self.assertFalse(is_prime(1))
+        simple_composites = [0, 1, 4, 100]
+        composites_40000 = composites_up_to(40000)
+        carmichael_numbers = [561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841,
+                              29341, 41041, 46657, 52633, 62745, 63973, 75361, 101101,
+                              115921, 126217, 162401, 172081, 188461, 252601, 278545,
+                              294409, 314821, 334153, 340561, 399001, 410041, 449065, 488881, 512461]
+        strong_pseudoprimes_base_2 = [2047, 3277, 4033, 4681, 8321, 15841, 29341, 42799, 49141, 52633,
+                                      65281, 74665, 80581, 85489, 88357, 90751, 104653, 130561, 196093,
+                                      220729, 233017, 252601, 253241, 256999, 271951, 280601, 314821,
+                                      357761, 390937, 458989, 476971, 486737]
+        strong_pseudoprimes_base_3 = [121, 703, 1891, 3281, 8401, 8911, 10585, 12403, 16531, 18721,
+                                      19345, 23521, 31621, 44287, 47197, 55969, 63139, 74593, 79003,
+                                      82513, 87913, 88573, 97567, 105163, 111361, 112141, 148417,
+                                      152551, 182527, 188191, 211411, 218791, 221761, 226801]
+        strong_pseudoprimes_base_4 = [341, 1387, 2047, 3277, 4033, 4371, 4681, 5461, 8321, 8911, 10261,
+                                      13747, 14491, 15709, 15841, 19951, 29341, 31621, 42799, 49141,
+                                      49981, 52633, 60787, 65077, 65281, 74665, 80581, 83333, 85489,
+                                      88357, 90751, 104653, 123251, 129921, 130561, 137149]
+        strong_pseudoprimes_base_5 = [781, 1541, 5461, 5611, 7813, 13021, 14981, 15751, 24211, 25351,
+                                      29539, 38081, 40501, 44801, 53971, 79381, 100651, 102311, 104721,
+                                      112141, 121463, 133141, 141361, 146611, 195313, 211951, 216457,
+                                      222301, 251521, 289081, 290629, 298271, 315121]
+        strong_pseudoprimes_base_6 = [217, 481, 1111, 1261, 2701, 3589, 5713, 6533, 11041, 14701, 20017,
+                                      29341, 34441, 39493, 43621, 46657, 46873, 49141, 49661, 58969, 74023,
+                                      74563, 76921, 83333, 87061, 92053, 94657, 94697, 97751, 97921, 109061,
+                                      115921, 125563, 128627, 151387, 173377]
+        strong_pseudoprimes_base_100 = [9, 33, 91, 99, 259, 451, 481, 703, 1729, 2821, 2981, 3367, 4187,
+                                        5461, 6533, 6541, 6601, 7107, 7471, 8149, 8401, 8911, 10001, 11111,
+                                        12403, 13981, 14911, 15211, 19201, 19503, 21931, 23661, 24013,
+                                        24661, 38503, 41041, 45527, 50851, 51291, 57181, 63139]
+        strong_pseudoprimes = strong_pseudoprimes_base_2 + strong_pseudoprimes_base_3 + \
+                              strong_pseudoprimes_base_4 + strong_pseudoprimes_base_5 + \
+                              strong_pseudoprimes_base_6 + strong_pseudoprimes_base_100
+        fermat_composites = [2**32 + 1]
+        self.composites = simple_composites + composites_40000 + carmichael_numbers + strong_pseudoprimes + fermat_composites
+        self.composites = sorted(set(self.composites))
 
-    def testIsPrime2(self):
-        self.assertTrue(is_prime(2))
+    def testIsPrime(self):
+        for prime in self.primes:
+            self.assertTrue(is_prime(prime), prime)
+            self.assertTrue(is_prime(prime, []), prime)
+            self.assertTrue(is_prime(prime, [2, 3, 5]), prime)
+            self.assertTrue(is_prime(prime, self.primes[:random.randint(0, len(self.primes)-1)]), prime)
+            self.assertTrue(is_prime(prime, list_up_to(self.primes, int(1.2 * prime))), prime)
+            self.assertTrue(is_prime(prime, list_up_to(self.primes, int(sqrt(int(1.2 * prime))))), prime)
 
-    def testIsPrime3(self):
-        self.assertTrue(is_prime(3))
-
-    def testIsPrime4(self):
-        self.assertFalse(is_prime(4))
-
-    def testIsPrime5(self):
-        self.assertTrue(is_prime(5))
-
-    def testIsPrime100(self):
-        self.assertFalse(is_prime(100))
-
-    def testIsPrime40000(self):
-        known_primes = primes_up_to(40000)
-        for p in known_primes:
-            self.assertTrue(is_prime(p))
-
-        for p in known_primes:
-            self.assertTrue(is_prime(p, known_primes[:random.randint(0, len(known_primes)-1)]))
-
-    def testIsPrime40000Composites(self):
-        known_composites = composites_up_to(40000)
-        known_primes = primes_up_to(40000)
-        for c in known_composites:
-            self.assertFalse(is_prime(c))
-
-        for c in known_composites:
-            self.assertFalse(is_prime(c, known_primes[:random.randint(0, len(known_primes)-1)]))
-
-    def testIsPrimeMersenne(self):
-        for n in [2, 3, 5, 7, 13, 17, 19, 31]:
-            self.assertTrue(is_prime(2**n - 1))
-
-    def testIsPrimeCarmichael(self):
-        for n in 561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841, 29341, 41041, 46657, 52633, 62745, 63973, 75361, 101101, 115921, 126217, 162401, 172081, 188461, 252601, 278545, 294409, 314821, 334153, 340561, 399001, 410041, 449065, 488881, 512461:
-            self.assertFalse(is_prime(n))
-
-    def testIsPrimeFermat(self):
-        for n in [0, 1, 2, 3, 4]:
-            self.assertTrue(is_prime(2**(2**n) + 1))
-
-        self.assertFalse(is_prime(2**32 + 1))
-
-    def testIsPrimeWagstaff(self):
-        for n in [3, 5, 7, 11, 13, 17, 19, 23, 31, 43]:
-            self.assertTrue(is_prime((2**n + 1)//3))
-
-    def testIsPrimeWoodall(self):
-        for n in [2, 3, 6, 30]:
-            self.assertTrue(is_prime(n * 2**n - 1))
-
-    def testIsPrimeProth(self):
-        for n in [3, 5, 13, 17, 41, 97, 113, 193, 241, 257, 353, 449, 577, 641, 673, 769, 929, 1153, 1217, 1409, 1601, 2113, 2689, 2753, 3137, 3329, 3457, 4481, 4993, 6529, 7297, 7681, 7937, 9473, 9601, 9857]:
-            self.assertTrue(is_prime(n))
-
-    def testIsPrimeSolinas(self):
-        for n in [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 47, 59, 61, 67, 71, 73, 79, 97]:
-            self.assertTrue(is_prime(n))
-
-    def testIsPrimeStrongPseudoprimesBase2(self):
-        for n in [2047, 3277, 4033, 4681, 8321, 15841, 29341, 42799, 49141, 52633, 65281, 74665, 80581, 85489, 88357, 90751, 104653, 130561, 196093, 220729, 233017, 252601, 253241, 256999, 271951, 280601, 314821, 357761, 390937, 458989, 476971, 486737]:
-            self.assertFalse(is_prime(n))
-
-    def testIsPrimeStrongPseudoprimesBase3(self):
-        for n in [121, 703, 1891, 3281, 8401, 8911, 10585, 12403, 16531, 18721, 19345, 23521, 31621, 44287, 47197, 55969, 63139, 74593, 79003, 82513, 87913, 88573, 97567, 105163, 111361, 112141, 148417, 152551, 182527, 188191, 211411, 218791, 221761, 226801]:
-            self.assertFalse(is_prime(n))
-
-    def testIsPrimeStrongPseudoprimesBase4(self):
-        for n in [341, 1387, 2047, 3277, 4033, 4371, 4681, 5461, 8321, 8911, 10261, 13747, 14491, 15709, 15841, 19951, 29341, 31621, 42799, 49141, 49981, 52633, 60787, 65077, 65281, 74665, 80581, 83333, 85489, 88357, 90751, 104653, 123251, 129921, 130561, 137149]:
-            self.assertFalse(is_prime(n))
-
-    def testIsPrimeStrongPseudoprimesBase5(self):
-        for n in [781, 1541, 5461, 5611, 7813, 13021, 14981, 15751, 24211, 25351, 29539, 38081, 40501, 44801, 53971, 79381, 100651, 102311, 104721, 112141, 121463, 133141, 141361, 146611, 195313, 211951, 216457, 222301, 251521, 289081, 290629, 298271, 315121]:
-            self.assertFalse(is_prime(n))
-
-    def testIsPrimeStrongPseudoprimesBase6(self):
-        for n in [217, 481, 1111, 1261, 2701, 3589, 5713, 6533, 11041, 14701, 20017, 29341, 34441, 39493, 43621, 46657, 46873, 49141, 49661, 58969, 74023, 74563, 76921, 83333, 87061, 92053, 94657, 94697, 97751, 97921, 109061, 115921, 125563, 128627, 151387, 173377]:
-            self.assertFalse(is_prime(n))
-
-    def testIsPrimeStrongPseudoprimesBase100(self):
-        for n in [9, 33, 91, 99, 259, 451, 481, 703, 1729, 2821, 2981, 3367, 4187, 5461, 6533, 6541, 6601, 7107, 7471, 8149, 8401, 8911, 10001, 11111, 12403, 13981, 14911, 15211, 19201, 19503, 21931, 23661, 24013, 24661, 38503, 41041, 45527, 50851, 51291, 57181, 63139]:
-            self.assertFalse(is_prime(n))
-
-    def testIsPrime0WithPassIn(self):
-        self.assertFalse(is_prime(0, [2, 3, 5]))
-
-    def testIsPrime1WithPassIn(self):
-        self.assertFalse(is_prime(1, [2, 3, 5]))
-
-    def testIsPrime2WithPassIn(self):
-        self.assertTrue(is_prime(2, [2, 3, 5]))
-
-    def testIsPrime3WithPassIn(self):
-        self.assertTrue(is_prime(3, [2, 3, 5]))
-
-    def testIsPrime4WithPassIn(self):
-        self.assertFalse(is_prime(4, [2, 3, 5]))
-
-    def testIsPrime5WithPassIn(self):
-        self.assertTrue(is_prime(5, [2, 3, 5]))
-
-    def testIsPrimeMersenneWithPassInGreaterThanX(self):
-        # 7th Mersenne prime
-        # Pass in primes > x
-        self.assertTrue(is_prime(int(2**19) - 1, primes_up_to(int(1.2 * 2**19))))
-
-    def testIsPrimeMersenneWithPassInGreaterThanSqrt(self):
-        # 7th Mersenne prime
-        # Pass in primes between sqrt(x) and x
-        self.assertTrue(is_prime(int(2**19) - 1, primes_up_to(int(sqrt(1.2 * 2**19)))))
-
+        for composite in self.composites:
+            self.assertFalse(is_prime(composite), composite)
+            self.assertFalse(is_prime(composite, []), composite)
+            self.assertFalse(is_prime(composite, [2, 3, 5]), composite)
+            self.assertFalse(is_prime(composite, self.primes[:random.randint(0, len(self.primes)-1)]), composite)
+            self.assertFalse(is_prime(composite, list_up_to(self.primes, int(1.2 * prime))), composite)
+            self.assertFalse(is_prime(composite, list_up_to(self.primes, int(sqrt(int(1.2 * prime))))), composite)
 
 class TestNPrimes(unittest.TestCase):
     def testNPrimes0(self):
