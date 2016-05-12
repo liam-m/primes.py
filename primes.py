@@ -332,13 +332,13 @@ def _lucas_pp(num):
 
     if U == 0:
         return True
+    else: # pragma: no cover
+        for r in range(s):
+            U, V = (U*V) % num, (pow(V, 2, num) - 2*pow(Q, d*(2**r), num)) % num
+            if V == 0:
+                return True
 
-    for r in range(s): # pragma: no cover
-        U, V = (U*V) % num, (pow(V, 2, num) - 2*pow(Q, d*(2**r), num)) % num
-        if V == 0:
-            return True
-
-    return False
+        return False
 
 def is_prime(num, primes=None):
     """
