@@ -250,7 +250,7 @@ def _jacobi_symbol(a, n):
     """
     Calculate the Jacobi symbol (a/n)
     """
-    if n == 1:
+    if n == 1: # pragma: no cover
         return 1
     elif a == 0:
         return 0
@@ -295,9 +295,9 @@ def _U_V_subscript(k, n, U, V, P, Q, D):
             if not (P*U + V) & 1:
                 if not (D*U + P*V) & 1:
                     U, V = (P*U + V) >> 1, (D*U + P*V) >> 1
-                else:
+                else: # pragma: no cover
                     U, V = (P*U + V) >> 1, (D*U + P*V + n) >> 1
-            elif not (D*U + P*V) & 1:
+            elif not (D*U + P*V) & 1: # pragma: no cover
                 U, V = (P*U + V + n) >> 1, (D*U + P*V) >> 1
             else:
                 U, V = (P*U + V + n) >> 1, (D*U + P*V + n) >> 1
@@ -333,7 +333,7 @@ def _lucas_pp(num):
     if U == 0:
         return True
 
-    for r in range(s):
+    for r in range(s): # pragma: no cover
         U, V = (U*V) % num, (pow(V, 2, num) - 2*pow(Q, d*(2**r), num)) % num
         if V == 0:
             return True
