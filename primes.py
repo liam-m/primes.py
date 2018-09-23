@@ -378,7 +378,7 @@ def n_primes(num, primes=None):
             logn = log(num)
             log2n = log(logn)
             
-            if num >= 46254381: # Axler 2017, p. 2
+            if num >= 46254381: # Axler 2017, p. 2 # pragma: no cover
                 upper_bound = int(num*(logn + log2n - 1.0 + ((log2n-2.00)/logn) - ((log2n*log2n-6*log2n+10.667)/(2*logn*logn))))
             elif num >= 8009824: # Axler 2013, p. 8
                 upper_bound = int(num*(logn + log2n - 1.0 + ((log2n-2.00)/logn) - ((log2n*log2n-6*log2n+10.273)/(2*logn*logn))))
