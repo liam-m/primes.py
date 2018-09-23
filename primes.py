@@ -10,6 +10,11 @@ try:
 except ImportError: # pragma: no cover
     maxint = 9223372036854775807
 
+try:
+    from math import gcd
+except ImportError: # pragma: no cover
+    from fractions import gcd
+
 from numpy import ones, zeros
 
 from binary_search import binary_search, list_up_to
@@ -481,14 +486,6 @@ def prime_quadruplets_up_to(limit, primes=None):
     for prime in primes_up_to(limit-8, primes):
         if is_prime(prime+2, primes) and is_prime(prime+6, primes) and is_prime(prime+8, primes):
             yield (prime, prime+2, prime+6, prime+8)
-
-def gcd(a, b):
-    """
-    The greatest common denominator of a and b
-    """
-    while b:
-        a, b = b, a%b
-    return a
 
 def pollards_rho(num, starting_point=2):
     """
