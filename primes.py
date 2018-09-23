@@ -370,17 +370,32 @@ def n_primes(num, primes=None):
     """
     if not primes:
         primes = []
+    
     if len(primes) < num:
-        if num >= 39017:
-            upper_bound = int(num*(log(num) + log(log(num)) - 0.9484))
-        elif num >= 15985:
-            upper_bound = int(num*(log(num) + log(log(num)) - 0.9427))
-        elif num >= 8602:
-            upper_bound = int(num*(log(num) + log(log(num)) - 0.9385))
-        elif num >= 6:
-            upper_bound = int(num*(log(num) + log(log(num))))
-        else:
+        if num < 6:
             upper_bound = 13
+        else:
+            logn = log(num)
+            log2n = log(logn)
+            
+            if num >= 46254381: # Axler 2017, p. 2 # pragma: no cover
+                upper_bound = int(num*(logn + log2n - 1.0 + ((log2n-2.00)/logn) - ((log2n*log2n-6*log2n+10.667)/(2*logn*logn))))
+            elif num >= 8009824: # Axler 2013, p. 8
+                upper_bound = int(num*(logn + log2n - 1.0 + ((log2n-2.00)/logn) - ((log2n*log2n-6*log2n+10.273)/(2*logn*logn))))
+            elif num >= 688383: # Dusart 2010, p. 2
+                upper_bound = int(num*(logn + log2n - 1.0 + ((log2n-2.00)/logn)))
+            elif num >= 178974: # Dusart 2010, p. 7
+                upper_bound = int(num*(logn + log2n - 1.0 + ((log2n-1.95)/logn)))
+            elif num >= 39017: # Dusart 1999, p. 14
+                upper_bound = int(num*(logn + log2n - 0.9484))
+            elif num >= 15985: # Massias & Robin 1996, p. 4
+                upper_bound = int(num*(logn + log2n - 0.9427))
+            elif num >= 8602: # Robin 1983, corrected
+                upper_bound = int(num*(logn + log2n - 0.9385))
+            elif num >= 13: # Massias & Robin 1996, p. 4
+                upper_bound = int(num*(logn + log2n - 1.0 + 1.8*(log2n/logn)))
+            else:
+                upper_bound = int(num*(logn + log2n))
         primes = primes_up_to(upper_bound, primes)
     return primes[:num]
 
