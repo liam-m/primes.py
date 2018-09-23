@@ -1,4 +1,4 @@
-#primes.py
+# primes.py
 
 Prime number library for Python 2 and 3
 
@@ -6,7 +6,7 @@ If you want to help develop, [open an issue](https://github.com/liam-m/primes.py
 
 [![Build Status](https://travis-ci.org/liam-m/primes.py.svg?branch=master)](https://travis-ci.org/liam-m/primes.py)
 
-##Primes
+## Primes
 
 A list-like object that automatically generates additional prime numbers as required. Supports membership testing and slicing for sequences of prime numbers
 
@@ -28,7 +28,7 @@ True
 
 There are also a number of functions for prime generation and primality testing:
 
-##primes_up_to
+## primes_up_to
     
 Implementation of Sieve of Eratosthenes
 
@@ -44,7 +44,7 @@ Can pass in a list of primes to decrease execution time
 [2, 3, 5, 7, 11, 13, 17, 19]
 ```
 
-##is_prime
+## is_prime
 
 Returns True if x is a prime number, False if it is not
 
@@ -58,7 +58,7 @@ True
 False
 ```
 
-##n_primes
+## n_primes
 
 Returns a list of the first n primes
 
@@ -72,7 +72,7 @@ Can pass in a list of known primes to decrease execution time
 [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
 ```
 
-##nth_prime
+## nth_prime
 
 Returns the nth prime (i.e. the 3rd prime, the 6th prime)
 
@@ -86,7 +86,7 @@ Can pass in a list of known primes to decrease execution time
 7
 ```
 
-##composites_up_to
+## composites_up_to
 
 Returns a list of all composite (non-prime greater than 1) numbers up to (and including) x
 
@@ -100,7 +100,7 @@ Can pass in a list of known primes to decrease execution time
 [4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20]
 ```
 
-##next_prime
+## next_prime
 
 Given a list of primes, returns the next prime
 
