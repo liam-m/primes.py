@@ -374,7 +374,7 @@ def n_primes(num, primes=None):
     Can pass in a list of known primes to decrease execution time
     """
     if not primes:
-        primes = []
+        primes = Primes()
     
     if len(primes) < num:
         if num < 6:
@@ -448,6 +448,9 @@ def primes_with_difference_up_to(limit, difference, primes=None):
     """
     Primes with difference up to limit
     """
+    if not primes:
+        primes = Primes()
+
     return ((prime, prime+difference) for prime in primes_up_to(limit-difference, primes)
             if is_prime(prime+difference, primes))
 
@@ -473,6 +476,9 @@ def prime_triplets_up_to(limit, primes=None):
     """
     Prime triplets up to limit
     """
+    if not primes:
+        primes = Primes()
+
     for prime in primes_up_to(limit-6, primes):
         if is_prime(prime+2, primes) and is_prime(prime+6, primes):
             yield (prime, prime+2, prime+6)
@@ -483,6 +489,9 @@ def prime_quadruplets_up_to(limit, primes=None):
     """
     Prime quadruplets up to limit
     """
+    if not primes:
+        primes = Primes()
+
     for prime in primes_up_to(limit-8, primes):
         if is_prime(prime+2, primes) and is_prime(prime+6, primes) and is_prime(prime+8, primes):
             yield (prime, prime+2, prime+6, prime+8)
@@ -503,25 +512,28 @@ def pollards_rho(num, starting_point=2):
         elif d != 1:
             return d
 
-def factorise(num, include_trivial=False):
+def factorise(num, include_trivial=False, primes=None):
     """
     Factorise a number
 
     Returns the prime factors of num
     Excludes trivial factors unless include_trivial = True
     """
+    if not primes:
+        primes = Primes()
+
     factors = set([1, num]) if include_trivial else set()
 
-    if is_prime(num):
+    if is_prime(num, primes):
         return factors
 
-    while num > 1 and not is_prime(num):
+    while num > 1 and not is_prime(num, primes):
         factor = pollards_rho(num)
 
-        if is_prime(factor):
+        if is_prime(factor, primes):
             factors.add(factor)
         else:
-            factors |= factorise(factor)
+            factors |= factorise(factor, primes=primes)
 
         while num % factor == 0:
             num //= factor
