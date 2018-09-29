@@ -44,9 +44,7 @@ class Primes(list):
         >>> 31 in primes
         True
         """
-        if item > self.highest_known:
-            super(self.__class__, self).extend(primes_up_to(item, self)[len(self):])
-        return not binary_search(self, item) == -1
+        return is_prime(item, self)
 
     def __getitem__(self, key):
         """
