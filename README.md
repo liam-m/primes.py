@@ -74,7 +74,7 @@ Can pass in a list of known primes to decrease execution time
 
 ## nth_prime
 
-Returns the nth prime (i.e. the 3rd prime, the 6th prime)
+Returns the n<sup>th</sup> prime (i.e. the 3<sup>rd</sup> prime, the 6<sup>th</sup> prime)
 
 Can pass in a list of known primes to decrease execution time 
 
