@@ -4,6 +4,7 @@ from math import sqrt
 from operator import mul
 from primes import *
 
+# Required for Python 2
 try:
     from functools import reduce
 except ImportError: # pragma: no cover
@@ -11,11 +12,8 @@ except ImportError: # pragma: no cover
 
 # assertRaisesRegex is called assertRaisesRegexp on <3.2
 # Monkey patch it in on older versions to avoid DeprecationWarning
-if not hasattr(unittest.TestCase, 'assertRaisesRegex'): # pragma: no cover
-    if hasattr(unittest.TestCase, 'assertRaisesRegexp'):
-        unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
-    else: # assertRaisesRegexp is unavailable on <2.7, so fall back to assertRaises
-        unittest.TestCase.assertRaisesRegex = lambda self, e, r, c, *a, **k: self.assertRaises(e, c, *a, **k)
+if not hasattr(unittest.TestCase, 'assertRaisesRegex') and hasattr(unittest.TestCase, 'assertRaisesRegexp'): # pragma: no cover
+    unittest.TestCase.assertRaisesRegex = unittest.TestCase.assertRaisesRegexp
 
 class TestPrimesUpTo(unittest.TestCase):
     def testPrimesUpTo0(self):
