@@ -539,6 +539,13 @@ class TestPrimes(unittest.TestCase):
         self.primes[200]
         self.assertNotEqual(self.primes, otherprimes)
 
+    def testIndex(self):
+        self.assertEqual(self.primes.index(2), 0)
+        self.assertEqual(self.primes.index(3), 1)
+        self.assertEqual(self.primes.index(5), 2)
+        self.assertEqual(self.primes.index(7), 3)
+        self.assertRaisesRegex(ValueError, "4 is not in list", lambda p: p.index(4), self.primes)
+
 class TestSieves(unittest.TestCase):
     def testSieves(self):
         for i in range(1000):
