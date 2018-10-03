@@ -75,6 +75,14 @@ class Primes(list):
         """
         return self[slice(i, j)]
 
+    def index(self, prime):
+        """
+        The index of the prime
+        """
+        if len(self) == 0 or self[-1] < prime:
+            super(self.__class__, self).extend(primes_up_to(prime, self)[len(self):])
+        return super(self.__class__, self).index(prime)
+
 def _first_multiple_of(num, above):
     """
     Returns first multiple of num >= above
