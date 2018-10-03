@@ -32,9 +32,9 @@ There are also a number of functions for prime generation and primality testing:
     
 Implementation of Sieve of Eratosthenes
 
-Returns a list of all primes up to (and including) x
+Returns all primes up to (and including) x
 
-Can pass in a list of primes to decrease execution time
+Can pass in primes to decrease execution time
 
 ```python
 >>> primes_up_to(10)
@@ -48,7 +48,7 @@ Can pass in a list of primes to decrease execution time
 
 Returns True if x is a prime number, False if it is not
 
-Can pass in a list of known primes to decrease execution time
+Can pass in known primes to decrease execution time
 
 ```python
 >>> is_prime(191)
@@ -60,9 +60,9 @@ False
 
 ## n_primes
 
-Returns a list of the first n primes
+Returns the first n primes
 
-Can pass in a list of known primes to decrease execution time
+Can pass in known primes to decrease execution time
 
 ```python
 >>> n_primes(5)
@@ -76,7 +76,7 @@ Can pass in a list of known primes to decrease execution time
 
 Returns the n<sup>th</sup> prime (i.e. the 3<sup>rd</sup> prime, the 6<sup>th</sup> prime)
 
-Can pass in a list of known primes to decrease execution time 
+Can pass in known primes to decrease execution time 
 
 ```python
 >>> nth_prime(1000)
@@ -88,9 +88,9 @@ Can pass in a list of known primes to decrease execution time
 
 ## composites_up_to
 
-Returns a list of all composite (non-prime greater than 1) numbers up to (and including) x
+Returns all composite (non-prime greater than 1) numbers up to (and including) x
 
-Can pass in a list of known primes to decrease execution time
+Can pass in known primes to decrease execution time
 
 ```python
 >>> composites_up_to(10)
@@ -102,7 +102,7 @@ Can pass in a list of known primes to decrease execution time
 
 ## next_prime
 
-Given a list of primes, returns the next prime
+Given primes, returns the next prime
 
 Uses method of trial division
     
