@@ -344,6 +344,22 @@ class TestPrimeQuadrupletsUpTo(unittest.TestCase):
         for i in range(upto):
             self.assertEqual(list(prime_quadruplets_up_to(i)), list(prime_quadruplets_up_to(i, p[:random.randint(0, upto)])))
 
+class TestPrimeGapsUpTo(unittest.TestCase):
+    def testPrimeGaps0(self):
+        self.assertEqual(list(prime_gaps_up_to(0)), [])
+
+    def testPrimeGaps2(self):
+        self.assertEqual(list(prime_gaps_up_to(2)), [])
+
+    def testPrimeGaps3(self):
+        self.assertEqual(list(prime_gaps_up_to(3)), [1])
+
+    def testPrimeGaps11(self):
+        self.assertEqual(list(prime_gaps_up_to(11)), [1, 2, 2, 4])
+
+    def testPrimeGaps61(self):
+        self.assertEqual(list(prime_gaps_up_to(67)), [1, 2, 2, 4, 2, 4, 2, 4, 6, 2, 6, 4, 2, 4, 6, 6, 2, 6])
+
 class TestPrimes(unittest.TestCase):
     def setUp(self):
         self.primes = Primes()

@@ -492,6 +492,17 @@ def prime_quadruplets_up_to(limit, primes=None):
         if is_prime(prime+2, primes) and is_prime(prime+6, primes) and is_prime(prime+8, primes):
             yield (prime, prime+2, prime+6, prime+8)
 
+def prime_gaps_up_to(limit, primes=None):
+    """
+    Difference between successive primes up to limit
+    """
+    if not primes:
+        primes = Primes()
+
+    primes = primes_up_to(limit, primes)
+    for prime1, prime2 in zip(primes, primes[1:]):
+        yield prime2 - prime1
+
 def pollards_rho(num, starting_point=2):
     """
     Return a factor of num using Pollard's rho algorithm
