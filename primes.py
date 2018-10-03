@@ -86,9 +86,9 @@ def sieve_of_eratosthenes(limit, primes=None):
     """
     Implementation of Sieve of Eratosthenes
 
-    Returns a list of all primes up to (and including) limit
+    Returns all primes up to (and including) limit
 
-    Can pass in a list of known primes to decrease execution time
+    Can pass in known primes to decrease execution time
     """
 
     # The Sieve of Eratosthenes works by making a list of numbers 2..limit.
@@ -101,7 +101,7 @@ def sieve_of_eratosthenes(limit, primes=None):
     if limit <= 1:
         return []
 
-    # If a list of primes is passed in, take advantage of this
+    # If primes are passed in, take advantage of this
     # Even numbers aren't included in the list, so this isn't useful to know
     if primes and primes != [2]:
         # If enough primes are passed in, simply return the primes up to limit
@@ -161,7 +161,7 @@ def sieve_of_atkin(limit):
     """
     Implementation of Sieve of Atkin
 
-    Returns a list of all primes up to (and including) x
+    Returns all primes up to (and including) x
 
     See http://compoasso.free.fr/primelistweb/page/prime/atkin_en.php for the range values
     """
@@ -209,7 +209,7 @@ def sieve_of_atkin(limit):
 
 def primes_up_to(limit, primes=None):
     """
-    Returns a list of primes up to (and including) limit
+    Returns primes up to (and including) limit
 
     Uses (hopefully) the faster sieving algorithm available
     """
@@ -219,7 +219,7 @@ def primes_up_to(limit, primes=None):
 def _trial_division(num, primes):
     """
     Simple trial division algorithm, check if num is prime by dividing
-    it by a list of known primes
+    it by known primes
     """
     return all(num%p != 0 for p in list_up_to(primes, int(num ** 0.5)))
 
@@ -347,7 +347,7 @@ def is_prime(num, primes=None):
     """
     Returns True if num is a prime number, False if it is not
 
-    Can pass in a list of known primes to decrease execution time
+    Can pass in known primes to decrease execution time
     """
     if num <= 1:
         return False
@@ -367,9 +367,9 @@ def is_prime(num, primes=None):
 
 def n_primes(num, primes=None):
     """
-    Returns a list of the first num primes
+    Returns the first num primes
 
-    Can pass in a list of known primes to decrease execution time
+    Can pass in known primes to decrease execution time
     """
     if not primes:
         primes = Primes()
@@ -406,15 +406,15 @@ def nth_prime(num, primes=None):
     """
     Returns the numth prime (e.g. the 3rd prime, the 6th prime)
 
-    Can pass in a list of known primes to decrease execution time
+    Can pass in known primes to decrease execution time
     """
     return n_primes(num, primes)[-1]
 
 def composites_up_to(limit, primes=None):
     """
-    Returns a list of all composite (non-prime greater than 1) numbers up to (and including) limit
+    Returns all composite (non-prime greater than 1) numbers up to (and including) limit
 
-    Can pass in a list of known primes to decrease execution time
+    Can pass in known primes to decrease execution time
     """
     primes = primes_up_to(limit, primes)
     composites = []
@@ -428,7 +428,7 @@ def composites_up_to(limit, primes=None):
 
 def next_prime(primes):
     """
-    Given a list of primes, returns the next prime
+    Given primes, returns the next prime
 
     Uses method of trial division
 
