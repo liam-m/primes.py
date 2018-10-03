@@ -108,17 +108,16 @@ def sieve_of_eratosthenes(limit, primes=None):
             # Primes is a sorted list so binary search is possible
             return list_up_to(primes, limit)
 
-        else:
-            offset = primes[-1]+2
-            lst = ones((limit-offset)//2 + 1, dtype=bool)
+        offset = primes[-1]+2
+        lst = ones((limit-offset)//2 + 1, dtype=bool)
 
-            # Only go up to the sqrt as all composites <= limit have a factor <= sqrt(limit)
-            for prime in list_up_to(primes, int(limit ** 0.5))[1:]:
-                start = max(prime**2, _first_multiple_of(prime, offset))
-                if start % 2 == 0:
-                    start += prime
+        # Only go up to the sqrt as all composites <= limit have a factor <= sqrt(limit)
+        for prime in list_up_to(primes, int(limit ** 0.5))[1:]:
+            start = max(prime**2, _first_multiple_of(prime, offset))
+            if start % 2 == 0:
+                start += prime
 
-                lst[(start-offset)//2::prime] = False
+            lst[(start-offset)//2::prime] = False
 
     else:
         offset = 3
