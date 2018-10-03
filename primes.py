@@ -103,7 +103,7 @@ def sieve_of_eratosthenes(limit, primes=None):
 
     # If primes are passed in, take advantage of this
     # Even numbers aren't included in the list, so this isn't useful to know
-    if primes and primes != [2]:
+    if primes and len(primes) > 1:
         # If enough primes are passed in, simply return the primes up to limit
         if primes[-1] >= (limit-1):
             # Primes is a sorted list so binary search is possible
