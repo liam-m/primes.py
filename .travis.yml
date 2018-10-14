@@ -10,6 +10,7 @@ python:
 install:
  - pip install coverage
  - pip install pylint
+ - if [[ $TRAVIS_PYTHON_VERSION != 'pypy'* ]]; then pypy -m pip install numpy; fi
 script:
  - python test.py
  - coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
