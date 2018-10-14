@@ -15,7 +15,10 @@ try:
 except ImportError: # pragma: no cover
     from fractions import gcd
 
-from numpy import ones, zeros
+try:
+    from _numpypy import ones, zeros
+except ImportError: # pragma: no cover
+    from numpy import ones, zeros
 
 from binary_search import binary_search, list_up_to
 
