@@ -561,6 +561,10 @@ class TestPrimeFactorisation(unittest.TestCase):
             self.assertEqual(factorise(p, include_trivial=False), set())
             self.assertEqual(factorise(p, include_trivial=True), set([1, p]))
 
+    def testPrimesPerfectSquares(self):
+        for p in primes_up_to(100):
+            self.assertEqual(factorise(p*p), set([p]))
+
 class TestSemiprimeFactorisation(unittest.TestCase):
     def test15(self):
         self.assertEqual(factorise(15), set([3, 5]))
