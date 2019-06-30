@@ -513,19 +513,21 @@ def prime_gaps_up_to(limit, primes=None):
 
 def pollards_rho(num, starting_point=2):
     """
-    Return a factor of num using Pollard's rho algorithm
+    Return a factor of num using Pollard's rho algorithm, or num if one is not found
     """
-    f = lambda x: (x*x + 1) % num
-    x, y = starting_point, starting_point
-    while True:
-        x = f(x)
-        y = f(f(y))
-        d = gcd((x-y) % num, num)
-        if d == num:
-            starting_point += 1
-            x, y = starting_point, starting_point
-        elif d != 1:
-            return d
+    starting_point_fixed = starting_point
+    cycle_size = 2
+    factor = 1
+
+    while factor == 1:
+        count = 1
+        while count <= cycle_size and factor <= 1:
+            starting_point = (starting_point*starting_point + 1) % num
+            factor = gcd(abs(starting_point - starting_point_fixed), num)
+            count += 1
+        cycle_size *= 2
+        starting_point_fixed = starting_point
+    return factor
 
 def factorise(num, include_trivial=False, primes=None):
     """
@@ -543,7 +545,11 @@ def factorise(num, include_trivial=False, primes=None):
         return factors
 
     while num > 1 and not is_prime(num, primes):
-        factor = pollards_rho(num)
+        starting_point = 2
+        factor = pollards_rho(num, starting_point)
+        while factor == num:
+            factor = pollards_rho(num, starting_point)
+            starting_point += 1
 
         if is_prime(factor, primes):
             factors.add(factor)
