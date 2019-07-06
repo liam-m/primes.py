@@ -511,23 +511,38 @@ def prime_gaps_up_to(limit, primes=None):
     for prime1, prime2 in zip(primes, primes[1:]):
         yield prime2 - prime1
 
-def pollards_rho(num, starting_point=2):
+def brents_rho(num, starting_point=2):
     """
-    Return a factor of num using Pollard's rho algorithm, or num if one is not found
+    Return a factor of num using Brent's variant of Pollard's rho algorithm, or num if one is not found
     """
-    starting_point_fixed = starting_point
-    cycle_size = 2
-    factor = 1
+    y, m = starting_point, 1000 # http://xn--2-umb.com/09/12/brent-pollard-rho-factorisation suggests 1000 is optimal
+    g, r, q = 1, 1, 1
 
-    while factor == 1:
-        count = 1
-        while count <= cycle_size and factor <= 1:
-            starting_point = (starting_point*starting_point + 1) % num
-            factor = gcd(abs(starting_point - starting_point_fixed), num)
-            count += 1
-        cycle_size *= 2
-        starting_point_fixed = starting_point
-    return factor
+    while g == 1:
+        x = y
+        for _ in range(r):
+            y = (pow(y, 2, num) + 1) % num
+
+        k = 0
+        while k < r and g == 1:
+            ys = y
+            for _ in range(min(m, r-k)):
+                y = (pow(y, 2, num) + 1) % num
+                q = q * (abs(x-y)) % num
+            g = gcd(q, num)
+            k += m
+
+        r *= 2
+
+    if g != num:
+        return g
+
+    g = 1
+    while g == 1:
+        ys = (pow(ys, 2, num) + 1) % num
+        g = gcd(abs(x - ys), num)
+
+    return g
 
 def factorise(num, include_trivial=False, primes=None):
     """
@@ -546,9 +561,9 @@ def factorise(num, include_trivial=False, primes=None):
 
     while num > 1 and not is_prime(num, primes):
         starting_point = 2
-        factor = pollards_rho(num, starting_point)
+        factor = brents_rho(num, starting_point)
         while factor == num:
-            factor = pollards_rho(num, starting_point)
+            factor = brents_rho(num, starting_point)
             starting_point += 1
 
         if is_prime(factor, primes):
