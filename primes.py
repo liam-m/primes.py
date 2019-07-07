@@ -5,7 +5,7 @@ from math import log
 
 try:
     from math import gcd
- except ImportError: # pragma: no cover
+except ImportError: # pragma: no cover
     from fractions import gcd
 
 from numpy import ones, zeros
