@@ -1,7 +1,12 @@
 """
 Several prime number functions
 """
-from math import log, gcd
+from math import log
+
+try:
+    from math import gcd
+ except ImportError: # pragma: no cover
+    from fractions import gcd
 
 from numpy import ones, zeros
 
