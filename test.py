@@ -598,5 +598,11 @@ class TestCompositeFactorisation(unittest.TestCase):
             N = reduce(mul, factors, 1)
             self.assertEqual(factorise(N), factors)
 
+class TestFactorisationWithPrimes(unittest.TestCase):
+    def testFactorisation(self):
+        for i in range(2, 10000):
+            primes = primes_up_to(random.randint(2, 150))
+            self.assertEqual(factorise(i), factorise(i, primes=primes))
+
 if __name__ == '__main__':
     unittest.main()
