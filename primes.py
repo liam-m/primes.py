@@ -540,6 +540,17 @@ def factorise(num, include_trivial=False, primes=None):
     if is_prime(num, primes):
         return factors
 
+    if primes:
+         sqrt_num = num ** 0.5
+         for p in primes:
+             if p > sqrt_num or is_prime(num, primes):
+                 break
+             if num % p == 0:
+                 factors.add(p)
+                 while num % p == 0:
+                     num //= p
+                 sqrt_num = num ** 0.5
+
     while num > 1 and not is_prime(num, primes):
         starting_point = 2
         factor = brents_rho(num, starting_point)
