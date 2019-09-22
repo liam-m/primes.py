@@ -18,12 +18,6 @@ class Primes(list):
     generating new primes when needed
     """
 
-    def __init__(self):
-        """
-        Initialise an instance of the primes object
-        """
-        super().__init__()
-
     def __contains__(self, item):
         """
         Check if a number is prime:
