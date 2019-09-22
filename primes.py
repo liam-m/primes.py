@@ -18,12 +18,6 @@ class Primes(list):
     generating new primes when needed
     """
 
-    def __init__(self):
-        """
-        Initialise an instance of the primes object
-        """
-        super().__init__()
-
     def __contains__(self, item):
         """
         Check if a number is prime:
@@ -539,6 +533,17 @@ def factorise(num, include_trivial=False, primes=None):
 
     if is_prime(num, primes):
         return factors
+
+    if primes:
+         sqrt_num = num ** 0.5
+         for p in primes:
+             if p > sqrt_num or is_prime(num, primes):
+                 break
+             if num % p == 0:
+                 factors.add(p)
+                 while num % p == 0:
+                     num //= p
+                 sqrt_num = num ** 0.5
 
     while num > 1 and not is_prime(num, primes):
         starting_point = 2
