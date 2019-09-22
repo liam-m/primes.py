@@ -55,7 +55,7 @@ class Primes(list):
         """
         The index of the prime
         """
-        if len(self) == 0 or self[-1] < prime:
+        if not self or self[-1] < prime:
             super().extend(primes_up_to(prime, self)[len(self):])
         return super().index(prime)
 
@@ -354,14 +354,14 @@ def n_primes(num, primes=None):
     """
     if not primes:
         primes = Primes()
-    
+
     if len(primes) < num:
         if num < 6:
             upper_bound = 13
         else:
             logn = log(num)
             log2n = log(logn)
-            
+
             if num >= 46254381: # Axler 2017, p. 2 # pragma: no cover
                 upper_bound = int(num*(logn + log2n - 1.0 + ((log2n-2.00)/logn) - ((log2n*log2n-6*log2n+10.667)/(2*logn*logn))))
             elif num >= 8009824: # Axler 2013, p. 8
@@ -535,15 +535,15 @@ def factorise(num, include_trivial=False, primes=None):
         return factors
 
     if primes:
-         sqrt_num = num ** 0.5
-         for p in primes:
-             if p > sqrt_num or is_prime(num, primes):
-                 break
-             if num % p == 0:
-                 factors.add(p)
-                 while num % p == 0:
-                     num //= p
-                 sqrt_num = num ** 0.5
+        sqrt_num = num ** 0.5
+        for p in primes:
+            if p > sqrt_num or is_prime(num, primes):
+                break
+            if num % p == 0:
+                factors.add(p)
+                while num % p == 0:
+                    num //= p
+                sqrt_num = num ** 0.5
 
     while num > 1 and not is_prime(num, primes):
         starting_point = 2
