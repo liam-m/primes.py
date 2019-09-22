@@ -162,7 +162,7 @@ def sieve_of_atkin(limit):
     limit_sqrt = int(limit ** 0.5)
     s1, s2, s3 = set([1, 13, 17, 29, 37, 41, 49, 53]), set([7, 19, 31, 43]), set([11, 23, 47, 59])
 
-    squares = dict([(x, x**2) for x in range(1, limit_sqrt+1)])
+    squares = {x: x**2 for x in range(1, limit_sqrt+1)}
 
     range24_1_4 = list(_range24(1, limit_sqrt + 1, 4)) # +4, +2, +4.. from 1
     range24_2_2 = list(_range24(2, limit_sqrt + 1, 2)) # +2, +4, +2.. from 2
