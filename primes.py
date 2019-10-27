@@ -52,13 +52,13 @@ class Primes(List[int]):
 
         return super().__getitem__(key)
 
-    def index(self, prime):
+    def index(self, prime: int, start: int = 0, stop: Optional[int] = None) -> int:
         """
         The index of the prime
         """
         if not self or self[-1] < prime:
             super().extend(primes_up_to(prime, self)[len(self):])
-        return super().index(prime)
+        return super().index(prime, start, stop or len(self))
 
 def _first_multiple_of(num: int, above: int) -> int:
     """
