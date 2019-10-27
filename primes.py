@@ -198,7 +198,7 @@ def primes_up_to(limit: int, primes: Optional[List[int]] = None) -> Sequence[int
     """
     return sieve_of_eratosthenes(limit, primes)
 
-def _trial_division(num: int, primes: Iterable[int]) -> bool:
+def _trial_division(num: int, primes: Sequence[int]) -> bool:
     """
     Simple trial division algorithm, check if num is prime by dividing
     it by known primes
@@ -247,7 +247,7 @@ def _jacobi_symbol(a: int, n: int) -> int:
         elif n % 8 in [1, 7]:
             return 1
     elif a < 0:
-        return (-1)**((n-1)//2) * _jacobi_symbol(-1*a, n)
+        return int((-1)**((n-1)//2) * _jacobi_symbol(-1*a, n))
 
     if a % 2 == 0:
         return _jacobi_symbol(2, n) * _jacobi_symbol(a // 2, n)
