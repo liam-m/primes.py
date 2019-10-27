@@ -1,13 +1,8 @@
 """
 Several prime number functions
 """
-from math import log
-from typing import Any, Iterable, List, Optional, Tuple, Sequence, Set, Union
-
-try:
-    from math import gcd
-except ImportError: # pragma: no cover
-    from fractions import gcd
+from math import gcd, log
+from typing import Any, Iterable, List, Optional, Tuple, Sequence, Set
 
 from numpy import ones, zeros
 
@@ -41,24 +36,28 @@ class Primes(List[int]):
                     return []
 
             if key.start is not None and len(self)-1 < key.start:
-                super().extend(n_primes(key.start+1, list(self))[len(self):])
+                self += n_primes(key.start+1, list(self))[len(self):]
             if key.stop is not None and len(self) < key.stop:
-                super().extend(n_primes(key.stop, list(self))[len(self):])
+                self += n_primes(key.stop, list(self))[len(self):]
         elif isinstance(key, int):
             if len(self)-1 < key:
-                super().extend(n_primes(key+1, list(self))[len(self):])
+                self += n_primes(key+1, list(self))[len(self):]
         else:
             raise TypeError()
 
+        # pylint: disable=no-member
         return super().__getitem__(key)
+        # pylint: enable=no-member
 
     def index(self, prime: int, start: int = 0, stop: Optional[int] = None) -> int:
         """
         The index of the prime
         """
         if not self or self[-1] < prime:
-            super().extend(primes_up_to(prime, self)[len(self):])
+            self += primes_up_to(prime, self)[len(self):]
+        # pylint: disable=no-member
         return super().index(prime, start, stop or len(self))
+        # pylint: enable=no-member
 
 def _first_multiple_of(num: int, above: int) -> int:
     """
@@ -111,7 +110,7 @@ def sieve_of_eratosthenes(limit: int, primes: Optional[Sequence[int]] = None) ->
         primes = [2]
 
     l_primes = list(primes)
-    
+
     # Only go up to the position of the sqrt as all composites <= limit have
     # a factor <= limit, so all composites will have been marked by sqrt(limit)
     for num in range(offset, int(limit**0.5)+1, 2):
@@ -157,13 +156,15 @@ def sieve_of_atkin(limit: int) -> Sequence[int]:
     res = [2, 3, 5]
     lst = zeros(limit+1, dtype=bool)
     limit_sqrt = int(limit ** 0.5)
-    s1, s2, s3 = set([1, 13, 17, 29, 37, 41, 49, 53]), set([7, 19, 31, 43]), set([11, 23, 47, 59])
 
     squares = {x: x**2 for x in range(1, limit_sqrt+1)}
 
     range24_1_4 = list(_range24(1, limit_sqrt + 1, 4)) # +4, +2, +4.. from 1
     range24_2_2 = list(_range24(2, limit_sqrt + 1, 2)) # +2, +4, +2.. from 2
     range_1_2 = list(range(1, limit_sqrt + 1, 2))
+
+    # pylint: disable=invalid-name
+    s1, s2, s3 = set([1, 13, 17, 29, 37, 41, 49, 53]), set([7, 19, 31, 43]), set([11, 23, 47, 59])
 
     for x in range(1, int((limit//4) ** 0.5) + 1):
         for y in list_up_to(range24_1_4 if x%3 == 0 else range_1_2, int((limit-4*squares[x]) ** 0.5)):
@@ -182,6 +183,7 @@ def sieve_of_atkin(limit: int) -> Sequence[int]:
             n = 3*squares[x] - squares[y]
             if n <= limit and n%60 in s3:
                 lst[n] = True
+    # pylint: enable=invalid-name
 
     # Exclude multiples of 2, 3 and 5
     for num in list_up_to([i+n for i in range(1, limit_sqrt+1, 30)
@@ -216,6 +218,7 @@ def _miller_rabin_2(num: int) -> bool:
     if num in (2, 3):
         return True
 
+    # pylint: disable=invalid-name
     d, s = num-1, 0
     while d%2 == 0:
         d //= 2
@@ -230,9 +233,11 @@ def _miller_rabin_2(num: int) -> bool:
             return False
         if x == num-1:
             return True
+    # pylint: enable=invalid-name
 
     return False
 
+# pylint: disable=invalid-name,too-many-return-statements
 def _jacobi_symbol(a: int, n: int) -> int:
     """
     Calculate the Jacobi symbol (a/n)
@@ -260,17 +265,21 @@ def _jacobi_symbol(a: int, n: int) -> int:
             return -1 * _jacobi_symbol(n, a)
         else:
             return _jacobi_symbol(n, a)
+# pylint: enable=invalid-name,too-many-return-statements
 
 def _D_chooser(num: int) -> int:
     """
     Choose a D value suitable for the Baillie-PSW test
     """
+    # pylint: disable=invalid-name
     D = 5
     while _jacobi_symbol(D, num) != -1:
         D += 2 if D > 0 else -2
         D *= -1
+    # pylint: enable=invalid-name
     return D
 
+# pylint: disable=invalid-name,too-many-arguments
 def _U_V_subscript(k: int, n: int, U: int, V: int, P: int, Q: int, D: int) -> Tuple[int, int]:
     digits = list(map(int, str(bin(k))[2:]))
     subscript = 1
@@ -290,6 +299,7 @@ def _U_V_subscript(k: int, n: int, U: int, V: int, P: int, Q: int, D: int) -> Tu
             subscript += 1
             U, V = U % n, V % n
     return U, V
+# pylint: enable=invalid-name,too-many-arguments
 
 def _lucas_pp(num: int) -> bool:
     """
@@ -300,6 +310,7 @@ def _lucas_pp(num: int) -> bool:
     if num == 2:
         return True
 
+    # pylint: disable=invalid-name
     D = _D_chooser(num)
     P = 1
     Q = (1-D)//4
@@ -325,6 +336,7 @@ def _lucas_pp(num: int) -> bool:
                 return True
 
         return False
+    # pylint: enable=invalid-name
 
 def is_prime(num: int, primes: Optional[Sequence[int]] = None) -> bool:
     """
@@ -423,10 +435,11 @@ def next_prime(primes: List[int]) -> int:
     for num in range(_first_multiple_of(2, primes[-1])+1, 2*primes[-1], 2):
         if is_prime(num, primes):
             return num
-    
+
     raise RuntimeError("Unreachable code") # pragma: no cover
 
-def primes_with_difference_up_to(limit: int, difference: int, primes: Optional[Sequence[int]] = None) -> Iterable[Tuple[int, int]]:
+def primes_with_difference_up_to(limit: int, difference: int,
+                                 primes: Optional[Sequence[int]] = None) -> Iterable[Tuple[int, int]]:
     """
     Primes with difference up to limit
     """
@@ -487,6 +500,7 @@ def brents_rho(num: int, starting_point: int = 2) -> int:
     """
     Return a factor of num using Brent's variant of Pollard's rho algorithm, or num if one is not found
     """
+    # pylint: disable=invalid-name
     y, m = starting_point, 1000 # http://xn--2-umb.com/09/12/brent-pollard-rho-factorisation suggests 1000 is optimal
     g, r, q = 1, 1, 1
 
@@ -513,6 +527,7 @@ def brents_rho(num: int, starting_point: int = 2) -> int:
     while g == 1:
         ys = (pow(ys, 2, num) + 1) % num
         g = gcd(abs(x - ys), num)
+    # pylint: enable=invalid-name
 
     return g
 
@@ -532,13 +547,13 @@ def factorise(num: int, include_trivial: bool = False, primes: Optional[Sequence
 
     if primes:
         sqrt_num = num ** 0.5
-        for p in primes:
-            if p > sqrt_num or is_prime(num, primes):
+        for prime in primes:
+            if prime > sqrt_num or is_prime(num, primes):
                 break
-            if num % p == 0:
-                factors.add(p)
-                while num % p == 0:
-                    num //= p
+            if num % prime == 0:
+                factors.add(prime)
+                while num % prime == 0:
+                    num //= prime
                 sqrt_num = num ** 0.5
 
     while num > 1 and not is_prime(num, primes):
