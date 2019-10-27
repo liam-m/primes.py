@@ -326,14 +326,15 @@ def _lucas_pp(num: int) -> bool:
 
     U, V = _U_V_subscript(num+1, num, 1, P, P, Q, D)
 
+    # pylint: disable=no-else-return
     if U == 0:
         return True
-
-    # pragma: no cover
-    for r in range(s):
-        U, V = (U*V) % num, (pow(V, 2, num) - 2*pow(Q, d*(2**r), num)) % num
-        if V == 0:
-            return True
+    else: # pragma: no cover
+        for r in range(s):
+            U, V = (U*V) % num, (pow(V, 2, num) - 2*pow(Q, d*(2**r), num)) % num
+            if V == 0:
+                return True
+    # pylint: enable=no-else-return
 
     return False
     # pylint: enable=invalid-name
