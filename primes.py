@@ -480,7 +480,7 @@ def prime_gaps_up_to(limit: int, primes: Optional[List[int]] = None) -> Iterable
     """
     Difference between successive primes up to limit
     """
-    l_primes: List[int] = list(primes_up_to(limit, l_primes))
+    l_primes: List[int] = list(primes_up_to(limit, primes))
     for prime1, prime2 in zip(l_primes, l_primes[1:]):
         yield prime2 - prime1
 
