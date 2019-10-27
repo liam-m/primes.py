@@ -244,27 +244,26 @@ def _jacobi_symbol(a: int, n: int) -> int:
     """
     if n == 1: # pragma: no cover
         return 1
-    elif a == 0:
+    if a == 0:
         return 0
-    elif a == 1:
+    if a == 1:
         return 1
-    elif a == 2:
+    if a == 2:
         if n % 8 in [3, 5]:
             return -1
-        elif n % 8 in [1, 7]:
+        if n % 8 in [1, 7]:
             return 1
     elif a < 0:
         return int((-1)**((n-1)//2) * _jacobi_symbol(-1*a, n))
 
     if a % 2 == 0:
         return _jacobi_symbol(2, n) * _jacobi_symbol(a // 2, n)
-    elif a % n != a:
+    if a % n != a:
         return _jacobi_symbol(a % n, n)
-    else:
-        if a % 4 == n % 4 == 3:
-            return -1 * _jacobi_symbol(n, a) # pylint: disable=arguments-out-of-order
-        else:
-            return _jacobi_symbol(n, a) # pylint: disable=arguments-out-of-order
+
+    if a % 4 == n % 4 == 3:
+        return -1 * _jacobi_symbol(n, a) # pylint: disable=arguments-out-of-order
+    return _jacobi_symbol(n, a) # pylint: disable=arguments-out-of-order
 # pylint: enable=invalid-name,too-many-return-statements
 
 def _D_chooser(num: int) -> int:
@@ -329,13 +328,14 @@ def _lucas_pp(num: int) -> bool:
 
     if U == 0:
         return True
-    else: # pragma: no cover
-        for r in range(s):
-            U, V = (U*V) % num, (pow(V, 2, num) - 2*pow(Q, d*(2**r), num)) % num
-            if V == 0:
-                return True
 
-        return False
+    # pragma: no cover
+    for r in range(s):
+        U, V = (U*V) % num, (pow(V, 2, num) - 2*pow(Q, d*(2**r), num)) % num
+        if V == 0:
+            return True
+
+    return False
     # pylint: enable=invalid-name
 
 def is_prime(num: int, primes: Optional[Sequence[int]] = None) -> bool:
@@ -351,7 +351,7 @@ def is_prime(num: int, primes: Optional[Sequence[int]] = None) -> bool:
         if primes[-1] >= num:
             # If it's prime, it'll be in the list
             return not binary_search(primes, num) == -1
-        elif primes[-1] >= num**0.5:
+        if primes[-1] >= num**0.5:
             # If it's prime, none of the primes up to its square root will be a factor of it
             return _trial_division(num, primes)
 
