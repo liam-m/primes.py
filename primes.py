@@ -13,7 +13,7 @@ from numpy import ones, zeros
 
 from binary_search import binary_search, list_up_to
 
-class Primes(list):
+class Primes(List[int]):
     """
     List subclass that supports slicing and membership checking, automatically
     generating new primes when needed
@@ -422,7 +422,7 @@ def next_prime(primes: List[int]) -> int:
         if is_prime(num, primes):
             return num
     
-    raise RuntimeError("Unreachable code")
+    raise RuntimeError("Unreachable code") # pragma: no cover
 
 def primes_with_difference_up_to(limit: int, difference: int, primes: Optional[List[int]] = None) -> Iterable[Tuple[int, int]]:
     """
