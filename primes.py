@@ -262,9 +262,9 @@ def _jacobi_symbol(a: int, n: int) -> int:
         return _jacobi_symbol(a % n, n)
     else:
         if a % 4 == n % 4 == 3:
-            return -1 * _jacobi_symbol(n, a)
+            return -1 * _jacobi_symbol(n, a) # pylint: disable=arguments-out-of-order
         else:
-            return _jacobi_symbol(n, a)
+            return _jacobi_symbol(n, a) # pylint: disable=arguments-out-of-order
 # pylint: enable=invalid-name,too-many-return-statements
 
 def _D_chooser(num: int) -> int:
