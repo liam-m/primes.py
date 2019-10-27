@@ -354,9 +354,9 @@ def n_primes(num: int, primes: Optional[Sequence[int]] = None) -> Sequence[int]:
 
     Can pass in known primes to decrease execution time
     """
-    l_primes = primes or Primes()
+    primes = primes or Primes()
 
-    if len(l_primes) < num:
+    if len(primes) < num:
         if num < 6:
             upper_bound = 13
         else:
@@ -381,8 +381,8 @@ def n_primes(num: int, primes: Optional[Sequence[int]] = None) -> Sequence[int]:
                 upper_bound = int(num*(logn + log2n - 1.0 + 1.8*(log2n/logn)))
             else:
                 upper_bound = int(num*(logn + log2n))
-        l_primes = primes_up_to(upper_bound, l_primes)
-    return l_primes[:num]
+        primes = primes_up_to(upper_bound, primes)
+    return primes[:num]
 
 def nth_prime(num: int, primes: Optional[Sequence[int]] = None) -> int:
     """
@@ -398,14 +398,14 @@ def composites_up_to(limit: int, primes: Optional[Sequence[int]] = None) -> Sequ
 
     Can pass in known primes to decrease execution time
     """
-    l_primes = primes_up_to(limit, primes)
+    primes = primes_up_to(limit, primes)
     composites: List[int] = []
-    for prime1, prime2 in zip(l_primes, l_primes[1:]):
+    for prime1, prime2 in zip(primes, primes[1:]):
         # Add numbers between primes to composites
         composites.extend(range(prime1+1, prime2))
-    if l_primes:
+    if primes:
         # Add numbers between last prime and x
-        composites.extend(range(l_primes[-1]+1, limit+1))
+        composites.extend(range(primes[-1]+1, limit+1))
     return composites
 
 def next_prime(primes: List[int]) -> int:
@@ -479,8 +479,8 @@ def prime_gaps_up_to(limit: int, primes: Optional[Sequence[int]] = None) -> Iter
     """
     Difference between successive primes up to limit
     """
-    l_primes: List[int] = list(primes_up_to(limit, primes))
-    for prime1, prime2 in zip(l_primes, l_primes[1:]):
+    primes = primes_up_to(limit, primes)
+    for prime1, prime2 in zip(primes, primes[1:]):
         yield prime2 - prime1
 
 def brents_rho(num: int, starting_point: int = 2) -> int:
