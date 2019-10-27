@@ -1,14 +1,7 @@
 """
 Several prime number functions
 """
-
-from __future__ import division
 from math import log
-
-try:
-    from sys import maxint
-except ImportError: # pragma: no cover
-    maxint = 9223372036854775807
 
 try:
     from math import gcd
@@ -19,22 +12,11 @@ from numpy import ones, zeros
 
 from binary_search import binary_search, list_up_to
 
-try:
-    range = xrange
-except NameError: # pragma: no cover
-    pass
-
 class Primes(list):
     """
     List subclass that supports slicing and membership checking, automatically
     generating new primes when needed
     """
-
-    def __init__(self):
-        """
-        Initialise an instance of the primes object
-        """
-        super(self.__class__, self).__init__()
 
     def __contains__(self, item):
         """
@@ -53,35 +35,29 @@ class Primes(list):
             if key.step == 0:
                 raise ValueError("slice step cannot be zero")
 
-            if all((s not in [None, maxint] for s in [key.start, key.stop, key.step])):
+            if all((s is not None for s in [key.start, key.stop, key.step])):
                 if key.start > key.stop and key.step > 0 or key.stop > key.start and key.step < 0:
                     return []
 
-            if key.start not in [None, maxint] and len(self)-1 < key.start:
-                super(self.__class__, self).extend(n_primes(key.start+1, list(self))[len(self):])
-            if key.stop not in [None, maxint] and len(self) < key.stop:
-                super(self.__class__, self).extend(n_primes(key.stop, list(self))[len(self):])
+            if key.start is not None and len(self)-1 < key.start:
+                super().extend(n_primes(key.start+1, list(self))[len(self):])
+            if key.stop is not None and len(self) < key.stop:
+                super().extend(n_primes(key.stop, list(self))[len(self):])
         elif isinstance(key, int):
             if len(self)-1 < key:
-                super(self.__class__, self).extend(n_primes(key+1, list(self))[len(self):])
+                super().extend(n_primes(key+1, list(self))[len(self):])
         else:
             raise TypeError()
 
-        return super(self.__class__, self).__getitem__(key)
-
-    def __getslice__(self, i, j): # pragma: no cover
-        """
-        list still implements __getslice__ in 2.x, so it is overriden and calls __getitem__
-        """
-        return self[slice(i, j)]
+        return super().__getitem__(key)
 
     def index(self, prime):
         """
         The index of the prime
         """
-        if len(self) == 0 or self[-1] < prime:
-            super(self.__class__, self).extend(primes_up_to(prime, self)[len(self):])
-        return super(self.__class__, self).index(prime)
+        if not self or self[-1] < prime:
+            super().extend(primes_up_to(prime, self)[len(self):])
+        return super().index(prime)
 
 def _first_multiple_of(num, above):
     """
@@ -180,7 +156,7 @@ def sieve_of_atkin(limit):
     limit_sqrt = int(limit ** 0.5)
     s1, s2, s3 = set([1, 13, 17, 29, 37, 41, 49, 53]), set([7, 19, 31, 43]), set([11, 23, 47, 59])
 
-    squares = dict([(x, x**2) for x in range(1, limit_sqrt+1)])
+    squares = {x: x**2 for x in range(1, limit_sqrt+1)}
 
     range24_1_4 = list(_range24(1, limit_sqrt + 1, 4)) # +4, +2, +4.. from 1
     range24_2_2 = list(_range24(2, limit_sqrt + 1, 2)) # +2, +4, +2.. from 2
@@ -219,7 +195,6 @@ def primes_up_to(limit, primes=None):
 
     Uses (hopefully) the faster sieving algorithm available
     """
-
     return sieve_of_eratosthenes(limit, primes)
 
 def _trial_division(num, primes):
@@ -379,14 +354,14 @@ def n_primes(num, primes=None):
     """
     if not primes:
         primes = Primes()
-    
+
     if len(primes) < num:
         if num < 6:
             upper_bound = 13
         else:
             logn = log(num)
             log2n = log(logn)
-            
+
             if num >= 46254381: # Axler 2017, p. 2 # pragma: no cover
                 upper_bound = int(num*(logn + log2n - 1.0 + ((log2n-2.00)/logn) - ((log2n*log2n-6*log2n+10.667)/(2*logn*logn))))
             elif num >= 8009824: # Axler 2013, p. 8
@@ -560,15 +535,15 @@ def factorise(num, include_trivial=False, primes=None):
         return factors
 
     if primes:
-         sqrt_num = num ** 0.5
-         for p in primes:
-             if p > sqrt_num or is_prime(num, primes):
-                 break
-             if num % p == 0:
-                 factors.add(p)
-                 while num % p == 0:
-                     num //= p
-                 sqrt_num = num ** 0.5
+        sqrt_num = num ** 0.5
+        for p in primes:
+            if p > sqrt_num or is_prime(num, primes):
+                break
+            if num % p == 0:
+                factors.add(p)
+                while num % p == 0:
+                    num //= p
+                sqrt_num = num ** 0.5
 
     while num > 1 and not is_prime(num, primes):
         starting_point = 2

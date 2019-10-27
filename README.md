@@ -1,6 +1,6 @@
 # primes.py
 
-Prime number library for Python 2 and 3
+Prime number library for Python 3
 
 If you want to help develop, [open an issue](https://github.com/liam-m/primes.py/issues/new) or [fork the repo](https://github.com/liam-m/primes.py/fork), make your changes and [submit a pull request](https://github.com/liam-m/primes.py/compare/).
 
