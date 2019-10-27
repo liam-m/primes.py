@@ -334,9 +334,9 @@ def _lucas_pp(num: int) -> bool:
             U, V = (U*V) % num, (pow(V, 2, num) - 2*pow(Q, d*(2**r), num)) % num
             if V == 0:
                 return True
-    # pylint: enable=no-else-return
 
-    return False
+        return False
+    # pylint: enable=no-else-return
     # pylint: enable=invalid-name
 
 def is_prime(num: int, primes: Optional[Sequence[int]] = None) -> bool:
