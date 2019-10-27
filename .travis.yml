@@ -10,9 +10,11 @@ python:
  - "3.8"
  - "nightly"
 install:
+ - pip install mypy
  - pip install coverage
  - pip install pylint
 script:
+ - mypy .
  - python test.py
  - coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
  - python speed_test.py --all

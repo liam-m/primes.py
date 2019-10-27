@@ -2,6 +2,7 @@
 Several prime number functions
 """
 from math import log
+from typing import Any, Iterable, List, Optional, Tuple, Sequence, Set, Union
 
 try:
     from math import gcd
@@ -18,7 +19,7 @@ class Primes(list):
     generating new primes when needed
     """
 
-    def __contains__(self, item):
+    def __contains__(self, item: Any) -> bool:
         """
         Check if a number is prime:
         >>> primes = Primes()
@@ -27,7 +28,7 @@ class Primes(list):
         """
         return is_prime(item, self)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: Any) -> Any:
         """
         Used in slicing to get a single prime or a sequence of primes
         """
@@ -59,13 +60,13 @@ class Primes(list):
             super().extend(primes_up_to(prime, self)[len(self):])
         return super().index(prime)
 
-def _first_multiple_of(num, above):
+def _first_multiple_of(num: int, above: int) -> int:
     """
     Returns first multiple of num >= above
     """
     return above + ((num-(above%num)) % num)
 
-def sieve_of_eratosthenes(limit, primes=None):
+def sieve_of_eratosthenes(limit: int, primes: Optional[List[int]] = None) -> Sequence[int]:
     """
     Implementation of Sieve of Eratosthenes
 
@@ -129,7 +130,7 @@ def sieve_of_eratosthenes(limit, primes=None):
 
     return primes
 
-def _range24(start, stop, step=2):
+def _range24(start: int, stop: int, step: int = 2) -> Iterable[int]:
     """
     Like range(), but step is alternating between 2 and 4
     (or 4 and 2 if step is initially 4)
@@ -139,7 +140,7 @@ def _range24(start, stop, step=2):
         start += step
         step = 2+(step&2)
 
-def sieve_of_atkin(limit):
+def sieve_of_atkin(limit: int) -> Sequence[int]:
     """
     Implementation of Sieve of Atkin
 
@@ -189,7 +190,7 @@ def sieve_of_atkin(limit):
 
     return res + [num for num in range(_first_multiple_of(2, limit_sqrt)+1, limit+1, 2) if lst[num]]
 
-def primes_up_to(limit, primes=None):
+def primes_up_to(limit: int, primes: Optional[List[int]] = None) -> Sequence[int]:
     """
     Returns primes up to (and including) limit
 
@@ -197,14 +198,14 @@ def primes_up_to(limit, primes=None):
     """
     return sieve_of_eratosthenes(limit, primes)
 
-def _trial_division(num, primes):
+def _trial_division(num: int, primes: Iterable[int]) -> bool:
     """
     Simple trial division algorithm, check if num is prime by dividing
     it by known primes
     """
     return all(num%p != 0 for p in list_up_to(primes, int(num ** 0.5)))
 
-def _miller_rabin_2(num):
+def _miller_rabin_2(num: int) -> bool:
     """
     Single application of the Miller-Rabin primality test base-2
 
@@ -230,7 +231,7 @@ def _miller_rabin_2(num):
 
     return False
 
-def _jacobi_symbol(a, n):
+def _jacobi_symbol(a: int, n: int) -> int:
     """
     Calculate the Jacobi symbol (a/n)
     """
@@ -258,7 +259,7 @@ def _jacobi_symbol(a, n):
         else:
             return _jacobi_symbol(n, a)
 
-def _D_chooser(num):
+def _D_chooser(num: int) -> int:
     """
     Choose a D value suitable for the Baillie-PSW test
     """
@@ -268,8 +269,7 @@ def _D_chooser(num):
         D *= -1
     return D
 
-def _U_V_subscript(k, n, U, V, P, Q, D):
-    k, n, U, V, P, Q, D = map(int, (k, n, U, V, P, Q, D))
+def _U_V_subscript(k: int, n: int, U: int, V: int, P: int, Q: int, D: int) -> Tuple[int, int]:
     digits = list(map(int, str(bin(k))[2:]))
     subscript = 1
     for digit in digits[1:]:
@@ -289,7 +289,7 @@ def _U_V_subscript(k, n, U, V, P, Q, D):
             U, V = U % n, V % n
     return U, V
 
-def _lucas_pp(num):
+def _lucas_pp(num: int) -> bool:
     """
     Perform the Lucas probable prime test
 
@@ -324,7 +324,7 @@ def _lucas_pp(num):
 
         return False
 
-def is_prime(num, primes=None):
+def is_prime(num: int, primes: Optional[List[int]] = None) -> bool:
     """
     Returns True if num is a prime number, False if it is not
 
@@ -346,16 +346,15 @@ def is_prime(num, primes=None):
 
     return _miller_rabin_2(num) and _lucas_pp(num)
 
-def n_primes(num, primes=None):
+def n_primes(num: int, primes: Optional[List[int]] = None) -> Sequence[int]:
     """
     Returns the first num primes
 
     Can pass in known primes to decrease execution time
     """
-    if not primes:
-        primes = Primes()
+    l_primes: List[int] = primes or Primes()
 
-    if len(primes) < num:
+    if len(l_primes) < num:
         if num < 6:
             upper_bound = 13
         else:
@@ -380,10 +379,10 @@ def n_primes(num, primes=None):
                 upper_bound = int(num*(logn + log2n - 1.0 + 1.8*(log2n/logn)))
             else:
                 upper_bound = int(num*(logn + log2n))
-        primes = primes_up_to(upper_bound, primes)
-    return primes[:num]
+        l_primes = list(primes_up_to(upper_bound, l_primes))
+    return l_primes[:num]
 
-def nth_prime(num, primes=None):
+def nth_prime(num: int, primes: Optional[List[int]] = None) -> int:
     """
     Returns the numth prime (e.g. the 3rd prime, the 6th prime)
 
@@ -391,23 +390,23 @@ def nth_prime(num, primes=None):
     """
     return n_primes(num, primes)[-1]
 
-def composites_up_to(limit, primes=None):
+def composites_up_to(limit: int, primes: Optional[List[int]] = None) -> Sequence[int]:
     """
     Returns all composite (non-prime greater than 1) numbers up to (and including) limit
 
     Can pass in known primes to decrease execution time
     """
-    primes = primes_up_to(limit, primes)
-    composites = []
-    for prime1, prime2 in zip(primes, primes[1:]):
+    l_primes = primes_up_to(limit, primes)
+    composites: List[int] = []
+    for prime1, prime2 in zip(l_primes, l_primes[1:]):
         # Add numbers between primes to composites
         composites.extend(range(prime1+1, prime2))
-    if primes:
+    if l_primes:
         # Add numbers between last prime and x
-        composites.extend(range(primes[-1]+1, limit+1))
+        composites.extend(range(l_primes[-1]+1, limit+1))
     return composites
 
-def next_prime(primes):
+def next_prime(primes: List[int]) -> int:
     """
     Given primes, returns the next prime
 
@@ -422,8 +421,10 @@ def next_prime(primes):
     for num in range(_first_multiple_of(2, primes[-1])+1, 2*primes[-1], 2):
         if is_prime(num, primes):
             return num
+    
+    raise RuntimeError("Unreachable code")
 
-def primes_with_difference_up_to(limit, difference, primes=None):
+def primes_with_difference_up_to(limit: int, difference: int, primes: Optional[List[int]] = None) -> Iterable[Tuple[int, int]]:
     """
     Primes with difference up to limit
     """
@@ -433,25 +434,25 @@ def primes_with_difference_up_to(limit, difference, primes=None):
     return ((prime, prime+difference) for prime in primes_up_to(limit-difference, primes)
             if is_prime(prime+difference, primes))
 
-def twin_primes_up_to(limit, primes=None):
+def twin_primes_up_to(limit: int, primes: Optional[List[int]] = None) -> Iterable[Tuple[int, int]]:
     """
     Primes with difference 2 up to limit
     """
     return primes_with_difference_up_to(limit, 2, primes)
 
-def cousin_primes_up_to(limit, primes=None):
+def cousin_primes_up_to(limit: int, primes: Optional[List[int]] = None) -> Iterable[Tuple[int, int]]:
     """
     Primes with difference 4 up to limit
     """
     return primes_with_difference_up_to(limit, 4, primes)
 
-def sexy_primes_up_to(limit, primes=None):
+def sexy_primes_up_to(limit: int, primes: Optional[List[int]] = None) -> Iterable[Tuple[int, int]]:
     """
     Primes with difference 6 up to limit
     """
     return primes_with_difference_up_to(limit, 6, primes)
 
-def prime_triplets_up_to(limit, primes=None):
+def prime_triplets_up_to(limit: int, primes: Optional[List[int]] = None) -> Iterable[Tuple[int, int, int]]:
     """
     Prime triplets up to limit
     """
@@ -464,7 +465,7 @@ def prime_triplets_up_to(limit, primes=None):
         if is_prime(prime+4, primes) and is_prime(prime+6, primes):
             yield (prime, prime+4, prime+6)
 
-def prime_quadruplets_up_to(limit, primes=None):
+def prime_quadruplets_up_to(limit: int, primes: Optional[List[int]] = None) -> Iterable[Tuple[int, int, int, int]]:
     """
     Prime quadruplets up to limit
     """
@@ -475,18 +476,15 @@ def prime_quadruplets_up_to(limit, primes=None):
         if is_prime(prime+2, primes) and is_prime(prime+6, primes) and is_prime(prime+8, primes):
             yield (prime, prime+2, prime+6, prime+8)
 
-def prime_gaps_up_to(limit, primes=None):
+def prime_gaps_up_to(limit: int, primes: Optional[List[int]] = None) -> Iterable[int]:
     """
     Difference between successive primes up to limit
     """
-    if not primes:
-        primes = Primes()
-
-    primes = primes_up_to(limit, primes)
-    for prime1, prime2 in zip(primes, primes[1:]):
+    l_primes: List[int] = list(primes_up_to(limit, l_primes))
+    for prime1, prime2 in zip(l_primes, l_primes[1:]):
         yield prime2 - prime1
 
-def brents_rho(num, starting_point=2):
+def brents_rho(num: int, starting_point: int = 2) -> int:
     """
     Return a factor of num using Brent's variant of Pollard's rho algorithm, or num if one is not found
     """
@@ -519,7 +517,7 @@ def brents_rho(num, starting_point=2):
 
     return g
 
-def factorise(num, include_trivial=False, primes=None):
+def factorise(num: int, include_trivial: bool = False, primes: Optional[List[int]] = None) -> Set[int]:
     """
     Factorise a number
 
