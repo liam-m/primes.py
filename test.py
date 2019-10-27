@@ -535,7 +535,7 @@ class TestPrimes(unittest.TestCase):
         self.assertEqual(self.primes.index(3), 1)
         self.assertEqual(self.primes.index(5), 2)
         self.assertEqual(self.primes.index(7), 3)
-        self.assertRaisesRegex(ValueError, "4 is not in list", lambda p: p.index(4), self.primes)
+        self.assertRaisesRegex(ValueError, "4 is not prime", lambda p: p.index(4), self.primes)
 
 class TestSieves(unittest.TestCase):
     def testSieves(self):

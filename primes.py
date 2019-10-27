@@ -2,17 +2,20 @@
 Several prime number functions
 """
 from math import gcd, log
-from typing import Any, Iterable, List, Optional, Tuple, Sequence, Set
+from typing import Any, Iterator, Iterable, List, Optional, Tuple, Sequence, Set
 
 from numpy import ones, zeros
 
 from binary_search import binary_search, list_up_to
 
-class Primes(List[int]):
+class Primes(Sequence[int]):
     """
     List subclass that supports slicing and membership checking, automatically
     generating new primes when needed
     """
+
+    def __init__(self) -> None:
+        self.primes: List[int] = []
 
     def __contains__(self, item: Any) -> bool:
         """
@@ -36,28 +39,38 @@ class Primes(List[int]):
                     return []
 
             if key.start is not None and len(self)-1 < key.start:
-                self += n_primes(key.start+1, list(self))[len(self):]
+                self.primes += n_primes(key.start+1, self)[len(self):]
             if key.stop is not None and len(self) < key.stop:
-                self += n_primes(key.stop, list(self))[len(self):]
+                self.primes += n_primes(key.stop, self)[len(self):]
         elif isinstance(key, int):
             if len(self)-1 < key:
-                self += n_primes(key+1, list(self))[len(self):]
+                self.primes += n_primes(key+1, self)[len(self):]
         else:
             raise TypeError()
 
-        # pylint: disable=no-member
-        return super().__getitem__(key)
-        # pylint: enable=no-member
+        return self.primes[key]
 
     def index(self, prime: int, start: int = 0, stop: Optional[int] = None) -> int:
         """
         The index of the prime
         """
         if not self or self[-1] < prime:
-            self += primes_up_to(prime, self)[len(self):]
-        # pylint: disable=no-member
-        return super().index(prime, start, stop or len(self))
-        # pylint: enable=no-member
+            self.primes += primes_up_to(prime, self)[len(self):]
+        idx = binary_search(self.primes, prime, start, stop)
+        if idx < 0:
+            raise ValueError(f"{prime} is not prime")
+        return idx
+
+    def __eq__(self, other: Any) -> Any:
+        if isinstance(other, Primes):
+            other = other.primes
+        return self.primes == other
+
+    def __iter__(self) -> Iterator[int]:
+        return iter(self.primes)
+
+    def __len__(self) -> int:
+        return len(self.primes)
 
 def _first_multiple_of(num: int, above: int) -> int:
     """
@@ -421,7 +434,7 @@ def composites_up_to(limit: int, primes: Optional[Sequence[int]] = None) -> Sequ
         composites.extend(range(primes[-1]+1, limit+1))
     return composites
 
-def next_prime(primes: List[int]) -> int:
+def next_prime(primes: Sequence[int]) -> int:
     """
     Given primes, returns the next prime
 
