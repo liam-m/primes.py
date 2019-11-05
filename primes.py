@@ -38,15 +38,9 @@ class Primes(Sequence[int]):
                 if key.start > key.stop and key.step > 0 or key.stop > key.start and key.step < 0:
                     return []
 
-            if key.start is not None and len(self)-1 < key.start:
-                self.primes += n_primes(key.start+1, self)[len(self):]
-            if key.stop is not None and len(self) < key.stop:
-                self.primes += n_primes(key.stop, self)[len(self):]
-        elif isinstance(key, int):
-            if len(self)-1 < key:
-                self.primes += n_primes(key+1, self)[len(self):]
-        else:
-            raise TypeError()
+        num_required = max((key.start or -1)+1, key.stop or 0) if isinstance(key, slice) else key+1
+        if len(self) < num_required:
+            self.primes += n_primes(num_required, self)[len(self):]
 
         return self.primes[key]
 
