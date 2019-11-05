@@ -40,7 +40,7 @@ class Primes(Sequence[int]):
 
         num_required = max((key.start or -1)+1, key.stop or 0) if isinstance(key, slice) else key+1
         if len(self) < num_required:
-            self.primes = n_primes(num_required, self)
+            self.primes += n_primes(num_required, self)[len(self):]
 
         return self.primes[key]
 
