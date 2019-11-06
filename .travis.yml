@@ -5,12 +5,13 @@ language: python
 python: "nightly"
 jobs:
   include:
-      - name: "mypy"
-        install: pip install mypy
-        script: mypy primes.py binary_search.py --strict
-      - name: "pylint"
-        install: pip install pylint
-        script: pylint primes.py binary_search.py
+      - name: "Type check and lint"
+        install: 
+          - pip install mypy
+          - pip install pylint
+        script: 
+          - mypy primes.py binary_search.py --strict
+          - pylint primes.py binary_search.py
       - &unit-tests
         script: python test.py
         name: "Unit Tests 3.6"
