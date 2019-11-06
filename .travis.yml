@@ -12,40 +12,49 @@ jobs:
         install: pip install pylint
         script: pylint primes.py binary_search.py
       - &unit-tests
-        name: "Unit Tests"
         script: python test.py
       - <<: *unit-tests
+        name: "Unit Tests 3.6"
         python: "3.6"
       - <<: *unit-tests
+        name: "Unit Tests 3.7"
         python: "3.7"
       - <<: *unit-tests
+        name: "Unit Tests 3.8"
         python: "3.8"
       - <<: *unit-tests
+        name: "Unit Tests Nightly"
         python: "nightly"
       - name: "Coverage"
         install: pip install coverage
         script: coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
       - &speed-test-all
-        name: "Speed Test All"
         python: "3.6"
         script: python speed_test.py --all
       - <<: *speed-test-all
+        name: "Speed Test All 3.6"
         python: "3.6"
       - <<: *speed-test-all
+        name: "Speed Test All 3.7"
         python: "3.7"
       - <<: *speed-test-all
+        name: "Speed Test All 3.8"
         python: "3.8"
       - <<: *speed-test-all
+        name: "Speed Test All Nightly"
         python: "nightly"
       - &speed-test-fermat
-        name: "Speed Test 6 Fermat Numbers"
         python: "3.6"
         script: python speed_test.py --fermat 6
       - <<: *speed-test-fermat
+        name: "Speed Test 6 Fermat Numbers 3.6"
         python: "3.6"
       - <<: *speed-test-fermat
+        name: "Speed Test 6 Fermat Numbers 3.7"
         python: "3.7"
       - <<: *speed-test-fermat
+        name: "Speed Test 6 Fermat Numbers 3.8"
         python: "3.8"
       - <<: *speed-test-fermat
+        name: "Speed Test 6 Fermat Numbers Nightly"
         python: "nightly"
