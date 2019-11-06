@@ -4,87 +4,74 @@ dist: xenial   # required for Python >= 3.7
 language: python
 jobs:
   include:
-      - name: "mypy"
-        python: "3.6"
+      - &mypy
+        name: "mypy"
         install: pip install mypy
         script: mypy primes.py binary_search.py --strict
-      - name: "pylint"
+      - <<: *mypy
         python: "3.6"
+      - <<: *mypy
+        python: "3.7"
+      - <<: *mypy
+        python: "3.8"
+      - <<: *mypy
+        python: "nightly"
+      - &pylint
+        name: "pylint"
         install: pip install pylint
         script: pylint primes.py binary_search.py
-      - name: "Unit Tests"
+      - <<: *pylint
         python: "3.6"
+      - <<: *pylint
+        python: "3.7"
+      - <<: *pylint
+        python: "3.8"
+      - <<: *pylint
+        python: "nightly"
+      - &unit-tests
+        name: "Unit Tests"
         script: python test.py
-      - name: "Coverage"
+      - <<: *unit-tests
         python: "3.6"
+      - <<: *unit-tests
+        python: "3.7"
+      - <<: *unit-tests
+        python: "3.8"
+      - <<: *unit-tests
+        python: "nightly"
+      - &coverage
+        name: "Coverage"
         install: pip install coverage
         script: coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
-      - name: "Speed Test All"
+      - <<: *coverage
+        python: "3.6"
+      - <<: *coverage
+        python: "3.7"
+      - <<: *coverage
+        python: "3.8"
+      - <<: *coverage
+        python: "nightly"
+      - &speed-test-all
+        name: "Speed Test All"
         python: "3.6"
         script: python speed_test.py --all
-      - name: "Speed Test 6 Fermat Numbers"
+      - <<: *speed-test-all
+        python: "3.6"
+      - <<: *speed-test-all
+        python: "3.7"
+      - <<: *speed-test-all
+        python: "3.8"
+      - <<: *speed-test-all
+        python: "nightly"
+      - &speed-test-fermat
+        name: "Speed Test 6 Fermat Numbers"
         python: "3.6"
         script: python speed_test.py --fermat 6
-      - name: "mypy"
+      - <<: *speed-test-fermat
+        python: "3.6"
+      - <<: *speed-test-fermat
         python: "3.7"
-        install: pip install mypy
-        script: mypy primes.py binary_search.py --strict
-      - name: "pylint"
-        python: "3.7"
-        install: pip install pylint
-        script: pylint primes.py binary_search.py
-      - name: "Unit Tests"
-        python: "3.7"
-        script: python test.py
-      - name: "Coverage"
-        python: "3.7"
-        install: pip install coverage
-        script: coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
-      - name: "Speed Test All"
-        python: "3.7"
-        script: python speed_test.py --all
-      - name: "Speed Test 6 Fermat Numbers"
-        python: "3.7"
-        script: python speed_test.py --fermat 6
-      - name: "mypy"
+      - <<: *speed-test-fermat
         python: "3.8"
-        install: pip install mypy
-        script: mypy primes.py binary_search.py --strict
-      - name: "pylint"
-        python: "3.8"
-        install: pip install pylint
-        script: pylint primes.py binary_search.py
-      - name: "Unit Tests"
-        python: "3.8"
-        script: python test.py
-      - name: "Coverage"
-        python: "3.8"
-        install: pip install coverage
-        script: coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
-      - name: "Speed Test All"
-        python: "3.8"
-        script: python speed_test.py --all
-      - name: "Speed Test 6 Fermat Numbers"
-        python: "3.8"
-        script: python speed_test.py --fermat 6
-      - name: "mypy"
+      - <<: *speed-test-fermat
         python: "nightly"
-        install: pip install mypy
-        script: mypy primes.py binary_search.py --strict
-      - name: "pylint"
-        python: "nightly"
-        install: pip install pylint
-        script: pylint primes.py binary_search.py
-      - name: "Unit Tests"
-        python: "nightly"
-        script: python test.py
-      - name: "Coverage"
-        python: "nightly"
-        install: pip install coverage
-        script: coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
-      - name: "Speed Test All"
-        python: "nightly"
-        script: python speed_test.py --all
-      - name: "Speed Test 6 Fermat Numbers"
-        python: "nightly"
-        script: python speed_test.py --fermat 6
