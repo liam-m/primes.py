@@ -2,20 +2,15 @@ version: ~> 1.0
 os: linux
 dist: xenial   # required for Python >= 3.7
 language: python
+python: "nightly"
 jobs:
   include:
-      - &mypy
-        name: "mypy"
+      - name: "mypy"
         install: pip install mypy
         script: mypy primes.py binary_search.py --strict
-      - <<: *mypy
-        python: "nightly"
-      - &pylint
-        name: "pylint"
+      - name: "pylint"
         install: pip install pylint
         script: pylint primes.py binary_search.py
-      - <<: *pylint
-        python: "nightly"
       - &unit-tests
         name: "Unit Tests"
         script: python test.py
@@ -27,12 +22,9 @@ jobs:
         python: "3.8"
       - <<: *unit-tests
         python: "nightly"
-      - &coverage
-        name: "Coverage"
+      - name: "Coverage"
         install: pip install coverage
         script: coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
-      - <<: *coverage
-        python: "nightly"
       - &speed-test-all
         name: "Speed Test All"
         python: "3.6"
