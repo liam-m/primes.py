@@ -13,7 +13,6 @@ jobs:
         script: pylint primes.py binary_search.py
       - &unit-tests
         script: python test.py
-      - <<: *unit-tests
         name: "Unit Tests 3.6"
         python: "3.6"
       - <<: *unit-tests
@@ -31,7 +30,6 @@ jobs:
       - &speed-test-all
         python: "3.6"
         script: python speed_test.py --all
-      - <<: *speed-test-all
         name: "Speed Test All 3.6"
         python: "3.6"
       - <<: *speed-test-all
@@ -46,7 +44,6 @@ jobs:
       - &speed-test-fermat
         python: "3.6"
         script: python speed_test.py --fermat 6
-      - <<: *speed-test-fermat
         name: "Speed Test 6 Fermat Numbers 3.6"
         python: "3.6"
       - <<: *speed-test-fermat
