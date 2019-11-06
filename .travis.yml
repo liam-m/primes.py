@@ -9,14 +9,13 @@ python:
  - "nightly"
 jobs:
   include:
+      - python: "3.6"
+      - python: "3.7"
+      - python: "3.8"
+      - python: "nightly"
       - name: "mypy"
         install: pip install mypy
         script: mypy primes.py binary_search.py --strict
-        python:
-          - "3.6"
-          - "3.7"
-          - "3.8"
-          - "nightly"
       - name: "pylint"
         install: pip install pylint
         script: pylint primes.py binary_search.py
