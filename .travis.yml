@@ -7,14 +7,20 @@ python:
  - "3.7"
  - "3.8"
  - "nightly"
-install:
- - pip install mypy
- - pip install coverage
- - pip install pylint
-script:
- - mypy primes.py binary_search.py --strict
- - python test.py
- - coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
- - python speed_test.py --all
- - python speed_test.py --fermat 6
- - pylint primes.py binary_search.py
+jobs:
+  include:
+      - name: "mypy"
+        install: pip install mypy
+        script: mypy primes.py binary_search.py --strict
+      - name: "pylint"
+        install: pip install pylint
+        script: pylint primes.py binary_search.py
+      - name: "Unit Tests"
+        script: python test.py
+      - name: "Coverage"
+        install: pip install coverage
+        script: coverage run --include=primes.py,test.py,binary_search.py test.py && coverage report -m --fail-under=100 --rcfile=coveragerc
+      - name: "Speed Test All"
+        script: python speed_test.py --all
+      - name: "Speed Test 6 Fermat Numbers"
+        script: python speed_test.py --fermat 6
