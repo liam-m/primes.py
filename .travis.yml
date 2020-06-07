@@ -8,6 +8,7 @@ python:
  - "3.8"
  - "nightly"
 install:
+ - pip install --user -r requirements.txt
  - pip install mypy
  - pip install coverage
  - pip install pylint
