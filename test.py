@@ -45,13 +45,15 @@ class TestPrimesUpTo(unittest.TestCase):
 
     def testPrimesUpTo1000WithLesserPassIn(self):
         for i in range(1000):
-            lower_primes = primes_up_to(random.randint(0, i))
-            self.assertEqual(primes_up_to(i), primes_up_to(i, lower_primes))
+            with self.subTest(i=i):
+                lower_primes = primes_up_to(random.randint(0, i))
+                self.assertEqual(primes_up_to(i), primes_up_to(i, lower_primes))
 
     def testPrimesUpTo1000WithGreaterPassIn(self):
         for i in range(1000):
-            greater_primes = primes_up_to(random.randint(i, 2*i))
-            self.assertEqual(primes_up_to(i), primes_up_to(i, greater_primes))
+            with self.subTest(i=i):
+                greater_primes = primes_up_to(random.randint(i, 2*i))
+                self.assertEqual(primes_up_to(i), primes_up_to(i, greater_primes))
 
 class TestIsPrime(unittest.TestCase):
     def setUp(self):
@@ -108,20 +110,22 @@ class TestIsPrime(unittest.TestCase):
 
     def testIsPrime(self):
         for prime in self.primes:
-            self.assertTrue(is_prime(prime), prime)
-            self.assertTrue(is_prime(prime, []), prime)
-            self.assertTrue(is_prime(prime, [2, 3, 5]), prime)
-            self.assertTrue(is_prime(prime, self.primes[:random.randint(0, len(self.primes)-1)]), prime)
-            self.assertTrue(is_prime(prime, list_up_to(self.primes, int(1.2 * prime))), prime)
-            self.assertTrue(is_prime(prime, list_up_to(self.primes, int(sqrt(int(1.2 * prime))))), prime)
+            with self.subTest(prime=prime):
+                self.assertTrue(is_prime(prime), prime)
+                self.assertTrue(is_prime(prime, []), prime)
+                self.assertTrue(is_prime(prime, [2, 3, 5]), prime)
+                self.assertTrue(is_prime(prime, self.primes[:random.randint(0, len(self.primes)-1)]), prime)
+                self.assertTrue(is_prime(prime, list_up_to(self.primes, int(1.2 * prime))), prime)
+                self.assertTrue(is_prime(prime, list_up_to(self.primes, int(sqrt(int(1.2 * prime))))), prime)
 
         for composite in self.composites:
-            self.assertFalse(is_prime(composite), composite)
-            self.assertFalse(is_prime(composite, []), composite)
-            self.assertFalse(is_prime(composite, [2, 3, 5]), composite)
-            self.assertFalse(is_prime(composite, self.primes[:random.randint(0, len(self.primes)-1)]), composite)
-            self.assertFalse(is_prime(composite, list_up_to(self.primes, int(1.2 * prime))), composite)
-            self.assertFalse(is_prime(composite, list_up_to(self.primes, int(sqrt(int(1.2 * prime))))), composite)
+            with self.subTest(composite=composite):
+                self.assertFalse(is_prime(composite), composite)
+                self.assertFalse(is_prime(composite, []), composite)
+                self.assertFalse(is_prime(composite, [2, 3, 5]), composite)
+                self.assertFalse(is_prime(composite, self.primes[:random.randint(0, len(self.primes)-1)]), composite)
+                self.assertFalse(is_prime(composite, list_up_to(self.primes, int(1.2 * prime))), composite)
+                self.assertFalse(is_prime(composite, list_up_to(self.primes, int(sqrt(int(1.2 * prime))))), composite)
 
 class TestNPrimes(unittest.TestCase):
     def testNPrimes0(self):
@@ -141,46 +145,51 @@ class TestNPrimes(unittest.TestCase):
 
     def testNPrimes500(self):
         for i in range(500):
-            p = primes_up_to(i)
-            self.assertEqual(n_primes(len(p)), p)
+            with self.subTest(i=i):
+                p = primes_up_to(i)
+                self.assertEqual(n_primes(len(p)), p)
 
     def testNPrimes1000(self):
         for i in range(1000):
-            self.assertEqual(len(n_primes(i)), i)
+            with self.subTest(i=i):
+                self.assertEqual(len(n_primes(i)), i)
 
     def testNPrimes10000(self):
         for i in range(10000, 10050):
-            self.assertEqual(len(n_primes(i)), i)
+            with self.subTest(i=i):
+                self.assertEqual(len(n_primes(i)), i)
 
     def testNPrimes16000(self):
         for i in range(16000, 16005):
-            self.assertEqual(len(n_primes(i)), i)
+            with self.subTest(i=i):
+                self.assertEqual(len(n_primes(i)), i)
 
     def testNPrimes40000(self):
         for i in range(40000, 40005):
-            self.assertEqual(len(n_primes(i)), i)
+            with self.subTest(i=i):
+                self.assertEqual(len(n_primes(i)), i)
 
     def testNPrimes180000(self):
         for i in range(180000, 180005):
-            self.assertEqual(len(n_primes(i)), i)
+            with self.subTest(i=i):
+                self.assertEqual(len(n_primes(i)), i)
 
     def testNPrimes700000(self):
         for i in range(700000, 700005):
-            self.assertEqual(len(n_primes(i)), i)
+            with self.subTest(i=i):
+                self.assertEqual(len(n_primes(i)), i)
 
     def testNPrimes8010000(self):
         for i in range(8010000, 8010002):
-            self.assertEqual(len(n_primes(i)), i)
-
-    #def testNPrimes470000000(self):
-    #    for i in range(470000000, 470000002):
-    #        self.assertEqual(len(n_primes(i)), i)
+            with self.subTest(i=i):
+                self.assertEqual(len(n_primes(i)), i)
 
 class TestNthPrime(unittest.TestCase):
     def testNthPrime1000(self):
         known_primes = primes_up_to(1000)
         for i in range(1, len(known_primes)):
-            self.assertEqual(nth_prime(i), known_primes[i-1])
+            with self.subTest(i=i):
+                self.assertEqual(nth_prime(i), known_primes[i-1])
 
 class TestCompositesUpTo(unittest.TestCase):
     def testCompositesUpTo0(self):
@@ -208,7 +217,8 @@ class TestNextPrime(unittest.TestCase):
     def testNextPrime10000(self):
         known_primes = primes_up_to(10000)
         for i in range(len(known_primes)):
-            self.assertEqual(next_prime(known_primes[:i]), known_primes[i])
+            with self.subTest(i=i):
+                self.assertEqual(next_prime(known_primes[:i]), known_primes[i])
 
 class TestTwinPrimesUpTo(unittest.TestCase):
     def testTwinPrimesUpTo4(self):
@@ -242,7 +252,8 @@ class TestTwinPrimesUpTo(unittest.TestCase):
         upto = 500
         p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(twin_primes_up_to(i)), list(twin_primes_up_to(i, p[:random.randint(0, upto)])))
+            with self.subTest(i=i):
+                self.assertEqual(list(twin_primes_up_to(i)), list(twin_primes_up_to(i, p[:random.randint(0, upto)])))
 
 class TestCousinPrimesUpTo(unittest.TestCase):
     def testCousinPrimesUpTo6(self):
@@ -267,7 +278,8 @@ class TestCousinPrimesUpTo(unittest.TestCase):
         upto = 500
         p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(cousin_primes_up_to(i)), list(cousin_primes_up_to(i, p[:random.randint(0, upto)])))
+            with self.subTest(i=i):
+                self.assertEqual(list(cousin_primes_up_to(i)), list(cousin_primes_up_to(i, p[:random.randint(0, upto)])))
 
 class TestSexyPrimesUpTo(unittest.TestCase):
     def testSexyPrimesUpTo10(self):
@@ -289,7 +301,8 @@ class TestSexyPrimesUpTo(unittest.TestCase):
         upto = 500
         p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(sexy_primes_up_to(i)), list(sexy_primes_up_to(i, p[:random.randint(0, upto)])))
+            with self.subTest(i=i):
+                self.assertEqual(list(sexy_primes_up_to(i)), list(sexy_primes_up_to(i, p[:random.randint(0, upto)])))
 
 class TestPrimeTripletsUpTo(unittest.TestCase):
     def testPrimeTripletsUpTo10(self):
@@ -311,7 +324,8 @@ class TestPrimeTripletsUpTo(unittest.TestCase):
         upto = 500
         p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(prime_triplets_up_to(i)), list(prime_triplets_up_to(i, p[:random.randint(0, upto)])))
+            with self.subTest(i=i):
+                self.assertEqual(list(prime_triplets_up_to(i)), list(prime_triplets_up_to(i, p[:random.randint(0, upto)])))
 
 class TestPrimeQuadrupletsUpTo(unittest.TestCase):
     def testPrimeQuadrupletsUpTo12(self):
@@ -333,7 +347,8 @@ class TestPrimeQuadrupletsUpTo(unittest.TestCase):
         upto = 500
         p = primes_up_to(upto)
         for i in range(upto):
-            self.assertEqual(list(prime_quadruplets_up_to(i)), list(prime_quadruplets_up_to(i, p[:random.randint(0, upto)])))
+            with self.subTest(i=i):
+                self.assertEqual(list(prime_quadruplets_up_to(i)), list(prime_quadruplets_up_to(i, p[:random.randint(0, upto)])))
 
 class TestPrimeGapsUpTo(unittest.TestCase):
     def testPrimeGaps0(self):
@@ -370,21 +385,25 @@ class TestPrimes(unittest.TestCase):
 
     def testMembership10000(self):
         p = primes_up_to(10000)
-        for pr in p:
-            self.assertTrue(pr in self.primes)
+        for prime in p:
+            with self.subTest(prime=prime):
+                self.assertTrue(prime in self.primes)
 
         c = composites_up_to(10000, p)
-        for co in c:
-            self.assertFalse(co in self.primes)
+        for composite in c:
+            with self.subTest(composite=composite):
+                self.assertFalse(composite in self.primes)
 
     def testMembership15000(self):
         p = primes_up_to(15000)
-        for pr in p[::-1]:
-            self.assertTrue(pr in self.primes)
+        for prime in p[::-1]:
+            with self.subTest(prime=prime):
+                self.assertTrue(prime in self.primes)
 
         c = composites_up_to(15000, p)
-        for co in c[::-1]:
-            self.assertFalse(co in self.primes)
+        for composite in c[::-1]:
+            with self.subTest(composite=composite):
+                self.assertFalse(composite in self.primes)
 
     def testIndexingSanity(self):
         self.assertEqual(self.primes[0], 2)
@@ -398,8 +417,9 @@ class TestPrimes(unittest.TestCase):
 
     def testIndexing1000(self):
         p = n_primes(1000)
-        for i, pr in enumerate(p):
-            self.assertEqual(self.primes[i], pr)
+        for i, prime in enumerate(p):
+            with self.subTest(i=i, prime=prime):
+                self.assertEqual(self.primes[i], prime)
 
     def testSlicing(self):
         self.assertRaises(TypeError, lambda p: p[1,2,3], self.primes)
@@ -500,7 +520,8 @@ class TestPrimes(unittest.TestCase):
         self.assertEqual(n_primes(1000), [prime for prime in self.primes])
 
         for prime in self.primes:
-            self.assertTrue(is_prime(prime))
+            with self.subTest(prime=prime):
+                self.assertTrue(is_prime(prime))
 
     def testEquality(self):
         otherprimes = Primes()
@@ -540,7 +561,8 @@ class TestPrimes(unittest.TestCase):
 class TestSieves(unittest.TestCase):
     def testSieves(self):
         for i in range(1000):
-            self.assertEqual(sieve_of_eratosthenes(i), sieve_of_atkin(i))
+            with self.subTest(i=i):
+                self.assertEqual(sieve_of_eratosthenes(i), sieve_of_atkin(i))
 
         for _ in range(100):
             r = random.randint(1001, 500000)
@@ -549,12 +571,14 @@ class TestSieves(unittest.TestCase):
 class TestPrimeFactorisation(unittest.TestCase):
     def testPrimes(self):
         for p in primes_up_to(100000):
-            self.assertEqual(factorise(p, include_trivial=False), set())
-            self.assertEqual(factorise(p, include_trivial=True), set([1, p]))
+            with self.subTest(p=p):
+                self.assertEqual(factorise(p, include_trivial=False), set())
+                self.assertEqual(factorise(p, include_trivial=True), set([1, p]))
 
     def testPrimesPerfectSquares(self):
         for p in primes_up_to(100):
-            self.assertEqual(factorise(p*p), set([p]))
+            with self.subTest(p=p):
+                self.assertEqual(factorise(p*p), set([p]))
 
 class TestSemiprimeFactorisation(unittest.TestCase):
     def test15(self):
@@ -578,7 +602,8 @@ class TestSemiprimeFactorisation(unittest.TestCase):
         primes = primes_up_to(500000)
         random.shuffle(primes)
         for p, q in zip(primes[:1000], primes[1:]):
-            self.assertEqual(factorise(p*q), set([p, q]))
+            with self.subTest(p=p, q=q):
+                self.assertEqual(factorise(p*q), set([p, q]))
 
 class TestCompositeFactorisation(unittest.TestCase):
     def testComposites(self):
@@ -592,8 +617,9 @@ class TestCompositeFactorisation(unittest.TestCase):
 class TestFactorisationWithPrimes(unittest.TestCase):
     def testFactorisation(self):
         for i in range(2, 10000):
-            primes = primes_up_to(random.randint(2, 150))
-            self.assertEqual(factorise(i), factorise(i, primes=primes))
+            with self.subTest(i=i):
+                primes = primes_up_to(random.randint(2, 150))
+                self.assertEqual(factorise(i), factorise(i, primes=primes))
 
 if __name__ == '__main__':
     unittest.main()
