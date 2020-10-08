@@ -12,6 +12,7 @@ jobs:
   - python: nightly
 install:
  - pip install mypy
+ - pip install hypothesis
  - pip install coverage
  - pip install pylint
 script:
