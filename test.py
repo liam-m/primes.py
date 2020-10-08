@@ -1,5 +1,7 @@
 import unittest
 import random
+from hypothesis import given, settings
+import hypothesis.strategies as st
 from math import sqrt
 from operator import mul
 from primes import *
@@ -143,46 +145,10 @@ class TestNPrimes(unittest.TestCase):
     def testNPrimes100(self):
         self.assertEqual(n_primes(100), primes_up_to(542))
 
-    def testNPrimes500(self):
-        for i in range(500):
-            with self.subTest(i=i):
-                p = primes_up_to(i)
-                self.assertEqual(n_primes(len(p)), p)
-
-    def testNPrimes1000(self):
-        for i in range(1000):
-            with self.subTest(i=i):
-                self.assertEqual(len(n_primes(i)), i)
-
-    def testNPrimes10000(self):
-        for i in range(10000, 10050):
-            with self.subTest(i=i):
-                self.assertEqual(len(n_primes(i)), i)
-
-    def testNPrimes16000(self):
-        for i in range(16000, 16005):
-            with self.subTest(i=i):
-                self.assertEqual(len(n_primes(i)), i)
-
-    def testNPrimes40000(self):
-        for i in range(40000, 40005):
-            with self.subTest(i=i):
-                self.assertEqual(len(n_primes(i)), i)
-
-    def testNPrimes180000(self):
-        for i in range(180000, 180005):
-            with self.subTest(i=i):
-                self.assertEqual(len(n_primes(i)), i)
-
-    def testNPrimes700000(self):
-        for i in range(700000, 700005):
-            with self.subTest(i=i):
-                self.assertEqual(len(n_primes(i)), i)
-
-    def testNPrimes8010000(self):
-        for i in range(8010000, 8010002):
-            with self.subTest(i=i):
-                self.assertEqual(len(n_primes(i)), i)
+    @given(st.integers(min_value=0, max_value=100_000))
+    @settings(max_examples=20)
+    def testNPrimes(self, i):
+        self.assertEqual(len(n_primes(i)), i)
 
 class TestNthPrime(unittest.TestCase):
     def testNthPrime1000(self):
