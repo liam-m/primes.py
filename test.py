@@ -145,7 +145,7 @@ class TestNPrimes(unittest.TestCase):
     def testNPrimes100(self):
         self.assertEqual(n_primes(100), primes_up_to(542))
 
-    @given(st.integers(min_value=0, max_value=100_000))
+    @given(st.integers(min_value=0, max_value=1_000_000))
     @settings(max_examples=20)
     def testNPrimes(self, i):
         self.assertEqual(len(n_primes(i)), i)
