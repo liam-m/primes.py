@@ -1,6 +1,5 @@
 from primes import is_prime
 import time, argparse
-
 order_2_primes = [101, 103, 107, 109, 113,
                     127, 131, 137, 139, 149]
 
